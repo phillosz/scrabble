@@ -1,20 +1,41 @@
-alien = Actor("alien")
-alien.pos = 200, 60
-WIDTH = 500
-HEIGHT = alien.height + 60
+#TW = triple word
+#DW = double word 
+#TL = triple letter 
+#DL = double letter 
 
-def draw():
-    screen.clear()
-    alien.draw()
+import numpy as np
 
-def update():
-    alien.left += 2
-    if alien.left > WIDTH:
-        alien.right = 0
+arr = [4, 0, 0, 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0, 4, 5,
+    0, 3, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 3, 0, 5,
+    0, 0, 3, 0, 0, 0, 1, 0, 1, 0, 0, 0, 3, 0, 0, 5, 
+    1, 0, 0, 3, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 1, 5, 
+    0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 5, 
+    0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 5, 
+    0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 5, 
+    4, 0, 0, 1, 0, 0, 0, 6, 0, 0, 0, 1, 0, 0, 4, 5, 
+    0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 5, 
+    0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 5, 
+    0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 5, 
+    1, 0, 0, 3, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 1, 5, 
+    0, 0, 3, 0, 0, 0, 1, 0, 1, 0, 0, 0, 3, 0, 0, 5, 
+    0, 3, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 3, 0, 5, 
+    4, 0, 0, 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0, 4, 5]
 
 
-def on_mouse_down(pos):
-    if alien.collidepoint(pos):
-        print("Hit")
-    else:
-        print("Miss")
+for i in arr:
+        if i == 4:
+            print("TW ", end=" ")
+        elif i == 3:
+            print("DW ", end=" ")
+        elif i == 2:
+            print("TL ", end=" ")
+        elif i == 1:
+            print("DL ", end=" ")
+        elif i == 0:
+            print("___", end=" ")
+        elif i == 5:
+            print("\n\n", end=" ")
+        elif i == 6:
+            print(" S ", end=" ")
+        elif i == 7:
+            print("__", end=" ")
