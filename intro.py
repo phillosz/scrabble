@@ -3,6 +3,7 @@
 #TL = triple letter 
 #DL = double letter 
 
+#MAIN BOARD
 arr = [[4, 0, 0, 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0, 4, 5,],
     [0, 3, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 3, 0, 5,],
     [0, 0, 3, 0, 0, 0, 1, 0, 1, 0, 0, 0, 3, 0, 0, 5,],
@@ -11,15 +12,15 @@ arr = [[4, 0, 0, 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0, 4, 5,],
     [0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 5,],
     [0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 5,],
     [4, 0, 0, 1, 0, 0, 0, 6, 0, 0, 0, 1, 0, 0, 4, 5,],
-    [0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 5,],
     [0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 5,],
+    [0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 5,],
     [0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 5,],
     [1, 0, 0, 3, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 1, 5,],
     [0, 0, 3, 0, 0, 0, 1, 0, 1, 0, 0, 0, 3, 0, 0, 5,],
     [0, 3, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 3, 0, 5,],
     [4, 0, 0, 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0, 4, 5]]
 
-
+#MAIN FUNCTION FOR PRINTING THE BOARD AND ADDING LETTERS
 def main_func():
     for i in arr:
         for each in i:
@@ -92,16 +93,41 @@ def main_func():
             elif each == "Z":
                 print(" Z ", end=" ")
         print()
-            
 main_func()
-            
+
+#PLAYER INPUTS           
 x = input("Enter X coords of the start ")
 y = input("Enter Y coords of the start ")
 word = []
-word.append(input("Enter your word in CAPITALS "))
+inp = input("Enter your word in CAPITALS ")
+for letter in inp:
+    word.append(letter)
 
-target = arr[int(x)][int(y)]
-arr[int(x)][int(y)] = word[0]
 
-main_func()
-#input("Enter your word in CAPITALS ")
+#WRITES PLAYERS WORD IN NORTH ORIENTATION
+direction = input("In which direction should your word be? D R? ")
+if direction == "D":
+    p = 0
+    q = 1
+    for i in str(inp):
+            arr[int(y)+p][int(x)] = word[q-1]
+            p += 1
+            q += 1
+if direction == "R":
+    p = 0
+    q = 1
+    for i in str(inp):
+            arr[int(y)][int(x)+p] = word[q-1]
+            p += 1
+            q += 1
+
+
+
+
+
+        
+main_func()        
+
+
+
+    
