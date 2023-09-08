@@ -95,6 +95,7 @@ def main_func():
         print()
 main_func()
 
+print("PLAYER 1")
 #PLAYER INPUTS           
 y = input("Enter Y coords of the start ")
 x = input("Enter X coords of the start ")
@@ -152,10 +153,74 @@ if direction == "R":
             arr[int(y)-1][int(x)-1+p] = word[q-1]
             p += 1
             q += 1
-
-        
+                   
 main_func()        
 
 
+
+
+
+
+
+print("PLAYER 2")
+
+y = input("Enter Y coords of the start ")
+x = input("Enter X coords of the start ")
+
+def coords_y_modifier():
+    global y
+    y = input("Enter Y coords of the start ")
+def coords_x_modifier():
+    global x 
+    x = input("Enter X coords of the start ")
+
+while int(y) not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
+    print("Error, please enter number between 1 and 15")
+    coords_y_modifier()
+    
+while int(x) not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
+    print("Error, please enter number between 1 and 15")
+    coords_x_modifier()
+
+word = []
+inp = input("Enter your word in CAPITALS ")
+for letter in inp:
+    word.append(letter)
+direction = input("In which direction should your word be? D R? ")
+
+
+#CHECKS IF THE WORD FITS INSIDE THE BORDERS
+def inp_modifier():
+    global inp, word
+    inp = input("Enter your word in CAPITALS ")
+    word = list(inp)
+
+if direction == "D":
+    while len(word) > (16 - int(y)):
+        print("Error, word colides with the border")
+        inp_modifier()
+if direction == "R":
+    while len(word) > (16 - int(x)):
+        print("Error, word colides with the border")
+        inp_modifier()
+
+
+#WRITES PLAYERS WORD
+if direction == "D":
+    p = 0
+    q = 1
+    for i in str(inp):
+            arr[int(y)-1+p][int(x)-1] = word[q-1]
+            p += 1
+            q += 1
+if direction == "R":
+    p = 0
+    q = 1
+    for i in str(inp):
+            arr[int(y)-1][int(x)-1+p] = word[q-1]
+            p += 1
+            q += 1
+                   
+main_func()        
 
     
