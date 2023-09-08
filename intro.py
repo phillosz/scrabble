@@ -98,6 +98,22 @@ main_func()
 #PLAYER INPUTS           
 y = input("Enter Y coords of the start ")
 x = input("Enter X coords of the start ")
+
+def coords_y_modifier():
+    global y
+    y = input("Enter Y coords of the start ")
+def coords_x_modifier():
+    global x 
+    x = input("Enter X coords of the start ")
+
+while int(y) not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
+    print("Error, please enter number between 1 and 15")
+    coords_y_modifier()
+    
+while int(x) not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
+    print("Error, please enter number between 1 and 15")
+    coords_x_modifier()
+
 word = []
 inp = input("Enter your word in CAPITALS ")
 for letter in inp:
