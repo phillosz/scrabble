@@ -96,34 +96,46 @@ def main_func():
 main_func()
 
 #PLAYER INPUTS           
-x = input("Enter X coords of the start ")
 y = input("Enter Y coords of the start ")
+x = input("Enter X coords of the start ")
 word = []
 inp = input("Enter your word in CAPITALS ")
 for letter in inp:
     word.append(letter)
-
-
-#WRITES PLAYERS WORD IN NORTH ORIENTATION
 direction = input("In which direction should your word be? D R? ")
+
+
+#CHECKS IF THE WORD FITS INSIDE THE BORDERS
+def inp_modifier():
+    global inp, word
+    inp = input("Enter your word in CAPITALS ")
+    word = list(inp)
+
+if direction == "D" and len(word) > (15 - int(y)):
+    print("Error, word colides with the border")
+    print(len(word))
+    inp_modifier()
+if direction == "R" and len(word) > (15 - int(x)):
+    print("Error, word colides with the border")
+    print(len(word))
+    inp_modifier()
+        
+        
+#WRITES PLAYERS WORD
 if direction == "D":
     p = 0
     q = 1
     for i in str(inp):
-            arr[int(y)+p][int(x)] = word[q-1]
+            arr[int(y)-1+p][int(x)-1] = word[q-1]
             p += 1
             q += 1
 if direction == "R":
     p = 0
     q = 1
     for i in str(inp):
-            arr[int(y)][int(x)+p] = word[q-1]
+            arr[int(y)-1][int(x)-1+p] = word[q-1]
             p += 1
             q += 1
-
-
-
-
 
         
 main_func()        
