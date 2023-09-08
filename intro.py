@@ -111,14 +111,14 @@ def inp_modifier():
     inp = input("Enter your word in CAPITALS ")
     word = list(inp)
 
-if direction == "D" and len(word) > (15 - int(y)):
-    print("Error, word colides with the border")
-    print(len(word))
-    inp_modifier()
-if direction == "R" and len(word) > (15 - int(x)):
-    print("Error, word colides with the border")
-    print(len(word))
-    inp_modifier()
+if direction == "D":
+    while len(word) > (16 - int(y)):
+        print("Error, word colides with the border")
+        inp_modifier()
+if direction == "R":
+    while len(word) > (16 - int(x)):
+        print("Error, word colides with the border")
+        inp_modifier()
         
         
 #WRITES PLAYERS WORD
