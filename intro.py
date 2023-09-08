@@ -139,6 +139,11 @@ if direction == "R":
         
         
 #WRITES PLAYERS WORD
+def word_word_coll():
+    print("Error, please enter different coordinations that don't colide with other words")
+    y = input("Enter Y coords of the start ")
+    x = input("Enter X coords of the start ")
+
 if direction == "D":
     p = 0
     q = 1
@@ -150,6 +155,9 @@ if direction == "R":
     p = 0
     q = 1
     for i in str(inp):
+        while arr[int(y)-1][int(x)-1+p] in ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z"]:
+            word_word_coll()
+        else:
             arr[int(y)-1][int(x)-1+p] = word[q-1]
             p += 1
             q += 1
@@ -217,6 +225,9 @@ if direction == "R":
     p = 0
     q = 1
     for i in str(inp):
+        while arr[int(y)-1][int(x)-1+p] in ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z"]:
+            word_word_coll()
+        else:
             arr[int(y)-1][int(x)-1+p] = word[q-1]
             p += 1
             q += 1
