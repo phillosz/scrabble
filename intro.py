@@ -1,3 +1,4 @@
+import random
 #TW = triple word
 #DW = double word 
 #TL = triple letter 
@@ -96,7 +97,22 @@ def main_func():
 main_func()
 
 print("PLAYER 1")
-#PLAYER INPUTS           
+          
+#RANDOM LETTER
+letters = ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z"]
+player1 = []
+player2 = []
+
+for i in range(7):
+    ran = random.choice(letters)
+    player1.append(ran)
+for i in range(7):
+    ran = random.choice(letters)
+    player2.append(ran)
+    
+print("You have ", player1, " on your hand")
+
+#PLAYER INPUTS 
 y = input("Enter Y coords of the start ")
 x = input("Enter X coords of the start ")
 
@@ -106,6 +122,14 @@ def coords_y_modifier():
 def coords_x_modifier():
     global x 
     x = input("Enter X coords of the start ")
+
+def letters_inhand():
+    global word
+    global inp
+    word = []
+    inp = input("Enter your word in CAPITALS ")
+    for letter in inp:
+        word.append(letter)
     
 while int(y) not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
     print("Error, please enter number between 1 and 15")
@@ -118,7 +142,10 @@ while int(x) not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
 word = []
 inp = input("Enter your word in CAPITALS ")
 for letter in inp:
-    word.append(letter)    
+    word.append(letter)
+while not all(letter in player1 for letter in word):
+    print("Please use only letters in your hand")
+    letters_inhand()
 direction = input("In which direction should your word be? D R? ")
 
 #CHECKS IF THE WORD FITS INSIDE THE BORDERS
@@ -161,6 +188,8 @@ main_func()
         
 print("PLAYER 2")
 #PLAYER INPUTS
+print("You have ", player2, " on your hand")
+
 y = input("Enter Y coords of the start ")
 x = input("Enter X coords of the start ")
 
@@ -183,6 +212,9 @@ word = []
 inp = input("Enter your word in CAPITALS ")
 for letter in inp:
     word.append(letter)   
+while not all(letter in player2 for letter in word):
+    print("Please use only letters in your hand")
+    letters_inhand()
 direction = input("In which direction should your word be? D R? ")
 
 #CHECKS IF THE WORD FITS INSIDE THE BORDERS
@@ -216,4 +248,7 @@ if direction == "R":
             p += 1
             q += 1
                    
-main_func()        
+main_func()  
+
+
+
