@@ -131,8 +131,7 @@ def letters_inhand():
     global inp
     word = []
     inp = input("Enter your word in CAPITALS ")
-    for letter in inp:
-        word.append(letter)
+    word = list(inp)
     
 while int(y) not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
     print("Error, please enter number between 1 and 15")
@@ -149,8 +148,7 @@ def draws_to_7():
           
 word = []
 inp = input("Enter your word in CAPITALS ")
-for letter in inp:
-    word.append(letter)
+word = list(inp)
 while not all(letter in player1 for letter in word):
     print("Please use only letters in your hand")
     letters_inhand()
@@ -182,64 +180,142 @@ if direction == "R":
         inp_modifier()
 
 #WRITES PLAYERS WORD
-def word_word_coll():
-    print("Error, please enter different coordinations that don't colide with other words")
-    y = input("Enter Y coords of the start ")
-    x = input("Enter X coords of the start ")
+def checker_D():
+    p = 0
+    q = 1
+    z = 0
+    for i in range(len(word)):
+        if arr[int(y)-1+p][int(x)-1] not in ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z"]:
+            z += 1
+        p += 1
+        q += 1
+    if z == int(len(word)):
+        return True
+
+def checker_R():
+    p = 0
+    q = 1
+    z = 0
+    for i in range(len(word)):
+        if arr[int(y)-1][int(x)-1+p] not in ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z"]:
+            z += 1
+        p += 1
+        q += 1
+    if z == int(len(word)):
+        return True
 
 if direction == "D":
     p = 0
     q = 1
-    for i in str(inp):
+    if checker_D() == True:
+        for i in range(len(word)):
             arr[int(y)-1+p][int(x)-1] = word[q-1]
             p += 1
             q += 1
+    else:
+        print("Error, please enter different coordinations that don't colide with other words")
+        y = input("Enter Y coords of the start ")
+        x = input("Enter X coords of the start ")
+        if checker_D() == True:
+            for i in range(len(word)):
+                arr[int(y)-1+p][int(x)-1] = word[q-1]
+                p += 1
+                q += 1
+        else:
+            pass
+        
 if direction == "R":
     p = 0
     q = 1
-    for i in str(inp):
+    if checker_R() == True:
+        for i in range(len(word)):
             arr[int(y)-1][int(x)-1+p] = word[q-1]
             p += 1
             q += 1
-                   
+    else:
+        print("Error, please enter different coordinations that don't colide with other words")
+        y = input("Enter Y coords of the start ")
+        x = input("Enter X coords of the start ")
+        if checker_R() == True:
+            for i in range(len(word)):
+                arr[int(y)-1][int(x)-1+p] = word[q-1]
+                p += 1
+                q += 1
+        else:
+            pass
+                  
 main_func()
-        
-print("PLAYER 2")
-#PLAYER INPUTS
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
 print("You have ", player2, " on your hand")
 
+#PLAYER INPUTS 
 y = input("Enter Y coords of the start ")
 x = input("Enter X coords of the start ")
 
 def coords_y_modifier():
     global y
-    y = input("Enter Y coords of the start ")
+    y = input("Enter Y coords of the start ")   
 def coords_x_modifier():
     global x 
     x = input("Enter X coords of the start ")
+
+def letters_inhand():
+    global word
+    global inp
+    word = []
+    inp = input("Enter your word in CAPITALS ")
+    word = list(inp)
     
 while int(y) not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
     print("Error, please enter number between 1 and 15")
     coords_y_modifier()
-    
+      
 while int(x) not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
     print("Error, please enter number between 1 and 15")
     coords_x_modifier()
-    
+
+def draws_to_7_second():
+    for i in range(7-len(player2)):
+        ran = random.choice(letters)
+        player2.append(ran)
+          
 word = []
 inp = input("Enter your word in CAPITALS ")
-for letter in inp:
-    word.append(letter)   
+word = list(inp)
 while not all(letter in player2 for letter in word):
     print("Please use only letters in your hand")
     letters_inhand()
-direction = input("In which direction should your word be? D R? ")
+player_storage = player2
+for letter in word:
+    if letter in player2:
+        player2.remove(letter)
+    else:
+        player2 = player_storage
+        letters_inhand()
+       
+draws_to_7_second()
+print(player2)
 
 #CHECKS IF THE WORD FITS INSIDE THE BORDERS
 def inp_modifier():
     global inp, word
     inp = input("Enter your word in CAPITALS ")
     word = list(inp)
+direction = input("In which direction should your word be? D R? ")
     
 if direction == "D":
     while len(word) > (16 - int(y)):
@@ -251,20 +327,69 @@ if direction == "R":
         inp_modifier()
         
 #WRITES PLAYERS WORD
+def checker_D():
+    p = 0
+    q = 1
+    z = 0
+    for i in range(len(word)):
+        if arr[int(y)-1+p][int(x)-1] not in ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z"]:
+            z += 1
+        p += 1
+        q += 1
+    if z == int(len(word)):
+        return True
+
+def checker_R():
+    p = 0
+    q = 1
+    z = 0
+    for i in range(len(word)):
+        if arr[int(y)-1][int(x)-1+p] not in ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z"]:
+            z += 1
+        p += 1
+        q += 1
+    if z == int(len(word)):
+        return True
+
 if direction == "D":
     p = 0
     q = 1
-    for i in str(inp):
+    if checker_D() == True:
+        for i in range(len(word)):
             arr[int(y)-1+p][int(x)-1] = word[q-1]
             p += 1
             q += 1
+    else:
+        print("Error, please enter different coordinations that don't colide with other words")
+        y = input("Enter Y coords of the start ")
+        x = input("Enter X coords of the start ")
+        if checker_D() == True:
+            for i in range(len(word)):
+                arr[int(y)-1+p][int(x)-1] = word[q-1]
+                p += 1
+                q += 1
+        else:
+            pass
+        
 if direction == "R":
     p = 0
     q = 1
-    for i in str(inp):
+    if checker_R() == True:
+        for i in range(len(word)):
             arr[int(y)-1][int(x)-1+p] = word[q-1]
             p += 1
             q += 1
+    else:
+        print("Error, please enter different coordinations that don't colide with other words")
+        y = input("Enter Y coords of the start ")
+        x = input("Enter X coords of the start ")
+        if checker_R() == True:
+            for i in range(len(word)):
+                arr[int(y)-1][int(x)-1+p] = word[q-1]
+                p += 1
+                q += 1
+        else:
+            pass
                    
 main_func()  
 
