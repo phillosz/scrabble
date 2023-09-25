@@ -21,6 +21,40 @@ arr = [[4, 0, 0, 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0, 4, 5,],
     [0, 3, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 3, 0, 5,],
     [4, 0, 0, 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0, 4, 5]]
 
+#MAIN SCOREBOARD
+score_arr = [[1, 2, 3, 4,],
+             [0, 0, 0, 0,],
+             [0, 0, 0, 0,],
+             [0, 0, 0, 0,],
+             [0, 0, 0, 0,],
+             [0, 0, 0, 0,],
+             [0, 0, 0, 0,],
+             [0, 0, 0, 0,],
+             [0, 0, 0, 0,],
+             [0, 0, 0, 0,],
+             [0, 0, 0, 0,],
+             [0, 0, 0, 0,],
+             [0, 0, 0, 0,],
+             [0, 0, 0, 0,],
+             [0, 0, 0, 0,],
+             [0, 0, 0, 0,]]
+
+#MAIN FUNCTION THAT PRINTS SCOREBOARD
+def main_scoreboard():
+    for i in score_arr:
+        for each in i:
+            if each == 1:
+                print("Player 1", end=" | ")
+            elif each == 2:
+                print("Player 2", end=" | ")
+            elif each == 3:
+                print("Player 3", end=" | ")
+            elif each == 4:
+                print("Player 4", end=" | ")
+            elif each == 0:
+                print("........", end=" | ")
+        print()
+
 #MAIN FUNCTION FOR PRINTING THE BOARD AND ADDING LETTERS
 def main_func():
     for i in arr:
@@ -98,8 +132,10 @@ letter_scores = {'A': 1, 'B': 3, 'C': 3, 'D': 2, 'E': 1, 'F': 4, 'G': 2, 'H': 4,
     'I': 1, 'J': 8, 'K': 5, 'L': 1, 'M': 3, 'N': 1, 'O': 1, 'P': 3,
     'Q': 10, 'R': 1, 'S': 1, 'T': 1, 'U': 1, 'V': 4, 'W': 4, 'X': 8,
     'Y': 4, 'Z': 10}
-          
+
 main_func()
+main_scoreboard()
+print()
 
 #RANDOM LETTER
 letters = ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z"]
@@ -243,9 +279,24 @@ if direction == "R":
                 q += 1
         else:
             pass
-                  
+        
+#SCORING SYSTEM
+def scoring():
+    score = 0
+    for i in word:
+        value = letter_scores[i]
+        score += value
+    return score  
+ 
+score = 0
+for i in word:
+    value = letter_scores[i]
+    score += value
+         
 main_func()
-       
+print(score)
+main_scoreboard()    
+print()
        
        
        
@@ -391,7 +442,8 @@ if direction == "R":
         else:
             pass
                    
-main_func()  
+main_func() 
+main_scoreboard() 
 
 
 
