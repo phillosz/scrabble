@@ -94,10 +94,13 @@ def main_func():
             elif each == "Z":
                 print(" Z ", end=" ")
         print()
+letter_scores = {'A': 1, 'B': 3, 'C': 3, 'D': 2, 'E': 1, 'F': 4, 'G': 2, 'H': 4,
+    'I': 1, 'J': 8, 'K': 5, 'L': 1, 'M': 3, 'N': 1, 'O': 1, 'P': 3,
+    'Q': 10, 'R': 1, 'S': 1, 'T': 1, 'U': 1, 'V': 4, 'W': 4, 'X': 8,
+    'Y': 4, 'Z': 10}
+          
 main_func()
 
-print("PLAYER 1")
-          
 #RANDOM LETTER
 letters = ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z"]
 player1 = []
@@ -138,7 +141,12 @@ while int(y) not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
 while int(x) not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
     print("Error, please enter number between 1 and 15")
     coords_x_modifier()
-    
+
+def draws_to_7():
+    for i in range(7-len(player1)):
+        ran = random.choice(letters)
+        player1.append(ran)
+          
 word = []
 inp = input("Enter your word in CAPITALS ")
 for letter in inp:
@@ -146,13 +154,23 @@ for letter in inp:
 while not all(letter in player1 for letter in word):
     print("Please use only letters in your hand")
     letters_inhand()
-direction = input("In which direction should your word be? D R? ")
+player_storage = player1
+for letter in word:
+    if letter in player1:
+        player1.remove(letter)
+    else:
+        player1 = player_storage
+        letters_inhand()
+       
+draws_to_7()
+print(player1)
 
 #CHECKS IF THE WORD FITS INSIDE THE BORDERS
 def inp_modifier():
     global inp, word
     inp = input("Enter your word in CAPITALS ")
     word = list(inp)
+direction = input("In which direction should your word be? D R? ")
 
 if direction == "D":
     while len(word) > (16 - int(y)):
