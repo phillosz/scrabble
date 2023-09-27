@@ -133,6 +133,11 @@ letter_scores = {'A': 1, 'B': 3, 'C': 3, 'D': 2, 'E': 1, 'F': 4, 'G': 2, 'H': 4,
     'Q': 10, 'R': 1, 'S': 1, 'T': 1, 'U': 1, 'V': 4, 'W': 4, 'X': 8,
     'Y': 4, 'Z': 10}
 
+letters_sack = ["A", "A", "A", "A", "A", "A", "A", "A", "A", "B", "B", "C", "C", "D", "D", "D", "D", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", 
+                "F", "F", "G", "G", "G", "H", "H", "I", "I", "I", "I", "I", "I", "I", "I", "I", "J", "K", "L", "L", "L", "L", "M", "M", "N", "N", "N", "N", "N", 
+                "N", "O", "O", "O", "O", "O", "O", "O", "O", "P", "P", "Q", "R", "R", "R", "R", "R", "R", "S", "S", "S", "S", "T", "T", "T", "T", "T", "T", "U", 
+                "U", "U", "U", "V", "V", "W", "W", "X", "Y", "Y", "Z", "joker", "joker"]
+
 main_func()
 main_scoreboard()
 print()
@@ -142,13 +147,19 @@ letters = ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M"
 player1 = []
 player2 = []
 
+sack_placeholder = letters_sack
 for i in range(7):
-    ran = random.choice(letters)
+    ran = random.choice(sack_placeholder)
     player1.append(ran)
+for i in player1:
+    sack_placeholder.remove(i)
+
 for i in range(7):
-    ran = random.choice(letters)
+    ran = random.choice(sack_placeholder)
     player2.append(ran)
-    
+for i in player2:
+    sack_placeholder.remove(i)
+
 print("You have ", player1, " on your hand")
 
 #PLAYER INPUTS 
@@ -179,8 +190,10 @@ while int(x) not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
 
 def draws_to_7():
     for i in range(7-len(player1)):
-        ran = random.choice(letters)
+        ran = random.choice(sack_placeholder)
         player1.append(ran)
+    for i in ran:
+        sack_placeholder.remove(i)
           
 word = []
 inp = input("Enter your word in CAPITALS ")
@@ -339,10 +352,12 @@ while int(x) not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
     print("Error, please enter number between 1 and 15")
     coords_x_modifier()
 
-def draws_to_7_second():
+def draws_to_7_2():
     for i in range(7-len(player2)):
-        ran = random.choice(letters)
+        ran = random.choice(sack_placeholder)
         player2.append(ran)
+    for i in ran:
+        sack_placeholder.remove(i)
           
 word = []
 inp = input("Enter your word in CAPITALS ")
@@ -358,7 +373,7 @@ for letter in word:
         player2 = player_storage
         letters_inhand()
        
-draws_to_7_second()
+draws_to_7_2()
 print(player2)
 
 #CHECKS IF THE WORD FITS INSIDE THE BORDERS
