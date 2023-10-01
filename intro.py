@@ -137,16 +137,25 @@ letters_sack = ["A", "A", "A", "A", "A", "A", "A", "A", "A", "B", "B", "C", "C",
                 "F", "F", "G", "G", "G", "H", "H", "I", "I", "I", "I", "I", "I", "I", "I", "I", "J", "K", "L", "L", "L", "L", "M", "M", "N", "N", "N", "N", "N", 
                 "N", "O", "O", "O", "O", "O", "O", "O", "O", "P", "P", "Q", "R", "R", "R", "R", "R", "R", "S", "S", "S", "S", "T", "T", "T", "T", "T", "T", "U", 
                 "U", "U", "U", "V", "V", "W", "W", "X", "Y", "Y", "Z", "joker", "joker"]
+letters = ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z"]
+player1 = []
+player2 = []
 
+#PLAYER 1
+#PLAYER 1
+#PLAYER 1
+#PLAYER 1
+#PLAYER 1
+#PLAYER 1
+#PLAYER 1
+#PLAYER 1
+#PLAYER 1
+#PLAYER 1
 main_func()
 main_scoreboard()
 print()
 
 #RANDOM LETTER
-letters = ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z"]
-player1 = []
-player2 = []
-
 sack_placeholder = letters_sack
 for i in range(7):
     ran = random.choice(sack_placeholder)
@@ -305,25 +314,31 @@ score = 0
 for i in word:
     value = letter_scores[i]
     score += value
+
+#SCORE PRINTINGs
+score_memory1 = []
+def print_score_1():
+    print("Player 1")
+    for i in score_memory1:
+        print(i)
+    score_memory1.append(score)
+    print(score)
          
 main_func()
 print(score)
 main_scoreboard()    
 print()
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
+           
+#PLAYER 2
+#PLAYER 2
+#PLAYER 2
+#PLAYER 2
+#PLAYER 2
+#PLAYER 2
+#PLAYER 2
+#PLAYER 2
+#PLAYER 2
+#PLAYER 2     
 print("You have ", player2, " on your hand")
 
 #PLAYER INPUTS 
@@ -457,8 +472,252 @@ if direction == "R":
         else:
             pass
                    
+                   
+#SCORE PRINTING
+score_memory2 = []
+def print_score_2():
+    print("Player 2")
+    for i in score_memory2:
+        print(i)
+    score_memory2.append(score)
+    print(score)                  
+
 main_func() 
 main_scoreboard() 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#LOOP THAT LETS YOU PLAY THE GAME
+#PLAYER 1
+#PLAYER 1
+#PLAYER 1
+#PLAYER 1
+#PLAYER 1
+#PLAYER 1
+#PLAYER 1
+#PLAYER 1
+#PLAYER 1
+#PLAYER 1
+while len(sack_placeholder) != 0:
+    print("You have ", player1, " on your hand")
+    y = input("Enter Y coords of the start ")
+    x = input("Enter X coords of the start ")
+    
+    
+    while int(y) not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
+        print("Error, please enter number between 1 and 15")
+        coords_y_modifier() 
+    while int(x) not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
+        print("Error, please enter number between 1 and 15")
+        coords_x_modifier()
+        
+        
+    word = []
+    inp = input("Enter your word in CAPITALS ")
+    word = list(inp)
+    while not all(letter in player1 for letter in word):
+        print("Please use only letters in your hand")
+        letters_inhand()
+    player_storage = player1
+    for letter in word:
+        if letter in player1:
+            player1.remove(letter)
+        else:
+            player1 = player_storage
+            letters_inhand()  
+    draws_to_7()
+    print(player1)
+    
+    
+    direction = input("In which direction should your word be? D R? ")
+    if direction == "D":
+        while len(word) > (16 - int(y)):
+            print("Error, word colides with the border")
+            inp_modifier()
+    if direction == "R":
+        while len(word) > (16 - int(x)):
+            print("Error, word colides with the border")
+            inp_modifier()        
+    if direction == "D":
+        p = 0
+        q = 1
+        if checker_D() == True:
+            for i in range(len(word)):
+                arr[int(y)-1+p][int(x)-1] = word[q-1]
+                p += 1
+                q += 1
+        else:
+            print("Error, please enter different coordinations that don't colide with other words")
+            y = input("Enter Y coords of the start ")
+            x = input("Enter X coords of the start ")
+            if checker_D() == True:
+                for i in range(len(word)):
+                    arr[int(y)-1+p][int(x)-1] = word[q-1]
+                    p += 1
+                    q += 1
+            else:
+                pass 
+    if direction == "R":
+        p = 0
+        q = 1
+        if checker_R() == True:
+            for i in range(len(word)):
+                arr[int(y)-1][int(x)-1+p] = word[q-1]
+                p += 1
+                q += 1
+        else:
+            print("Error, please enter different coordinations that don't colide with other words")
+            y = input("Enter Y coords of the start ")
+            x = input("Enter X coords of the start ")
+            if checker_R() == True:
+                for i in range(len(word)):
+                    arr[int(y)-1][int(x)-1+p] = word[q-1]
+                    p += 1
+                    q += 1
+            else:
+                pass
+    score = 0
+    for i in word:
+        value = letter_scores[i]
+        score += value
+    score_memory = []
+    
+    main_func()
+    print(score)
+    main_scoreboard()    
+    print()
+    
+    #PLAYER 2
+    #PLAYER 2
+    #PLAYER 2
+    #PLAYER 2
+    #PLAYER 2
+    #PLAYER 2
+    #PLAYER 2
+    #PLAYER 2
+    #PLAYER 2
+    #PLAYER 2
+    print("You have ", player2, " on your hand")
+    y = input("Enter Y coords of the start ")
+    x = input("Enter X coords of the start ")
+    
+    while int(y) not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
+        print("Error, please enter number between 1 and 15")
+        coords_y_modifier()
+        
+    while int(x) not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
+        print("Error, please enter number between 1 and 15")
+        coords_x_modifier()
+        
+    word = []
+    inp = input("Enter your word in CAPITALS ")
+    word = list(inp)
+    while not all(letter in player2 for letter in word):
+        print("Please use only letters in your hand")
+        letters_inhand()
+    player_storage = player2
+    for letter in word:
+        if letter in player2:
+            player2.remove(letter)
+        else:
+            player2 = player_storage
+            letters_inhand()
+    draws_to_7_2()
+    print(player2)
+    
+    direction = input("In which direction should your word be? D R? ")
+    
+    if direction == "D":
+        while len(word) > (16 - int(y)):
+            print("Error, word colides with the border")
+            inp_modifier()
+    if direction == "R":
+        while len(word) > (16 - int(x)):
+            print("Error, word colides with the border")
+            inp_modifier()
+    
+    if direction == "D":
+        p = 0
+        q = 1
+        if checker_D() == True:
+            for i in range(len(word)):
+                arr[int(y)-1+p][int(x)-1] = word[q-1]
+                p += 1
+                q += 1
+        else:
+            print("Error, please enter different coordinations that don't colide with other words")
+            y = input("Enter Y coords of the start ")
+            x = input("Enter X coords of the start ")
+            if checker_D() == True:
+                for i in range(len(word)):
+                    arr[int(y)-1+p][int(x)-1] = word[q-1]
+                    p += 1
+                    q += 1
+            else:
+                pass   
+    if direction == "R":
+        p = 0
+        q = 1
+        if checker_R() == True:
+            for i in range(len(word)):
+                arr[int(y)-1][int(x)-1+p] = word[q-1]
+                p += 1
+                q += 1
+        else:
+            print("Error, please enter different coordinations that don't colide with other words")
+            y = input("Enter Y coords of the start ")
+            x = input("Enter X coords of the start ")
+            if checker_R() == True:
+                for i in range(len(word)):
+                    arr[int(y)-1][int(x)-1+p] = word[q-1]
+                    p += 1
+                    q += 1
+            else:
+                pass
+    score_memory2 = []
+    def print_score_2():
+        print("Player 2")
+        for i in score_memory2:
+            print(i)
+        score_memory2.append(score)
+        print(score)                  
+
+    main_func() 
+    main_scoreboard()
