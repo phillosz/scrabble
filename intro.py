@@ -22,38 +22,38 @@ arr = [[4, 0, 0, 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0, 4, 5,],
     [4, 0, 0, 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0, 4, 5]]
 
 #MAIN SCOREBOARD
-score_arr = [[1, 2, 3, 4,],
-             [0, 0, 0, 0,],
-             [0, 0, 0, 0,],
-             [0, 0, 0, 0,],
-             [0, 0, 0, 0,],
-             [0, 0, 0, 0,],
-             [0, 0, 0, 0,],
-             [0, 0, 0, 0,],
-             [0, 0, 0, 0,],
-             [0, 0, 0, 0,],
-             [0, 0, 0, 0,],
-             [0, 0, 0, 0,],
-             [0, 0, 0, 0,],
-             [0, 0, 0, 0,],
-             [0, 0, 0, 0,],
-             [0, 0, 0, 0,]]
+# score_arr = [[1, 2, 3, 4,],
+#              [0, 0, 0, 0,],
+#              [0, 0, 0, 0,],
+#              [0, 0, 0, 0,],
+#              [0, 0, 0, 0,],
+#              [0, 0, 0, 0,],
+#              [0, 0, 0, 0,],
+#              [0, 0, 0, 0,],
+#              [0, 0, 0, 0,],
+#              [0, 0, 0, 0,],
+#              [0, 0, 0, 0,],
+#              [0, 0, 0, 0,],
+#              [0, 0, 0, 0,],
+#              [0, 0, 0, 0,],
+#              [0, 0, 0, 0,],
+#              [0, 0, 0, 0,]]
 
-#MAIN FUNCTION THAT PRINTS SCOREBOARD
-def main_scoreboard():
-    for i in score_arr:
-        for each in i:
-            if each == 1:
-                print("Player 1", end=" | ")
-            elif each == 2:
-                print("Player 2", end=" | ")
-            elif each == 3:
-                print("Player 3", end=" | ")
-            elif each == 4:
-                print("Player 4", end=" | ")
-            elif each == 0:
-                print("........", end=" | ")
-        print()
+# #MAIN FUNCTION THAT PRINTS SCOREBOARD
+# def main_scoreboard():
+#     for i in score_arr:
+#         for each in i:
+#             if each == 1:
+#                 print("Player 1", end=" | ")
+#             elif each == 2:
+#                 print("Player 2", end=" | ")
+#             elif each == 3:
+#                 print("Player 3", end=" | ")
+#             elif each == 4:
+#                 print("Player 4", end=" | ")
+#             elif each == 0:
+#                 print("........", end=" | ")
+#         print()
 
 #MAIN FUNCTION FOR PRINTING THE BOARD AND ADDING LETTERS
 def main_func():
@@ -152,7 +152,7 @@ player2 = []
 #PLAYER 1
 #PLAYER 1
 main_func()
-main_scoreboard()
+#main_scoreboard()
 print()
 
 #RANDOM LETTER
@@ -169,7 +169,7 @@ for i in range(7):
 for i in player2:
     sack_placeholder.remove(i)
 
-print("You have ", player1, " on your hand")
+print("Player 1 has ", player1, " on your hand")
 
 #PLAYER INPUTS 
 y = input("Enter Y coords of the start ")
@@ -303,30 +303,25 @@ if direction == "R":
             pass
         
 #SCORING SYSTEM
-def scoring():
-    score = 0
-    for i in word:
-        value = letter_scores[i]
-        score += value
-    return score  
- 
 score = 0
 for i in word:
     value = letter_scores[i]
     score += value
 
-#SCORE PRINTINGs
+#SCORE PRINTING
 score_memory1 = []
 def print_score_1():
-    print("Player 1")
+    print("Player 1's Score:")
     for i in score_memory1:
         print(i)
     score_memory1.append(score)
     print(score)
+    print("Total:")
+    print(sum(score_memory1))
          
 main_func()
-print(score)
-main_scoreboard()    
+#main_scoreboard() 
+print_score_1()   
 print()
            
 #PLAYER 2
@@ -339,7 +334,7 @@ print()
 #PLAYER 2
 #PLAYER 2
 #PLAYER 2     
-print("You have ", player2, " on your hand")
+print("Player 2 has ", player2, " on your hand")
 
 #PLAYER INPUTS 
 y = input("Enter Y coords of the start ")
@@ -472,18 +467,24 @@ if direction == "R":
         else:
             pass
                    
-                   
+score = 0
+for i in word:
+    value = letter_scores[i]
+    score += value                   
 #SCORE PRINTING
 score_memory2 = []
 def print_score_2():
-    print("Player 2")
+    print("Player 2's Score")
     for i in score_memory2:
         print(i)
     score_memory2.append(score)
-    print(score)                  
+    print(score)    
+    print("Total:")
+    print(sum(score_memory2))              
 
 main_func() 
-main_scoreboard() 
+#main_scoreboard() 
+print_score_2()
 
 
 
@@ -536,7 +537,7 @@ main_scoreboard()
 #PLAYER 1
 #PLAYER 1
 while len(sack_placeholder) != 0:
-    print("You have ", player1, " on your hand")
+    print("Player 1 has ", player1, " on your hand")
     y = input("Enter Y coords of the start ")
     x = input("Enter X coords of the start ")
     
@@ -617,11 +618,10 @@ while len(sack_placeholder) != 0:
     for i in word:
         value = letter_scores[i]
         score += value
-    score_memory = []
-    
+        
     main_func()
-    print(score)
-    main_scoreboard()    
+    #main_scoreboard() 
+    print_score_1()   
     print()
     
     #PLAYER 2
@@ -634,7 +634,7 @@ while len(sack_placeholder) != 0:
     #PLAYER 2
     #PLAYER 2
     #PLAYER 2
-    print("You have ", player2, " on your hand")
+    print("Player 2 has ", player2, " on your hand")
     y = input("Enter Y coords of the start ")
     x = input("Enter X coords of the start ")
     
@@ -711,13 +711,11 @@ while len(sack_placeholder) != 0:
                     q += 1
             else:
                 pass
-    score_memory2 = []
-    def print_score_2():
-        print("Player 2")
-        for i in score_memory2:
-            print(i)
-        score_memory2.append(score)
-        print(score)                  
-
+            
+    score = 0
+    for i in word:
+        value = letter_scores[i]
+        score += value
     main_func() 
-    main_scoreboard()
+    #main_scoreboard()
+    print_score_2()
