@@ -1,4 +1,7 @@
 import random
+import sys
+with open("dic.txt", "r") as file:
+    en_words = file.read().splitlines()
 #TW = triple word
 #DW = double word 
 #TL = triple letter 
@@ -210,6 +213,21 @@ word = list(inp)
 while not all(letter in player1 for letter in word):
     print("Please use only letters in your hand")
     letters_inhand()
+while inp not in en_words:
+    print("Not valid english word, try using different one ")
+    letters_inhand()
+if not all(letter in player1 for letter in word):
+    print("Please use only letters in your hand")
+    print("Last try!!")
+    letters_inhand()
+if inp not in en_words:
+    print("Not valid english word, try using different one ")
+    print("Last try!!")
+    letters_inhand()
+if not all(letter in player1 for letter in word):
+    sys.exit()
+if inp not in en_words:
+    sys.exit()  
 player_storage = player1
 for letter in word:
     if letter in player1:
@@ -375,6 +393,21 @@ word = list(inp)
 while not all(letter in player2 for letter in word):
     print("Please use only letters in your hand")
     letters_inhand()
+while inp not in en_words:
+    print("Not valid english word, try using different one ")
+    letters_inhand()
+if not all(letter in player1 for letter in word):
+    print("Please use only letters in your hand")
+    print("Last try!!")
+    letters_inhand()
+if inp not in en_words:
+    print("Not valid english word, try using different one ")
+    print("Last try!!")
+    letters_inhand()
+if not all(letter in player1 for letter in word):
+    sys.exit()
+if inp not in en_words:
+    sys.exit()
 player_storage = player2
 for letter in word:
     if letter in player2:
@@ -556,6 +589,21 @@ while len(sack_placeholder) != 0:
     while not all(letter in player1 for letter in word):
         print("Please use only letters in your hand")
         letters_inhand()
+    while inp not in en_words:
+        print("Not valid english word, try using different one! ")
+        letters_inhand()
+    if not all(letter in player1 for letter in word):
+        print("Please use only letters in your hand")
+        print("Last try!!")
+        letters_inhand()
+    if inp not in en_words:
+        print("Not valid english word, try using different one ")
+        print("Last try!!")
+        letters_inhand()
+    if not all(letter in player1 for letter in word):
+        sys.exit()
+    if inp not in en_words:
+        sys.exit()
     player_storage = player1
     for letter in word:
         if letter in player1:
@@ -652,6 +700,21 @@ while len(sack_placeholder) != 0:
     while not all(letter in player2 for letter in word):
         print("Please use only letters in your hand")
         letters_inhand()
+    while inp not in en_words:
+        print("Not valid english word, try using different one ")
+        letters_inhand()
+    if not all(letter in player1 for letter in word):
+        print("Please use only letters in your hand")
+        print("Last try!!")
+        letters_inhand()
+    if inp not in en_words:
+        print("Not valid english word, try using different one ")
+        print("Last try!!")
+        letters_inhand()
+    if not all(letter in player1 for letter in word):
+        sys.exit()
+    if inp not in en_words:
+        sys.exit()
     player_storage = player2
     for letter in word:
         if letter in player2:
