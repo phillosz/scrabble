@@ -24,40 +24,6 @@ arr = [[4, 0, 0, 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0, 4, 5,],
     [0, 3, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 3, 0, 5,],
     [4, 0, 0, 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0, 4, 5]]
 
-#MAIN SCOREBOARD
-# score_arr = [[1, 2, 3, 4,],
-#              [0, 0, 0, 0,],
-#              [0, 0, 0, 0,],
-#              [0, 0, 0, 0,],
-#              [0, 0, 0, 0,],
-#              [0, 0, 0, 0,],
-#              [0, 0, 0, 0,],
-#              [0, 0, 0, 0,],
-#              [0, 0, 0, 0,],
-#              [0, 0, 0, 0,],
-#              [0, 0, 0, 0,],
-#              [0, 0, 0, 0,],
-#              [0, 0, 0, 0,],
-#              [0, 0, 0, 0,],
-#              [0, 0, 0, 0,],
-#              [0, 0, 0, 0,]]
-
-# #MAIN FUNCTION THAT PRINTS SCOREBOARD
-# def main_scoreboard():
-#     for i in score_arr:
-#         for each in i:
-#             if each == 1:
-#                 print("Player 1", end=" | ")
-#             elif each == 2:
-#                 print("Player 2", end=" | ")
-#             elif each == 3:
-#                 print("Player 3", end=" | ")
-#             elif each == 4:
-#                 print("Player 4", end=" | ")
-#             elif each == 0:
-#                 print("........", end=" | ")
-#         print()
-
 #MAIN FUNCTION FOR PRINTING THE BOARD AND ADDING LETTERS
 def main_func():
     for i in arr:
@@ -155,7 +121,6 @@ player2 = []
 #PLAYER 1
 #PLAYER 1
 main_func()
-#main_scoreboard()
 print()
 
 #RANDOM LETTER
@@ -172,7 +137,7 @@ for i in range(7):
 for i in player2:
     sack_placeholder.remove(i)
 
-print("Player 1 has ", player1, " on your hand")
+print("Player 1 has ", player1, " in your hand")
 
 #PLAYER INPUTS 
 y = input("Enter Y coords of the start ")
@@ -184,13 +149,6 @@ def coords_y_modifier():
 def coords_x_modifier():
     global x 
     x = input("Enter X coords of the start ")
-
-def letters_inhand():
-    global word
-    global inp
-    word = []
-    inp = input("Enter your word in CAPITALS ")
-    word = list(inp)
     
 while int(y) not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
     print("Error, please enter number between 1 and 15")
@@ -210,32 +168,24 @@ def draws_to_7():
 word = []
 inp = input("Enter your word in CAPITALS ")
 word = list(inp)
-while not all(letter in player1 for letter in word):
-    print("Please use only letters in your hand")
-    letters_inhand()
-while inp not in en_words:
-    print("Not valid english word, try using different one ")
-    letters_inhand()
-if not all(letter in player1 for letter in word):
-    print("Please use only letters in your hand")
-    print("Last try!!")
-    letters_inhand()
-if inp not in en_words:
-    print("Not valid english word, try using different one ")
-    print("Last try!!")
-    letters_inhand()
-if not all(letter in player1 for letter in word):
-    sys.exit()
-if inp not in en_words:
-    sys.exit()  
-player_storage = player1
+def letters_inhand_1():
+    global word
+    global inp
+    while True:
+        if inp not in en_words:
+            print("Your word is not valid. Make sure it is in the list of english words! ")
+        elif not all(letter in player1 for letter in word):
+            print("Use only letters in your hand! ")
+        else:
+            break
+        inp = input("Enter your word in CAPITALS: ")
+        word = list(inp)
+
+while not all(letter in player1 for letter in word) or inp not in en_words:
+    letters_inhand_1()
 for letter in word:
-    if letter in player1:
-        player1.remove(letter)
-    else:
-        player1 = player_storage
-        letters_inhand()
-       
+    player1.remove(letter)
+    
 draws_to_7()
 print(player1)
 
@@ -255,6 +205,26 @@ if direction == "R":
         print("Error, word colides with the border")
         inp_modifier()
 
+#CHECKS IF 1. WORD GOES THROUGH CENTER
+# def center_checker_D():
+#     p =0
+#     for i in range(len(word)):
+#         if arr[int(y)-1+p][int(x)-1] not in ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z"]:
+#             pass
+#         elif arr[int(y)-1+p][int(x)-1] == word[i + 1]:
+#             print(i)
+#         else:
+#             letters_inhand()
+
+# def center_checker_R():
+#     p = 0
+#     for i in range(len(word)):
+#         if arr[int(y)-1][int(x)-1+p] not in ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z"]:
+#             pass
+#         elif arr[int(y)-1][int(x)-1+p] == word[i + 1]:
+#             print(i)
+#         else:
+#             letters_inhand()
 #WRITES PLAYERS WORD
 def checker_D():
     p = 0
@@ -338,7 +308,6 @@ def print_score_1():
     print(sum(score_memory1))
          
 main_func()
-#main_scoreboard() 
 print_score_1()   
 print()
            
@@ -352,7 +321,7 @@ print()
 #PLAYER 2
 #PLAYER 2
 #PLAYER 2     
-print("Player 2 has ", player2, " on your hand")
+print("Player 2 has ", player2, " in your hand")
 
 #PLAYER INPUTS 
 y = input("Enter Y coords of the start ")
@@ -364,13 +333,6 @@ def coords_y_modifier():
 def coords_x_modifier():
     global x 
     x = input("Enter X coords of the start ")
-
-def letters_inhand():
-    global word
-    global inp
-    word = []
-    inp = input("Enter your word in CAPITALS ")
-    word = list(inp)
     
 while int(y) not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
     print("Error, please enter number between 1 and 15")
@@ -390,31 +352,23 @@ def draws_to_7_2():
 word = []
 inp = input("Enter your word in CAPITALS ")
 word = list(inp)
-while not all(letter in player2 for letter in word):
-    print("Please use only letters in your hand")
-    letters_inhand()
-while inp not in en_words:
-    print("Not valid english word, try using different one ")
-    letters_inhand()
-if not all(letter in player1 for letter in word):
-    print("Please use only letters in your hand")
-    print("Last try!!")
-    letters_inhand()
-if inp not in en_words:
-    print("Not valid english word, try using different one ")
-    print("Last try!!")
-    letters_inhand()
-if not all(letter in player1 for letter in word):
-    sys.exit()
-if inp not in en_words:
-    sys.exit()
-player_storage = player2
+def letters_inhand_2():
+    global word
+    global inp
+    while True:
+        if inp not in en_words:
+            print("Your word is not valid. Make sure it is in the list of english words! ")
+        elif not all(letter in player2 for letter in word):
+            print("Use only letters in your hand! ")
+        else:
+            break
+        inp = input("Enter your word in CAPITALS: ")
+        word = list(inp)
+        
+while not all(letter in player2 for letter in word) or inp not in en_words:
+    letters_inhand_2()
 for letter in word:
-    if letter in player2:
-        player2.remove(letter)
-    else:
-        player2 = player_storage
-        letters_inhand()
+    player2.remove(letter)
        
 draws_to_7_2()
 print(player2)
@@ -516,7 +470,6 @@ def print_score_2():
     print(sum(score_memory2))              
 
 main_func() 
-#main_scoreboard() 
 print_score_2()
 
 
@@ -586,31 +539,12 @@ while len(sack_placeholder) != 0:
     word = []
     inp = input("Enter your word in CAPITALS ")
     word = list(inp)
-    while not all(letter in player1 for letter in word):
-        print("Please use only letters in your hand")
-        letters_inhand()
-    while inp not in en_words:
-        print("Not valid english word, try using different one! ")
-        letters_inhand()
-    if not all(letter in player1 for letter in word):
-        print("Please use only letters in your hand")
-        print("Last try!!")
-        letters_inhand()
-    if inp not in en_words:
-        print("Not valid english word, try using different one ")
-        print("Last try!!")
-        letters_inhand()
-    if not all(letter in player1 for letter in word):
-        sys.exit()
-    if inp not in en_words:
-        sys.exit()
-    player_storage = player1
+    
+    while not all(letter in player1 for letter in word) or inp not in en_words:
+        letters_inhand_1()
     for letter in word:
-        if letter in player1:
-            player1.remove(letter)
-        else:
-            player1 = player_storage
-            letters_inhand()  
+        player1.remove(letter)
+        
     draws_to_7()
     print(player1)
     
@@ -668,7 +602,6 @@ while len(sack_placeholder) != 0:
         score += value
         
     main_func()
-    #main_scoreboard() 
     print_score_1()   
     print()
     
@@ -697,31 +630,11 @@ while len(sack_placeholder) != 0:
     word = []
     inp = input("Enter your word in CAPITALS ")
     word = list(inp)
-    while not all(letter in player2 for letter in word):
-        print("Please use only letters in your hand")
-        letters_inhand()
-    while inp not in en_words:
-        print("Not valid english word, try using different one ")
-        letters_inhand()
-    if not all(letter in player1 for letter in word):
-        print("Please use only letters in your hand")
-        print("Last try!!")
-        letters_inhand()
-    if inp not in en_words:
-        print("Not valid english word, try using different one ")
-        print("Last try!!")
-        letters_inhand()
-    if not all(letter in player1 for letter in word):
-        sys.exit()
-    if inp not in en_words:
-        sys.exit()
-    player_storage = player2
+    while not all(letter in player2 for letter in word) or inp not in en_words:
+        letters_inhand_2()
     for letter in word:
-        if letter in player2:
-            player2.remove(letter)
-        else:
-            player2 = player_storage
-            letters_inhand()
+        player2.remove(letter)
+        
     draws_to_7_2()
     print(player2)
     
@@ -780,5 +693,4 @@ while len(sack_placeholder) != 0:
         value = letter_scores[i]
         score += value
     main_func() 
-    #main_scoreboard()
     print_score_2()
