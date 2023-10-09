@@ -191,6 +191,31 @@ if play == "PLACE":
     word = list(inp)
 else:
     pass
+
+# CHECKS IF WORD IS VALID
+def center_checker_D():
+    if direction == "D":
+        p = 0
+        for i in range(len(word)):
+            if arr[int(y)-1+p][int(x)-1] == 6:
+                return True
+            else:
+                p += 1
+        return False
+    else:
+        pass
+def center_checker_R():
+    if direction == "R":
+        p = 0
+        for i in range(len(word)):
+            if arr[int(y)-1][int(x)-1+p] == 6:
+                return True
+            else:
+                p += 1
+        return False
+    else:
+        pass
+
 def letters_inhand_1():
     global word
     global inp
@@ -203,16 +228,34 @@ def letters_inhand_1():
             break
         inp = input("Enter your word in CAPITALS: ")
         word = list(inp)
+def direction_modifier():
+    global direction
+    global y
+    global x
+    while True:
+        if direction not in ["D", "R"]:
+            print("Please enter D or R")
+            direction = input("In which direction should your word be? D R? ")
+        elif center_checker_D() == False or center_checker_R() == False:
+            print("Your word must go through the center of the board")
+            direction = input("In which direction should your word be? D R? ")
+            y = input("Enter Y coords of the start ")
+            x = input("Enter X coords of the start ")
+        else:
+            break
+    
+direction = input("In which direction should your word be? D R? ")
 
 if play == "PLACE":
     while not all(letter in player1 for letter in word) or inp not in en_words:
         letters_inhand_1()
+    while not (center_checker_D() or center_checker_R() == True):
+        direction_modifier()
     for letter in word:
         player1.remove(letter)
     draws_to_7()
 else:
     pass
-    
     
 print(player1)
 
@@ -223,7 +266,6 @@ def inp_modifier():
     word = list(inp)
     
 if play == "PLACE":
-    direction = input("In which direction should your word be? D R? ")
     if direction == "D":
         while len(word) > (16 - int(y)):
             print("Error, word colides with the border")
@@ -235,26 +277,6 @@ if play == "PLACE":
 else:
     pass
 
-# CHECKS IF 1. WORD GOES THROUGH CENTER
-# def center_checker_D():
-#     p = 0
-#     for i in range(len(word)):
-#         if arr[int(y)-1+p][int(x)-1] not in ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z"]:
-#             pass
-#         elif arr[int(y)-1+p][int(x)-1] == word[i + 1]:
-#             print(i)
-#         else:
-#             letters_inhand()
-
-# def center_checker_R():
-#     p = 0
-#     for i in range(len(word)):
-#         if arr[int(y)-1][int(x)-1+p] not in ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z"]:
-#             pass
-#         elif arr[int(y)-1][int(x)-1+p] == word[i + 1]:
-#             print(i)
-#         else:
-#             letters_inhand()
 #WRITES PLAYERS WORD
 def checker_D():
     p = 0
