@@ -238,15 +238,15 @@ def direction_modifier():
             direction = input("In which direction should your word be? D R? ")
         elif center_checker_D() == False or center_checker_R() == False:
             print("Your word must go through the center of the board")
-            direction = input("In which direction should your word be? D R? ")
             y = input("Enter Y coords of the start ")
             x = input("Enter X coords of the start ")
+            direction = input("In which direction should your word be? D R? ")
         else:
             break
-    
-direction = input("In which direction should your word be? D R? ")
+
 
 if play == "PLACE":
+    direction = input("In which direction should your word be? D R? ")
     while not all(letter in player1 for letter in word) or inp not in en_words:
         letters_inhand_1()
     while not (center_checker_D() or center_checker_R() == True):
@@ -450,10 +450,56 @@ def letters_inhand_2():
             break
         inp = input("Enter your word in CAPITALS: ")
         word = list(inp)
+        
+def checks_if_word_touch_D():
+    if direction == "D":
+        p = 0
+        for i in range(len(word)):
+            if arr[int(y)-1+p][int(x)-1] in ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R","S", "T", "U", "V", "X", "Y", "Z"]:
+                return True
+            else:
+                p += 1
+        return False
+    else:
+        pass
+def checks_if_word_touch_R():
+    if direction == "R":
+        p = 0
+        for i in range(len(word)):
+            if arr[int(y)-1][int(x)-1+p] in ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R","S", "T", "U", "V", "X", "Y", "Z"]:
+                return True
+            else:
+                p += 1
+        return False
+    else:
+        pass
    
-if play == "PLACE":     
+def direction_modifier_v2():
+    global direction
+    global y
+    global x
+    while True:
+        if direction not in ["D", "R"]:
+            print("Please enter D or R")
+            direction = input("In which direction should your word be? D R? ")
+        elif checks_if_word_touch_D() == False or checks_if_word_touch_R() == False:
+            print("Your word must touch another word")
+            y = input("Enter Y coords of the start ")
+            x = input("Enter X coords of the start ")
+            direction = input("In which direction should your word be? D R? ")
+        else:
+            break
+
+if play == "PLACE":    
+    direction = input("In which direction should your word be? D R? ") 
     while not all(letter in player2 for letter in word) or inp not in en_words:
         letters_inhand_2()
+    if arr[7][7] == 6:
+        while not (center_checker_D() or center_checker_R() == True):
+            direction_modifier()
+    if arr[7][7] != 6:
+        while not (checks_if_word_touch_D() or checks_if_word_touch_R() == True):
+            direction_modifier_v2()
     for letter in word:
         player2.remove(letter)      
     draws_to_7_2()
@@ -468,8 +514,7 @@ def inp_modifier():
     inp = input("Enter your word in CAPITALS ")
     word = list(inp)
     
-if play == "PLACE":
-    direction = input("In which direction should your word be? D R? ")  
+if play == "PLACE":  
     if direction == "D":
         while len(word) > (16 - int(y)):
             print("Error, word colides with the border")
@@ -645,9 +690,15 @@ while len(sack_placeholder) != 0:
         word = []
         inp = input("Enter your word in CAPITALS ")
         word = list(inp)
-        
+        direction = input("In which direction should your word be? D R? ")
         while not all(letter in player1 for letter in word) or inp not in en_words:
             letters_inhand_1()
+        if arr[7][7] == 6:
+            while not (center_checker_D() or center_checker_R() == True):
+                direction_modifier()
+        if arr[7][7] != 6:
+            while not (checks_if_word_touch_D() or checks_if_word_touch_R() == True):
+                direction_modifier_v2()
         for letter in word:
             player1.remove(letter)
             
@@ -660,7 +711,6 @@ while len(sack_placeholder) != 0:
     print(player1)
     
     if play == "PLACE":
-        direction = input("In which direction should your word be? D R? ")
         if direction == "D":
             while len(word) > (16 - int(y)):
                 print("Error, word colides with the border")
@@ -744,8 +794,15 @@ while len(sack_placeholder) != 0:
         word = []
         inp = input("Enter your word in CAPITALS ")
         word = list(inp)
+        direction = input("In which direction should your word be? D R? ")
         while not all(letter in player2 for letter in word) or inp not in en_words:
             letters_inhand_2()
+        if arr[7][7] == 6:
+            while not (center_checker_D() or center_checker_R() == True):
+                direction_modifier()
+        if arr[7][7] != 6:
+            while not (checks_if_word_touch_D() or checks_if_word_touch_R() == True):
+                direction_modifier_v2()
         for letter in word:
             player2.remove(letter)
             
@@ -758,7 +815,6 @@ while len(sack_placeholder) != 0:
     print(player2)
     
     if play == "PLACE":
-        direction = input("In which direction should your word be? D R? ")
         if direction == "D":
             while len(word) > (16 - int(y)):
                 print("Error, word colides with the border")
