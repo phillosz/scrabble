@@ -406,7 +406,7 @@ if play == "PLACE":
     y = input("Enter Y coords of the start ")
     x = input("Enter X coords of the start ")
 elif play == "CHANGE":
-    sack_replace1()
+    sack_replace2()
 else:
     pass
 def coords_y_modifier():
