@@ -276,6 +276,128 @@ if play == "PLACE":
             inp_modifier()
 else:
     pass
+  
+#SCORE MULTIPLICATION
+def score_3wmultiplier_D():
+    if direction == "D":
+        p = 0
+        for i in range(len(word)):
+            if arr[int(y)-1+p][int(x)-1] == 4:
+                return True
+            else:
+                p += 1
+        return False
+    else:
+        pass   
+def score_3wmultiplier_R():
+    if direction == "R":
+        p = 0
+        for i in range(len(word)):
+            if arr[int(y)-1][int(x)-1+p] == 4:
+                return True
+            else:
+                p += 1
+        return False
+    else:
+        pass  
+def score_2wmultiplier_D():
+    if direction == "D":
+        p = 0
+        for i in range(len(word)):
+            if arr[int(y)-1+p][int(x)-1] == 3:
+                return True
+            else:
+                p += 1
+        return False
+    else:
+        pass
+def score_2wmultiplier_R():
+    if direction == "R":
+        p = 0
+        for i in range(len(word)):
+            if arr[int(y)-1][int(x)-1+p] == 3:
+                return True
+            else:
+                p += 1
+        return False
+    else:
+        pass
+def score3lmultiplier_D():
+    if direction == "D":
+        p = 0
+        spec_val = 0
+        spec_score = 0
+        for i in word:
+            lett_multiplier = arr[int(y)-1+p][int(x)-1]
+            if lett_multiplier == 2:
+                spec_val += 2 * letter_scores[i]
+            spec_score += spec_val
+            p += 1
+        return spec_score
+    else:
+        return False
+def score3lmultiplier_R():
+    if direction == "R":
+        p = 0
+        spec_val = 0
+        spec_score = 0
+        for i in word:
+            lett_multiplier = arr[int(y)-1][int(x)-1+p]
+            if lett_multiplier == 2:
+                spec_val += 2 * letter_scores[i]
+            spec_score += spec_val
+            p += 1
+        return spec_score
+    else:
+        return False
+def score2lmultiplier_D():
+    if direction == "D":
+        p = 0
+        spec_score = 0
+        for i in word:
+            spec_val = 0
+            lett_multiplier = arr[int(y)-1+p][int(x)-1]
+            if lett_multiplier == 1:
+                spec_val += letter_scores[i]
+                spec_score += spec_val
+            p += 1
+        return spec_score
+    else:
+        return False
+def score2lmultiplier_R():
+    if direction == "R":
+        p = 0
+        spec_val = 0
+        spec_score = 0
+        for i in word:
+            lett_multiplier = arr[int(y)-1][int(x)-1+p]
+            if lett_multiplier == 1:
+                spec_val += letter_scores[i]
+                spec_score += spec_val
+            p += 1
+        return spec_score
+    else:
+        return False
+#SCORING SYSTEM
+if play == "PLACE":
+    score = 0
+    for i in word:
+        value = letter_scores[i]
+        score += value
+    score += score2lmultiplier_D()
+    score += score2lmultiplier_R()
+    score += score3lmultiplier_D()
+    score += score3lmultiplier_R()
+    if score_3wmultiplier_D() == True:
+        score = score * 3 
+    if score_3wmultiplier_R() == True:
+        score = score * 3
+    if score_2wmultiplier_D() == True:
+        score = score * 2
+    if score_2wmultiplier_R() == True:
+        score = score * 2
+else:
+    pass
 
 #WRITES PLAYERS WORD
 def checker_D():
@@ -348,15 +470,6 @@ if play == "PLACE":
                 pass
 else:
     pass
-        
-#SCORING SYSTEM
-if play == "PLACE":
-    score = 0
-    for i in word:
-        value = letter_scores[i]
-        score += value
-else:
-    pass
 
 #SCORE PRINTING
 score_memory1 = []
@@ -409,13 +522,7 @@ elif play == "CHANGE":
     sack_replace2()
 else:
     pass
-def coords_y_modifier():
-    global y
-    y = input("Enter Y coords of the start ")   
-def coords_x_modifier():
-    global x 
-    x = input("Enter X coords of the start ")
-   
+
 if play == "PLACE": 
     while int(y) not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
         print("Error, please enter number between 1 and 15")
@@ -509,11 +616,6 @@ else:
 print(player2)
 
 #CHECKS IF THE WORD FITS INSIDE THE BORDERS
-def inp_modifier():
-    global inp, word
-    inp = input("Enter your word in CAPITALS ")
-    word = list(inp)
-    
 if play == "PLACE":  
     if direction == "D":
         while len(word) > (16 - int(y)):
@@ -527,35 +629,24 @@ else:
     pass
         
 #WRITES PLAYERS WORD
-def checker_D():
-    p = 0
-    q = 1
-    z = 0
-    for i in range(len(word)):
-        if arr[int(y)-1+p][int(x)-1] not in ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z"]:
-            z += 1
-        elif arr[int(y)-1+p][int(x)-1] == word[i]:
-            z += 1
-        p += 1
-        q += 1
-    if z == int(len(word)):
-        return True
-
-def checker_R():
-    p = 0
-    q = 1
-    z = 0
-    for i in range(len(word)):
-        if arr[int(y)-1][int(x)-1+p] not in ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z"]:
-            z += 1
-        elif arr[int(y)-1][int(x)-1+p] == word[i]:
-            z += 1
-        p += 1
-        q += 1
-    if z == int(len(word)):
-        return True
-
 if play == "PLACE":
+    score = 0
+    for i in word:
+        value = letter_scores[i]
+        score += value
+    score += score2lmultiplier_D()
+    score += score2lmultiplier_R()
+    score += score3lmultiplier_D()
+    score += score3lmultiplier_R()
+    if score_3wmultiplier_D() == True:
+        score = score * 3
+    if score_3wmultiplier_R() == True:
+        score = score * 3
+    if score_2wmultiplier_D() == True:
+        score = score * 2
+    if score_2wmultiplier_R() == True:
+        score = score * 2
+        
     if direction == "D":
         p = 0
         q = 1
@@ -597,14 +688,7 @@ if play == "PLACE":
                 pass
 else:
     pass
-      
-if play == "PLACE":             
-    score = 0
-    for i in word:
-        value = letter_scores[i]
-        score += value  
-else:
-    pass                 
+          
 #SCORE PRINTING
 score_memory2 = []
 def print_score_2():
@@ -718,7 +802,25 @@ while len(sack_placeholder) != 0:
         if direction == "R":
             while len(word) > (16 - int(x)):
                 print("Error, word colides with the border")
-                inp_modifier()        
+                inp_modifier()  
+                
+        score = 0
+        for i in word:
+            value = letter_scores[i]
+            score += value
+        score += score2lmultiplier_D()
+        score += score2lmultiplier_R()
+        score += score3lmultiplier_D()
+        score += score3lmultiplier_R()
+        if score_3wmultiplier_D() == True:
+            score = score * 3
+        if score_3wmultiplier_R() == True:
+            score = score * 3
+        if score_2wmultiplier_D() == True:
+            score = score * 2
+        if score_2wmultiplier_R() == True:
+            score = score * 2
+                  
         if direction == "D":
             p = 0
             q = 1
@@ -757,11 +859,6 @@ while len(sack_placeholder) != 0:
                         q += 1
                 else:
                     pass
-        score = 0
-        for i in word:
-            value = letter_scores[i]
-            score += value
-    else:
         pass
         
     main_func()
@@ -823,7 +920,24 @@ while len(sack_placeholder) != 0:
             while len(word) > (16 - int(x)):
                 print("Error, word colides with the border")
                 inp_modifier()
-        
+                
+        score = 0
+        for i in word:
+            value = letter_scores[i]
+            score += value
+        score += score2lmultiplier_D()
+        score += score2lmultiplier_R()
+        score += score3lmultiplier_D()
+        score += score3lmultiplier_R()
+        if score_3wmultiplier_D() == True:
+            score = score * 3
+        if score_3wmultiplier_R() == True:
+            score = score * 3
+        if score_2wmultiplier_D() == True:
+            score = score * 2
+        if score_2wmultiplier_R() == True:
+            score = score * 2
+            
         if direction == "D":
             p = 0
             q = 1
@@ -862,10 +976,6 @@ while len(sack_placeholder) != 0:
                         q += 1
                 else:
                     pass  
-        score = 0
-        for i in word:
-            value = letter_scores[i]
-            score += value
     else:
         pass
     
