@@ -27,10 +27,10 @@ letters_sack = ["A", "A", "A", "A", "A", "A", "A", "A", "A", "B", "B", "C", "C",
                 "N", "O", "O", "O", "O", "O", "O", "O", "O", "P", "P", "Q", "R", "R", "R", "R", "R", "R", "S", "S", "S", "S", "T", "T", "T", "T", "T", "T", "U", 
                 "U", "U", "U", "V", "V", "W", "W", "X", "Y", "Y", "Z", "joker", "joker"]
 letters = ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z"]
-player1 = {"letters": [], "score": 0, "word": [], "y": 0, "x": 0}
-player2 = {"letters": [], "score": 0, "word": [], "y": 0, "x": 0}
-player3 = {"letters": [], "score": 0, "word": [], "y": 0, "x": 0}
-player4 = {"letters": [], "score": 0, "word": [], "y": 0, "x": 0}
+player1 = {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": ""}
+player2 = {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": ""}
+player3 = {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": ""}
+player4 = {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": ""}
 sack_placeholder = letters_sack
 score_memory = []
 word = []
@@ -159,50 +159,66 @@ def inp_modifier():
     global inp, word
     inp = input("Enter your word in CAPITALS ")
     word = list(inp)
-def score_multiplier_func_3W(word, x, y):
+def score_multiplier_func_3W(word, x, y, direction):
     p = 0
     for i in range(len(word)):
-        if arr[int(y)-1+p][int(x)-1] == 4 or arr[int(y)-1][int(x)-1+p] == 4:
-            return True
+        if direction == "R":
+            if arr[int(y)-1][int(x)-1+p] == 4:
+                return True
+        elif direction == "D":
+            if arr[int(y)-1+p][int(x)-1] == 4:
+                return True
         else:
             p += 1
     return False
-def score_multiplier_func_2W(word, x, y):
+def score_multiplier_func_2W(word, x, y, direction):
     p = 0
     for i in range(len(word)):
-        if arr[int(y)-1+p][int(x)-1] == 3 or arr[int(y)-1][int(x)-1+p] == 3:
-            return True
+        if direction == "R":
+            if arr[int(y)-1][int(x)-1+p] == 3:
+                return True
+        elif direction == "D":
+            if arr[int(y)-1+p][int(x)-1] == 3:
+                return True
         else:
             p += 1
     return False
-def score_multiplier_func_3L(word, x, y):
+def score_multiplier_func_3L(word, x, y, direction):
     p = 0
     for i in word:
-        if arr[int(y)-1+p][int(x)-1] == 2 or arr[int(y)-1][int(x)-1+p] == 2:
-            return i
+        if direction == "R":
+            if arr[int(y)-1][int(x)-1+p] == 2:
+                return i
+        elif direction == "D":
+            if arr[int(y)-1+p][int(x)-1] == 2:
+                return i
         else:
             p += 1
     return False
-def score_multiplier_func_2L(word, x, y):
+def score_multiplier_func_2L(word, x, y, direction):
     p = 0
     for i in word:
-        if arr[int(y)-1+p][int(x)-1] == 1 or arr[int(y)-1][int(x)-1+p] == 1:
-            return i
+        if direction == "R":
+            if arr[int(y)-1][int(x)-1+p] == 1:
+                return i
+        elif direction == "D":
+            if arr[int(y)-1+p][int(x)-1] == 1:
+                return i
         else:
             p += 1
     return False
 def score_counter(player):
-    score = player["score"]
+    score = 0
     for i in player["word"]:
         score += letter_scores[i]
-    player["score"] += score
     if len(player["word"]) == 7:
         player["score"] += 50
     if score_multiplier_func_3W(player["word"], player["x"], player["y"]) == True:
-        player["score"] *= 3
+        score *= 3
     elif score_multiplier_func_2W(player["word"], player["x"], player["y"]) == True:
-        player["score"] *= 2
+        score *= 2
     elif score_multiplier_func_3L(player["word"], player["x"], player["y"]) != False:
-        player["score"] += letter_scores[score_multiplier_func_3L(player["word"], player["x"], player["y"])]
+        score += 2*letter_scores[score_multiplier_func_3L(player["word"], player["x"], player["y"])]
     elif score_multiplier_func_2L(player["word"], player["x"], player["y"]) != False:
-        player["score"] += letter_scores[score_multiplier_func_2L(player["word"], player["x"], player["y"])]
+        score += letter_scores[score_multiplier_func_2L(player["word"], player["x"], player["y"])]
+    player["score"] += score
