@@ -33,10 +33,13 @@ player3 = {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "
 player4 = {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": ""}
 sack_placeholder = letters_sack
 score_memory = []
-word = []
 x = ""
 y = ""
-#FUNCTIONS
+inp = ""
+word = list(inp)
+
+
+#FUNCTIONS THAT EDIT OR DO SOMETHING
 def main_func():
     for i in arr:
         for each in i:
@@ -137,6 +140,40 @@ def sack_replace_all_func(player):
         sack_placeholder.append(i)
     player["letters"] = []
     sack_refill_func(player)
+def ifanything_wrong():
+    global inp, word, direction, x, y
+    inp = input("Enter your word in CAPITALS ")
+    word = list(inp)
+    x = input("Enter the x coordinate ")
+    y = input("Enter the y coordinate ")
+    direction = input("Enter the direction R, D ")
+def score_counter(player):
+    score = 0
+    for i in player["word"]:
+        score += letter_scores[i]
+    if len(player["word"]) == 7:
+        player["score"] += 50
+    if score_multiplier_func_3W(player["word"], player["x"], player["y"]) == True:
+        score *= 3
+    elif score_multiplier_func_2W(player["word"], player["x"], player["y"]) == True:
+        score *= 2
+    elif score_multiplier_func_3L(player["word"], player["x"], player["y"]) != False:
+        score += 2*letter_scores[score_multiplier_func_3L(player["word"], player["x"], player["y"])]
+    elif score_multiplier_func_2L(player["word"], player["x"], player["y"]) != False:
+        score += letter_scores[score_multiplier_func_2L(player["word"], player["x"], player["y"])]
+    player["score"] += score
+def printing_word(word, x, y, direction):
+    p = 0
+    for i in range(len(word)):
+        if direction == "R":
+            arr[int(y)-1][int(x)-1+p] = word[p]
+        elif direction == "D":
+            arr[int(y)-1+p][int(x)-1] = word[p]
+        else:
+            p += 1
+    
+    
+#FUNCTIONS THAT CHECK AND RETURN TRUE OR FALSE
 def center_checker(word, x, y):
     p = 0
     for i in range(len(word)):
@@ -155,10 +192,6 @@ def letters_inhand_checker(word, player):
         if i not in player["letters"]:
             return False
     return True
-def inp_modifier():
-    global inp, word
-    inp = input("Enter your word in CAPITALS ")
-    word = list(inp)
 def score_multiplier_func_3W(word, x, y, direction):
     p = 0
     for i in range(len(word)):
@@ -207,18 +240,31 @@ def score_multiplier_func_2L(word, x, y, direction):
         else:
             p += 1
     return False
-def score_counter(player):
-    score = 0
-    for i in player["word"]:
-        score += letter_scores[i]
-    if len(player["word"]) == 7:
-        player["score"] += 50
-    if score_multiplier_func_3W(player["word"], player["x"], player["y"]) == True:
-        score *= 3
-    elif score_multiplier_func_2W(player["word"], player["x"], player["y"]) == True:
-        score *= 2
-    elif score_multiplier_func_3L(player["word"], player["x"], player["y"]) != False:
-        score += 2*letter_scores[score_multiplier_func_3L(player["word"], player["x"], player["y"])]
-    elif score_multiplier_func_2L(player["word"], player["x"], player["y"]) != False:
-        score += letter_scores[score_multiplier_func_2L(player["word"], player["x"], player["y"])]
-    player["score"] += score
+def checks_if_collide_or_gothrough(word, x, y, direction):
+    p = 0
+    for i in range(len(word)):
+        if direction == "R":
+            if arr[int(y)-1][int(x)-1+p] == 0 or arr[int(y)-1][int(x)-1+p] == word[p]:
+                return True
+        elif direction == "D":
+            if arr[int(y)-1+p][int(x)-1] == 0 or arr[int(y)-1+p][int(x)-1] == word[p]:
+                return True
+        else:
+            p += 1
+    return False
+def checks_ifword_fit(word, x, y, direction):
+    if direction == "D":
+        while len(word) > (16 - int(y)):
+            print("Invalid coordinates")
+            return False
+    if direction == "R":
+        while len(word) > (16 - int(x)):
+            print("Invalid coordinates")
+            return False
+def checks_valid_coords(x, y):
+    while int(y) not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
+        print("Error, please enter number between 1 and 15")
+        return False
+    while int(x) not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
+        print("Error, please enter number between 1 and 15")
+        return False
