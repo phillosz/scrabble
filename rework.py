@@ -184,17 +184,18 @@ def printing_word(word, x, y, direction):
             all_players[player_switch]["letters"].remove(word[i])
             p += 1
 def print_score(player):
-    print("Player", player, "score is: ", player["score"])
+    print("Player", player_switch, "score is: ", player["score"])
 def asking_for_word(player):
     player["word"] = input("Enter your word in CAPITALS ")
     player["x"] = input("Enter the x coordinate ")
     player["y"] = input("Enter the y coordinate ")
     player["direction"] = input("Enter the direction R, D ")
 def print_letters(player):
-    print(player["letters"])
+    print("Player", player_switch, player["letters"])
 def ask_for_status(player):
     player["status"] = input("Do you want to pass, replace all or replace some? ")
 def ask_number_of_players():
+    global player_count
     player_count = int(input("Enter number of players 2-4 "))
     
     
@@ -308,11 +309,19 @@ def checks_valid_coords(x, y):
     while int(x) not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
         print("Error, please enter number between 1 and 15")
         return False
-    
+# def checks_ifword_touches(word, x, y, direction):
+#     p = 0
+#     for i in word:
+#         if direction == "R":
+#             if arr[int(y)-1][int(x)-1+p] == i:
+#                 pass
+#             else:
+#                 while arr[int(y)-1][int(x)-1+p] != 0:
     
     
 #GAME
 letter_sack_func()
+ask_number_of_players()
 while len(sack_placeholder) != 0:
     main_func()
     print_letters(all_players[player_switch])
@@ -334,6 +343,6 @@ while len(sack_placeholder) != 0:
             printing_word(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"])
             sack_refill_func(all_players[player_switch])
             print_score(all_players[player_switch])
-    player_switch = "1" if player_switch == "4" else str(int(player_switch) + 1)
+    player_switch = "1" if player_switch == str(player_count) else str(int(player_switch) + 1)
 
         
