@@ -176,12 +176,18 @@ def printing_word(word, x, y, direction):
     p = 0
     for i in range(len(word)):
         if direction == "R":
-            arr[int(y)-1][int(x)-1+p] = word[p]
-            all_players[player_switch]["letters"].remove(word[i])
+            if arr[int(y)-1][int(x)-1+p] != word[p]:
+                arr[int(y)-1][int(x)-1+p] = word[p]
+                all_players[player_switch]["letters"].remove(word[i])
+            elif arr[int(y)-1][int(x)-1+p] == word[p]:
+                pass
             p += 1
         elif direction == "D":
-            arr[int(y)-1+p][int(x)-1] = word[p]
-            all_players[player_switch]["letters"].remove(word[i])
+            if arr[int(y)-1+p][int(x)-1] != word[p]:
+                arr[int(y)-1+p][int(x)-1] = word[p]
+                all_players[player_switch]["letters"].remove(word[i])
+            elif arr[int(y)-1+p][int(x)-1] == word[p]:
+                pass
             p += 1
 def print_score(player):
     print("Player", player_switch, "score is: ", player["score"])
