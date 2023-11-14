@@ -27,10 +27,10 @@ letters_sack = ["A", "A", "A", "A", "A", "A", "A", "A", "A", "B", "B", "C", "C",
                 "N", "O", "O", "O", "O", "O", "O", "O", "O", "P", "P", "Q", "R", "R", "R", "R", "R", "R", "S", "S", "S", "S", "T", "T", "T", "T", "T", "T", "U", 
                 "U", "U", "U", "V", "V", "W", "W", "X", "Y", "Y", "Z", "joker", "joker"]
 letters = ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z"]
-all_players = {"1": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": ""}, 
-               "2": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": ""}, 
-               "3": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": ""}, 
-               "4": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": ""}}
+all_players = {"1": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": []}, 
+               "2": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": []},
+               "3": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": []},
+               "4": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": []}}
 sack_placeholder = letters_sack
 score_memory = []
 x = ""
@@ -40,7 +40,6 @@ word = list(inp)
 player_count = 0
 player_switch = "1"
 max1 = 0
-
 
 #FUNCTIONS THAT EDIT OR DO SOMETHING
 def main_func():
@@ -154,9 +153,11 @@ def sack_replace_some_func(player):
     sack_refill_func(player)
 def ifanything_wrong(player):
     player["word"] = input("Enter your word in CAPITALS ")
+    player["input"] = player["word"]
     player["x"]= input("Enter the x coordinate ")
     player["y"] = input("Enter the y coordinate ")
     player["direction"] = input("Enter the direction R, D ")
+    add_before_after(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"])
 def score_counter(player):
     score = 0
     for i in player["word"]:
@@ -165,34 +166,35 @@ def score_counter(player):
         player["score"] += 50
     if score_multiplier_func_3W(player["word"], player["x"], player["y"], player["direction"]) == True:
         score *= 3
-    elif score_multiplier_func_2W(player["word"], player["x"], player["y"], player["direction"]) == True:
+    if score_multiplier_func_2W(player["word"], player["x"], player["y"], player["direction"]) == True:
         score *= 2
-    elif score_multiplier_func_3L(player["word"], player["x"], player["y"], player["direction"]) != False:
+    if score_multiplier_func_3L(player["word"], player["x"], player["y"], player["direction"]) != False:
         score += 2*letter_scores[score_multiplier_func_3L(player["word"], player["x"], player["y"], player["direction"])]
-    elif score_multiplier_func_2L(player["word"], player["x"], player["y"], player["direction"]) != False:
+    if score_multiplier_func_2L(player["word"], player["x"], player["y"], player["direction"]) != False:
         score += letter_scores[score_multiplier_func_2L(player["word"], player["x"], player["y"], player["direction"])]
     player["score"] += score
-def printing_word(word, x, y, direction):
+def printing_word(inp, x, y, direction):
     p = 0
-    for i in range(len(word)):
+    for i in range(len(inp)):
         if direction == "R":
-            if arr[int(y)-1][int(x)-1+p] != word[p]:
-                arr[int(y)-1][int(x)-1+p] = word[p]
-                all_players[player_switch]["letters"].remove(word[i])
-            elif arr[int(y)-1][int(x)-1+p] == word[p]:
+            if arr[int(y)-1][int(x)-1+p] != inp[p]:
+                arr[int(y)-1][int(x)-1+p] = inp[p]
+                all_players[player_switch]["letters"].remove(all_players[player_switch]["input"][i])
+            elif arr[int(y)-1][int(x)-1+p] == inp[p]:
                 pass
             p += 1
         elif direction == "D":
-            if arr[int(y)-1+p][int(x)-1] != word[p]:
-                arr[int(y)-1+p][int(x)-1] = word[p]
-                all_players[player_switch]["letters"].remove(word[i])
-            elif arr[int(y)-1+p][int(x)-1] == word[p]:
+            if arr[int(y)-1+p][int(x)-1] != inp[p]:
+                arr[int(y)-1+p][int(x)-1] = inp[p]
+                all_players[player_switch]["letters"].remove(all_players[player_switch]["input"][i])
+            elif arr[int(y)-1+p][int(x)-1] == inp[p]:
                 pass
             p += 1
 def print_score(player):
     print("Player", player_switch, "score is: ", player["score"])
 def asking_for_word(player):
     player["word"] = input("Enter your word in CAPITALS ")
+    player["input"] = player["word"]
     player["x"] = input("Enter the x coordinate ")
     player["y"] = input("Enter the y coordinate ")
     player["direction"] = input("Enter the direction R, D ")
@@ -203,6 +205,47 @@ def ask_for_status(player):
 def ask_number_of_players():
     global player_count
     player_count = int(input("Enter number of players 2-4 "))
+# def load_whole_word(word, x, y, direction):
+#     new_word = word
+#     p = 0
+#     if direction == "D":
+#         while type(arr[int(y)-1+p+len(word)][int(x)-1]) is str:
+#             new_word = new_word + arr[int(y)-1+p+len(word)][int(x)-1]
+#             p += 1
+#         if valid_english_word(new_word) == True:
+#             all_players[player_switch]["word"] = new_word
+#             all_players[player_switch]["letters"].append(arr[int(y)-1+p][int(x)-1])
+#         else:
+#             ifanything_wrong(all_players[player_switch])
+#     if direction == "R":
+#         while type(arr[int(y)-1][int(x)-1+p+len(word)]) is str:
+#             new_word = new_word + arr[int(y)-1][int(x)-1+p+len(word)]
+#             p += 1
+#         if valid_english_word(new_word) == True:
+#             all_players[player_switch]["word"] = new_word
+#             all_players[player_switch]["letters"].append(arr[int(y)-1][int(x)-1+p])
+#         else:
+#             ifanything_wrong(all_players[player_switch])
+def add_before_after(word, x, y, direction):
+    new_word = word
+    p = 1
+    if direction == "D":
+        while type(arr[int(y)-1-p][int(x)-1]) is str:
+            new_word = arr[int(y)-1-p][int(x)-1] + new_word
+            p += 1
+        while type(arr[int(y)-1+p+len(word)][int(x)-1]) is str:
+            new_word = new_word + arr[int(y)-1+p+len(word)][int(x)-1]
+            p += 1
+        all_players[player_switch]["word"] = new_word
+    if direction == "R":
+        while type(arr[int(y)-1][int(x)-1-p]) is str:
+            new_word = arr[int(y)-1][int(x)-1-p] + new_word
+            p += 1
+        while type(arr[int(y)-1][int(x)-1+p+len(word)]) is str:
+            new_word = new_word + arr[int(y)-1][int(x)-1+p+len(word)]
+            p += 1
+        else:
+          all_players[player_switch]["word"] = new_word
     
     
 #FUNCTIONS THAT CHECK AND RETURN TRUE OR FALSE
@@ -217,12 +260,14 @@ def center_checker(word, x, y, direction):
                 if arr[int(y)-1][int(x)-1+p] == 6:
                     max1 += 1
                     return True
-            if direction == "D":
+                else:
+                    p += 1
+            elif direction == "D":
                 if arr[int(y)-1+p][int(x)-1] == 6:
                     max1 += 1
                     return True
-            else:
-                p += 1
+                else:
+                    p += 1
         print("Error, word doesn't go through center")
         return False
 def valid_english_word(word):
@@ -231,59 +276,73 @@ def valid_english_word(word):
     else:
         print("Error, word not in dictionary")
         return False
-def letters_inhand_checker(word, player):
-    for i in word:
-        if i not in player["letters"]:
-            print("Error, you don't have the letter", i)
-            return False
-    return True
+def letters_inhand_checker(inp, x, y, direction):
+    p = 0
+    for i in inp:
+        if direction == "D":
+            if i in all_players[player_switch]["letters"] or i == arr[int(y)-1+p][int(x)-1]:
+                return True
+            else:
+                print("Error, you don't have the letter", i)
+                return False
+        if direction == "R":
+            if i in all_players[player_switch]["letters"] or i == arr[int(y)-1][int(x)-1+p]:
+                return True
+            else:
+                print("Error, you don't have the letter", i)
+                return False
+    
 def score_multiplier_func_3W(word, x, y, direction):
     p = 0
     for i in range(len(word)):
         if direction == "R":
             if arr[int(y)-1][int(x)-1+p] == 4:
+                p += 1
                 return True
         elif direction == "D":
             if arr[int(y)-1+p][int(x)-1] == 4:
+                p += 1
                 return True
-        else:
-            p += 1
+        p += 1
     return False
 def score_multiplier_func_2W(word, x, y, direction):
     p = 0
     for i in range(len(word)):
         if direction == "R":
             if arr[int(y)-1][int(x)-1+p] == 3:
+                p += 1
                 return True
         elif direction == "D":
             if arr[int(y)-1+p][int(x)-1] == 3:
+                p += 1
                 return True
-        else:
-            p += 1
+        p += 1
     return False
 def score_multiplier_func_3L(word, x, y, direction):
     p = 0
     for i in word:
         if direction == "R":
             if arr[int(y)-1][int(x)-1+p] == 2:
+                p += 1
                 return i
         elif direction == "D":
             if arr[int(y)-1+p][int(x)-1] == 2:
+                p += 1
                 return i
-        else:
-            p += 1
+        p += 1
     return False
 def score_multiplier_func_2L(word, x, y, direction):
     p = 0
     for i in word:
         if direction == "R":
             if arr[int(y)-1][int(x)-1+p] == 1:
+                p += 1
                 return i
         elif direction == "D":
             if arr[int(y)-1+p][int(x)-1] == 1:
+                p += 1
                 return i
-        else:
-            p += 1
+        p += 1
     return False
 def checks_if_collide_or_gothrough(word, x, y, direction):
     p = 0
@@ -315,14 +374,6 @@ def checks_valid_coords(x, y):
     while int(x) not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
         print("Error, please enter number between 1 and 15")
         return False
-# def checks_ifword_touches(word, x, y, direction):
-#     p = 0
-#     for i in word:
-#         if direction == "R":
-#             if arr[int(y)-1][int(x)-1+p] == i:
-#                 pass
-#             else:
-#                 while arr[int(y)-1][int(x)-1+p] != 0:
     
     
 #GAME
@@ -342,11 +393,12 @@ while len(sack_placeholder) != 0:
         print_letters(all_players[player_switch])
     else:
         asking_for_word(all_players[player_switch])
-        while checks_valid_coords(all_players[player_switch]["x"], all_players[player_switch]["y"]) == False or checks_ifword_fit(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or checks_if_collide_or_gothrough(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or letters_inhand_checker(all_players[player_switch]["word"], all_players[player_switch]) == False or valid_english_word(all_players[player_switch]["word"]) == False or center_checker(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False:
+        add_before_after(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"])
+        while valid_english_word(all_players[player_switch]["word"]) == False or letters_inhand_checker(all_players[player_switch]["input"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or checks_valid_coords(all_players[player_switch]["x"], all_players[player_switch]["y"]) == False or checks_ifword_fit(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or checks_if_collide_or_gothrough(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or valid_english_word(all_players[player_switch]["word"]) == False or center_checker(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False:
             ifanything_wrong(all_players[player_switch])
         else:
             score_counter(all_players[player_switch])
-            printing_word(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"])
+            printing_word(all_players[player_switch]["input"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"])
             sack_refill_func(all_players[player_switch])
             print_score(all_players[player_switch])
     player_switch = "1" if player_switch == str(player_count) else str(int(player_switch) + 1)
