@@ -381,6 +381,27 @@ def checks_if_collide_or_gothrough(word, x, y, direction):
         else:
             p += 1
     return True
+def checks_if_touch(word, x, y, direction):
+    p = 0
+    touch = 0
+    for i in range(len(word)):
+        if direction == "R":
+            if arr[int(y)-1][int(x)-1+p] == word[i] or arr[int(y)-1][int(x)-1+p] == 6:
+                touch += 1
+                p += 1
+            else:
+                p += 1
+        elif direction == "D":
+            if arr[int(y)-1+p][int(x)-1] == word[i] or arr[int(y)-1+p][int(x)-1] == 6:
+                touch += 1
+                p += 1
+            else:
+                p += 1
+    if touch > 0:
+        return True 
+    else:
+        print("Word has to touch other words")
+        return False
 def checks_ifword_fit(word, x, y, direction):
     if direction == "D":
         while len(word) > (16 - int(y)):
@@ -419,7 +440,7 @@ while len(sack_placeholder) != 0:
         add_before_after(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"])
         while load_whole_word(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False:
             ifanything_wrong(all_players[player_switch])
-        while valid_english_word(all_players[player_switch]["word"]) == False or letters_inhand_checker(all_players[player_switch]["input"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or checks_valid_coords(all_players[player_switch]["x"], all_players[player_switch]["y"]) == False or checks_ifword_fit(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or checks_if_collide_or_gothrough(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or valid_english_word(all_players[player_switch]["word"]) == False or center_checker(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False:
+        while valid_english_word(all_players[player_switch]["word"]) == False or checks_if_touch(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or letters_inhand_checker(all_players[player_switch]["input"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or checks_valid_coords(all_players[player_switch]["x"], all_players[player_switch]["y"]) == False or checks_ifword_fit(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or checks_if_collide_or_gothrough(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or valid_english_word(all_players[player_switch]["word"]) == False or center_checker(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False:
             ifanything_wrong(all_players[player_switch])
         else:
             score_counter(all_players[player_switch])
