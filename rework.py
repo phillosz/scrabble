@@ -164,14 +164,14 @@ def score_counter(player):
         score += letter_scores[i]
     if len(player["word"]) == 7:
         player["score"] += 50
-    if score_multiplier_func_3W(player["word"], player["x"], player["y"], player["direction"]) == True:
-        score *= 3
-    if score_multiplier_func_2W(player["word"], player["x"], player["y"], player["direction"]) == True:
-        score *= 2
+    if score_multiplier_func_3W(player["word"], player["x"], player["y"], player["direction"]) != False:
+        score *= 3*score_multiplier_func_3W(player["word"], player["x"], player["y"], player["direction"])
+    if score_multiplier_func_2W(player["word"], player["x"], player["y"], player["direction"]) != False:
+        score *= 2*score_multiplier_func_2W(player["word"], player["x"], player["y"], player["direction"])
     if score_multiplier_func_3L(player["word"], player["x"], player["y"], player["direction"]) != False:
-        score += 2*letter_scores[score_multiplier_func_3L(player["word"], player["x"], player["y"], player["direction"])]
+        score += 2*score_multiplier_func_3L(player["word"], player["x"], player["y"], player["direction"])
     if score_multiplier_func_2L(player["word"], player["x"], player["y"], player["direction"]) != False:
-        score += letter_scores[score_multiplier_func_2L(player["word"], player["x"], player["y"], player["direction"])]
+        score += score_multiplier_func_2L(player["word"], player["x"], player["y"], player["direction"])
     player["score"] += score
 def printing_word(inp, x, y, direction):
     p = 0
@@ -317,56 +317,72 @@ def letters_inhand_checker(inp, x, y, direction):
     
 def score_multiplier_func_3W(word, x, y, direction):
     p = 0
+    counter = 0
     for i in range(len(word)):
         if direction == "R":
             if arr[int(y)-1][int(x)-1+p] == 4:
                 p += 1
-                return True
+                counter += 1
         elif direction == "D":
             if arr[int(y)-1+p][int(x)-1] == 4:
                 p += 1
-                return True
+                counter += 1
         p += 1
-    return False
+    if counter > 0:
+        return counter
+    else:
+        return False
 def score_multiplier_func_2W(word, x, y, direction):
     p = 0
+    counter = 0
     for i in range(len(word)):
         if direction == "R":
             if arr[int(y)-1][int(x)-1+p] == 3:
                 p += 1
-                return True
+                counter += 1
         elif direction == "D":
             if arr[int(y)-1+p][int(x)-1] == 3:
                 p += 1
-                return True
+                counter += 1
         p += 1
-    return False
+    if counter > 0:
+        return counter
+    else:
+        return False
 def score_multiplier_func_3L(word, x, y, direction):
     p = 0
+    counter = 0
     for i in word:
         if direction == "R":
             if arr[int(y)-1][int(x)-1+p] == 2:
                 p += 1
-                return i
+                counter += letter_scores[i] 
         elif direction == "D":
             if arr[int(y)-1+p][int(x)-1] == 2:
                 p += 1
-                return i
+                counter += letter_scores[i]
         p += 1
-    return False
+    if counter > 0:
+        return counter
+    else:
+        return False
 def score_multiplier_func_2L(word, x, y, direction):
     p = 0
+    counter = 0
     for i in word:
         if direction == "R":
             if arr[int(y)-1][int(x)-1+p] == 1:
                 p += 1
-                return i
+                counter += letter_scores[i]
         elif direction == "D":
             if arr[int(y)-1+p][int(x)-1] == 1:
                 p += 1
-                return i
+                counter += letter_scores[i]
         p += 1
-    return False
+    if counter > 0:
+        return counter
+    else:
+        return False
 def checks_if_collide_or_gothrough(word, x, y, direction):
     p = 0
     for i in range(len(word)):
