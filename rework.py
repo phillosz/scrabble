@@ -27,10 +27,10 @@ letters_sack = ["A", "A", "A", "A", "A", "A", "A", "A", "A", "B", "B", "C", "C",
                 "N", "O", "O", "O", "O", "O", "O", "O", "O", "P", "P", "Q", "R", "R", "R", "R", "R", "R", "S", "S", "S", "S", "T", "T", "T", "T", "T", "T", "U", 
                 "U", "U", "U", "V", "V", "W", "W", "X", "Y", "Y", "Z", "joker", "joker"]
 letters = ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z"]
-all_players = {"1": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": [], "joker_value": [], "joker_letter": []}, 
-               "2": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": [], "joker_value": [], "joker_letter": []},
-               "3": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": [], "joker_value": [], "joker_letter": []},
-               "4": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": [], "joker_value": [], "joker_letter": []}}
+all_players = {"1": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": [], "joker_value": [], "joker_letter": [], "score_memory": []}, 
+               "2": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": [], "joker_value": [], "joker_letter": [], "score_memory": []},
+               "3": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": [], "joker_value": [], "joker_letter": [], "score_memory": []},
+               "4": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": [], "joker_value": [], "joker_letter": [], "score_memory": []}}
 sack_placeholder = letters_sack
 score_memory = []
 x = ""
@@ -199,8 +199,12 @@ def printing_word(inp, x, y, direction):
             elif arr[int(y)-1+p][int(x)-1] == inp[p]:
                 pass
             p += 1
-def print_score(player):
-    print("Player", player_switch, "score is: ", player["score"])
+def print_score(player, score):
+    all_players[player_switch]["score_memory"].append(score)
+    print("Player", player_switch)
+    for i in range(len(all_players[player_switch]["score_memory"])):
+        print("      ", all_players[player_switch]["score_memory"][i])
+    print("Total:", sum(all_players[player_switch]["score_memory"]))
 def asking_for_word(player):
     joker = ""
     if "joker" in all_players[player_switch]["letters"]:
@@ -496,7 +500,7 @@ while len(sack_placeholder) != 0:
             score_counter(all_players[player_switch])
             printing_word(all_players[player_switch]["input"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"])
             sack_refill_func(all_players[player_switch])
-            print_score(all_players[player_switch])
+            print_score(all_players[player_switch], all_players[player_switch]["score"])
     player_switch = "1" if player_switch == str(player_count) else str(int(player_switch) + 1)
 
         
