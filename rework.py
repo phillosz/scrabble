@@ -27,10 +27,10 @@ letters_sack = ["A", "A", "A", "A", "A", "A", "A", "A", "A", "B", "B", "C", "C",
                 "N", "O", "O", "O", "O", "O", "O", "O", "O", "P", "P", "Q", "R", "R", "R", "R", "R", "R", "S", "S", "S", "S", "T", "T", "T", "T", "T", "T", "U", 
                 "U", "U", "U", "V", "V", "W", "W", "X", "Y", "Y", "Z", "joker", "joker"]
 letters = ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z"]
-all_players = {"1": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": []}, 
-               "2": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": []},
-               "3": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": []},
-               "4": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": []}}
+all_players = {"1": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": [], "joker_value": [], "joker_letter": []}, 
+               "2": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": [], "joker_value": [], "joker_letter": []},
+               "3": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": [], "joker_value": [], "joker_letter": []},
+               "4": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": [], "joker_value": [], "joker_letter": []}}
 sack_placeholder = letters_sack
 score_memory = []
 x = ""
@@ -40,6 +40,7 @@ word = list(inp)
 player_count = 0
 player_switch = "1"
 max1 = 0
+joker_value_nahrada = []
 
 #FUNCTIONS THAT EDIT OR DO SOMETHING
 def main_func():
@@ -166,12 +167,20 @@ def score_counter(player):
         player["score"] += 50
     if score_multiplier_func_3W(player["word"], player["x"], player["y"], player["direction"]) != False:
         score *= 3*score_multiplier_func_3W(player["word"], player["x"], player["y"], player["direction"])
+        if len(all_players[player_switch]["joker_letter"]) != 0:
+            score -= 3*sum(all_players[player_switch]["joker_value"])
     if score_multiplier_func_2W(player["word"], player["x"], player["y"], player["direction"]) != False:
         score *= 2*score_multiplier_func_2W(player["word"], player["x"], player["y"], player["direction"])
+        if len(all_players[player_switch]["joker_letter"]) != 0:
+            score -= 2*sum(all_players[player_switch]["joker_value"])
     if score_multiplier_func_3L(player["word"], player["x"], player["y"], player["direction"]) != False:
         score += 2*score_multiplier_func_3L(player["word"], player["x"], player["y"], player["direction"])
+        # if joker_position+1 == mult_position and joker_position != 0:
+        #     score -= 2*score_multiplier_func_3L(player["word"], player["x"], player["y"], player["direction"])
     if score_multiplier_func_2L(player["word"], player["x"], player["y"], player["direction"]) != False:
         score += score_multiplier_func_2L(player["word"], player["x"], player["y"], player["direction"])
+        # if joker_position+1 == mult_position and joker_position != 0:
+        #     score -= score_multiplier_func_2L(player["word"], player["x"], player["y"], player["direction"])
     player["score"] += score
 def printing_word(inp, x, y, direction):
     p = 0
@@ -193,6 +202,13 @@ def printing_word(inp, x, y, direction):
 def print_score(player):
     print("Player", player_switch, "score is: ", player["score"])
 def asking_for_word(player):
+    joker = ""
+    if "joker" in all_players[player_switch]["letters"]:
+        joker = input("Do you want to use your joker tile in this round? ")
+    else:
+        joker = "no"
+    if joker != "No" and joker != "no" and joker != "n":
+        joker_selection()    
     player["word"] = input("Enter your word in CAPITALS ")
     player["input"] = player["word"]
     player["x"] = input("Enter the x coordinate ")
@@ -205,7 +221,7 @@ def ask_for_status(player):
 def ask_number_of_players():
     global player_count
     player_count = int(input("Enter number of players 2-4 "))
-def load_whole_word(word, x, y, direction):
+def load_whole_word(x, y, direction):
     new_word = ""
     p = 0
     p_main = 1
@@ -269,6 +285,14 @@ def add_before_after(word, x, y, direction):
             p += 1
         else:
           all_players[player_switch]["word"] = new_word
+def joker_selection():
+    joker_replace = input("What letter do you want to use instead of the joker? ")
+    joker_value = letter_scores[joker_replace]
+    all_players[player_switch]["joker_value"].append(joker_value)
+    all_players[player_switch]["joker_letter"].append(joker_replace)
+    for i in range(len(all_players[player_switch]["letters"])):
+        if all_players[player_switch]["letters"][i] == "joker":
+            all_players[player_switch]["letters"][i] = joker_replace
     
     
 #FUNCTIONS THAT CHECK AND RETURN TRUE OR FALSE
@@ -337,11 +361,11 @@ def score_multiplier_func_2W(word, x, y, direction):
     counter = 0
     for i in range(len(word)):
         if direction == "R":
-            if arr[int(y)-1][int(x)-1+p] == 3:
+            if arr[int(y)-1][int(x)-1+p] == 3 or arr[int(y)-1][int(x)-1+p] == 6:
                 p += 1
                 counter += 1
         elif direction == "D":
-            if arr[int(y)-1+p][int(x)-1] == 3:
+            if arr[int(y)-1+p][int(x)-1] == 3 or arr[int(y)-1+p][int(x)-1] == 6:
                 p += 1
                 counter += 1
         p += 1
@@ -369,16 +393,26 @@ def score_multiplier_func_3L(word, x, y, direction):
 def score_multiplier_func_2L(word, x, y, direction):
     p = 0
     counter = 0
+    joker_value_nahrada = all_players[player_switch]["joker_value"].copy()
     for i in word:
         if direction == "R":
             if arr[int(y)-1][int(x)-1+p] == 1:
                 p += 1
                 counter += letter_scores[i]
+                if letter_scores[i] in joker_value_nahrada:
+                    counter -= letter_scores[i]
+                    joker_value_nahrada.remove(letter_scores[i])
+            else:
+                p += 1
         elif direction == "D":
             if arr[int(y)-1+p][int(x)-1] == 1:
                 p += 1
                 counter += letter_scores[i]
-        p += 1
+                if letter_scores[i] in joker_value_nahrada:
+                    counter -= letter_scores[i]
+                    joker_value_nahrada.remove(letter_scores[i])
+            else:
+                p += 1
     if counter > 0:
         return counter
     else:
@@ -454,7 +488,7 @@ while len(sack_placeholder) != 0:
     else:
         asking_for_word(all_players[player_switch])
         add_before_after(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"])
-        while load_whole_word(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False:
+        while load_whole_word(all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False:
             ifanything_wrong(all_players[player_switch])
         while valid_english_word(all_players[player_switch]["word"]) == False or checks_if_touch(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or letters_inhand_checker(all_players[player_switch]["input"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or checks_valid_coords(all_players[player_switch]["x"], all_players[player_switch]["y"]) == False or checks_ifword_fit(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or checks_if_collide_or_gothrough(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or valid_english_word(all_players[player_switch]["word"]) == False or center_checker(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False:
             ifanything_wrong(all_players[player_switch])
