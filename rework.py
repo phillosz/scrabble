@@ -154,10 +154,18 @@ def sack_replace_some_func(player):
     sack_refill_func(player)
 def ifanything_wrong(player):
     player["word"] = input("Enter your word in CAPITALS ")
-    player["input"] = player["word"]
-    player["x"]= input("Enter the x coordinate ")
-    player["y"] = input("Enter the y coordinate ")
-    player["direction"] = input("Enter the direction R, D ")
+    if valid_english_word(all_players[player_switch]["word"]) == True:
+        player["input"] = player["word"]
+        player["x"] = input("Enter the x coordinate ")
+        player["y"] = input("Enter the y coordinate ")
+        player["direction"] = input("Enter the direction R, D ")
+    while valid_english_word(all_players[player_switch]["word"]) != True:
+        print("Error, word not in dictionary")
+        player["word"] = input("Enter your word in CAPITALS ")
+        player["input"] = player["word"]
+        player["x"] = input("Enter the x coordinate ")
+        player["y"] = input("Enter the y coordinate ")
+        player["direction"] = input("Enter the direction R, D ")
     add_before_after(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"])
 def score_counter(player):
     score = 0
@@ -175,12 +183,8 @@ def score_counter(player):
             score -= 2*sum(all_players[player_switch]["joker_value"])
     if score_multiplier_func_3L(player["word"], player["x"], player["y"], player["direction"]) != False:
         score += 2*score_multiplier_func_3L(player["word"], player["x"], player["y"], player["direction"])
-        # if joker_position+1 == mult_position and joker_position != 0:
-        #     score -= 2*score_multiplier_func_3L(player["word"], player["x"], player["y"], player["direction"])
     if score_multiplier_func_2L(player["word"], player["x"], player["y"], player["direction"]) != False:
         score += score_multiplier_func_2L(player["word"], player["x"], player["y"], player["direction"])
-        # if joker_position+1 == mult_position and joker_position != 0:
-        #     score -= score_multiplier_func_2L(player["word"], player["x"], player["y"], player["direction"])
     player["score"] += score
 def printing_word(inp, x, y, direction):
     p = 0
@@ -214,14 +218,18 @@ def asking_for_word(player):
     if joker != "No" and joker != "no" and joker != "n":
         joker_selection()    
     player["word"] = input("Enter your word in CAPITALS ")
-    player["input"] = player["word"]
-    player["x"] = input("Enter the x coordinate ")
-    player["y"] = input("Enter the y coordinate ")
-    player["direction"] = input("Enter the direction R, D ")
+    if valid_english_word(all_players[player_switch]["word"]) == True:
+        player["input"] = player["word"]
+        player["x"] = input("Enter the x coordinate ")
+        player["y"] = input("Enter the y coordinate ")
+        player["direction"] = input("Enter the direction R, D ")
+    while valid_english_word(all_players[player_switch]["word"]) != True:
+        print("Error, word not in dictionary")
+        ifanything_wrong(all_players[player_switch])
 def print_letters(player):
     print("Player", player_switch, player["letters"])
 def ask_for_status(player):
-    player["status"] = input("Do you want to pass, replace all or replace some? ")
+    player["status"] = input("Do you want to pass, replace all, replace some or play? ")
 def ask_number_of_players():
     global player_count
     player_count = int(input("Enter number of players 2-4 "))
@@ -325,7 +333,6 @@ def valid_english_word(word):
     if word in en_words:
         return True
     else:
-        print("Error, word not in dictionary")
         return False
 def letters_inhand_checker(inp, x, y, direction):
     p = 0
