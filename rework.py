@@ -423,18 +423,29 @@ def score_multiplier_func_2L(word, x, y, direction):
         return False
 def checks_if_collide_or_gothrough(word, x, y, direction):
     p = 0
+    same_word_check = 0
     for i in range(len(word)):
         if direction == "R":
-            if arr[int(y)-1][int(x)-1+p] != 0 and arr[int(y)-1][int(x)-1+p] != word[i] and arr[int(y)-1][int(x)-1+p] == 6 and arr[int(y)-1][int(x)-1+p] == 1 and arr[int(y)-1][int(x)-1+p] == 2 and arr[int(y)-1][int(x)-1+p] == 3 and arr[int(y)-1][int(x)-1+p] == 4:
+            if arr[int(y)-1][int(x)-1+p] == word[i]:
+                    same_word_check += 1
+            if arr[int(y)-1][int(x)-1+p] != 0 and arr[int(y)-1][int(x)-1+p] != word[i] and arr[int(y)-1][int(x)-1+p] != 6 and arr[int(y)-1][int(x)-1+p] != 1 and arr[int(y)-1][int(x)-1+p] != 2 and arr[int(y)-1][int(x)-1+p] != 3 and arr[int(y)-1][int(x)-1+p] != 4:
                 print("Error, word collides with another word")
                 return False
+            else:
+                p += 1
         elif direction == "D":
-            if arr[int(y)-1][int(x)-1+p] != 0 and arr[int(y)-1][int(x)-1+p] != word[i] and arr[int(y)-1][int(x)-1+p] == 6 and arr[int(y)-1][int(x)-1+p] == 1 and arr[int(y)-1][int(x)-1+p] == 2 and arr[int(y)-1][int(x)-1+p] == 3 and arr[int(y)-1][int(x)-1+p] == 4:
+            if arr[int(y)-1+p][int(x)-1] == word[i]:
+                    same_word_check += 1
+            if arr[int(y)-1+p][int(x)-1] != 0 and arr[int(y)-1+p][int(x)-1] != word[i] and arr[int(y)-1+p][int(x)-1] != 6 and arr[int(y)-1+p][int(x)-1] != 1 and arr[int(y)-1+p][int(x)-1] != 2 and arr[int(y)-1+p][int(x)-1] != 3 and arr[int(y)-1+p][int(x)-1] != 4:
                 print("Error, word collides with another word")
                 return False
-        else:
-            p += 1
-    return True
+            else:
+                p += 1
+    if same_word_check == len(word):
+        print("You can't type same word")
+        return False
+    else:
+        return True
 def checks_if_touch(word, x, y, direction):
     p = 0
     touch = 0
