@@ -181,7 +181,7 @@ def score_counter(player):
         score += score_multiplier_func_2L(player["word"], player["x"], player["y"], player["direction"])
     player["score"] += score
 def printing_word(inp, x, y, direction):
-    global joker_coords
+    global joker_coords, joker_status
     p = 0
     joker_pos = 0
     for i in range(len(inp)):
@@ -199,15 +199,16 @@ def printing_word(inp, x, y, direction):
             elif arr[int(y)-1+p][int(x)-1] == inp[p]:
                 pass
             p += 1
-    for i in all_players[player_switch]["word"]:
-        if i != joker_replace:
-            joker_pos += 1
-        else:
-            break
-    if direction == "R":
-        joker_coords.append([int(x)+joker_pos, int(y)])
-    if direction == "D":
-        joker_coords.append([int(x), int(y)+joker_pos])
+    if joker_status != "No" and joker_status != "no" and joker_status != "n" and joker_status != "N":
+        for i in all_players[player_switch]["word"]:
+            if i != joker_replace:
+                joker_pos += 1
+            else:
+                break
+        if direction == "R":
+            joker_coords.append([int(x)+joker_pos, int(y)])
+        if direction == "D":
+            joker_coords.append([int(x), int(y)+joker_pos])
 def print_score(player, score):
     all_players[player_switch]["score_memory"].append(score)
     print("Player", player_switch)
@@ -215,16 +216,18 @@ def print_score(player, score):
         print("      ", all_players[player_switch]["score_memory"][i])
     print("Total:", sum(all_players[player_switch]["score_memory"]))
 def asking_for_word(player):
-    joker = ""
+    global joker_status
+    joker_status = ""
     if "joker" in all_players[player_switch]["letters"]:
-        joker = input("Do you want to use your joker tile in this round? ")
+        joker_status = input("Do you want to use your joker tile in this round? ")
     else:
-        joker = "no"
-    if joker != "No" and joker != "no" and joker != "n" and joker != "N":
+        joker_status = "no"
+    if joker_status != "No" and joker_status != "no" and joker_status != "n" and joker_status != "N":
         joker_selection()   
-    joker_pick = input("Do you want to replace joker placed on the board? ")
-    if joker_pick != "No" and joker_pick != "no" and joker_pick != "n" and joker_pick != "N":
-        joker_pickup()
+    if len(joker_coords) != 0:
+        joker_pick = input("Do you want to replace joker placed on the board? ")
+        if joker_pick != "No" and joker_pick != "no" and joker_pick != "n" and joker_pick != "N":
+            joker_pickup()
     player["word"] = input("Enter your word in CAPITALS ")
     player["input"] = player["word"]
     player["x"] = input("Enter the x coordinate ")
