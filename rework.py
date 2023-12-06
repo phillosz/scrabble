@@ -21,7 +21,7 @@ arr = [[4, 0, 0, 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0, 4, 5,],
 letter_scores = {'A': 1, 'B': 3, 'C': 3, 'D': 2, 'E': 1, 'F': 4, 'G': 2, 'H': 4,
     'I': 1, 'J': 8, 'K': 5, 'L': 1, 'M': 3, 'N': 1, 'O': 1, 'P': 3,
     'Q': 10, 'R': 1, 'S': 1, 'T': 1, 'U': 1, 'V': 4, 'W': 4, 'X': 8,
-    'Y': 4, 'Z': 10}
+    'Y': 4, 'Z': 10, "joker": 0}
 letters_sack = ["A", "A", "A", "A", "A", "A", "A", "A", "A", "B", "B", "C", "C", "D", "D", "D", "D", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", 
                 "F", "F", "G", "G", "G", "H", "H", "I", "I", "I", "I", "I", "I", "I", "I", "I", "J", "K", "L", "L", "L", "L", "M", "M", "N", "N", "N", "N", "N", 
                 "N", "O", "O", "O", "O", "O", "O", "O", "O", "P", "P", "Q", "R", "R", "R", "R", "R", "R", "S", "S", "S", "S", "T", "T", "T", "T", "T", "T", "U", 
@@ -41,6 +41,9 @@ player_count = 0
 player_switch = "1"
 max1 = 0
 joker_value_nahrada = []
+joker_coords = []
+joker_x = 0
+joker_y = 0
 
 #FUNCTIONS THAT EDIT OR DO SOMETHING
 def main_func():
@@ -178,7 +181,9 @@ def score_counter(player):
         score += score_multiplier_func_2L(player["word"], player["x"], player["y"], player["direction"])
     player["score"] += score
 def printing_word(inp, x, y, direction):
+    global joker_coords
     p = 0
+    joker_pos = 0
     for i in range(len(inp)):
         if direction == "R":
             if arr[int(y)-1][int(x)-1+p] != inp[p]:
@@ -194,6 +199,15 @@ def printing_word(inp, x, y, direction):
             elif arr[int(y)-1+p][int(x)-1] == inp[p]:
                 pass
             p += 1
+    for i in all_players[player_switch]["word"]:
+        if i != joker_replace:
+            joker_pos += 1
+        else:
+            break
+    if direction == "R":
+        joker_coords.append([int(x)+joker_pos, int(y)])
+    if direction == "D":
+        joker_coords.append([int(x), int(y)+joker_pos])
 def print_score(player, score):
     all_players[player_switch]["score_memory"].append(score)
     print("Player", player_switch)
@@ -206,15 +220,22 @@ def asking_for_word(player):
         joker = input("Do you want to use your joker tile in this round? ")
     else:
         joker = "no"
-    if joker != "No" and joker != "no" and joker != "n":
-        joker_selection()    
+    if joker != "No" and joker != "no" and joker != "n" and joker != "N":
+        joker_selection()   
+    joker_pick = input("Do you want to replace joker placed on the board? ")
+    if joker_pick != "No" and joker_pick != "no" and joker_pick != "n" and joker_pick != "N":
+        joker_pickup()
     player["word"] = input("Enter your word in CAPITALS ")
     player["input"] = player["word"]
     player["x"] = input("Enter the x coordinate ")
     player["y"] = input("Enter the y coordinate ")
     player["direction"] = input("Enter the direction R, D ")
 def print_letters(player):
+    scores = []
     print("Player", player_switch, player["letters"])
+    for i in player["letters"]:
+        scores.append(str(letter_scores[i]))
+    print(" Score is", scores)
 def ask_for_status(player):
     player["status"] = input("Do you want to pass, replace all, replace some or play? ")
 def ask_number_of_players():
@@ -288,6 +309,7 @@ def add_before_after(word, x, y, direction):
         p = 1
         all_players[player_switch]["word"] = new_word
 def joker_selection():
+    global joker_replace
     joker_replace = input("What letter do you want to use instead of the joker? ")
     joker_value = letter_scores[joker_replace]
     all_players[player_switch]["joker_value"].append(joker_value)
@@ -295,6 +317,16 @@ def joker_selection():
     for i in range(len(all_players[player_switch]["letters"])):
         if all_players[player_switch]["letters"][i] == "joker":
             all_players[player_switch]["letters"][i] = joker_replace
+def joker_pickup():
+    global joker_x, joker_y, joker_coords
+    joker_x = input("Enter the x coordinate of joker ")
+    joker_y = input("Enter the y coordinate of joker ")
+    joker_picked_position = [int(joker_x), int(joker_y)]
+    if joker_picked_position in joker_coords:
+        all_players[player_switch]["letters"].append("joker")
+        all_players[player_switch]["letters"].remove(arr[int(joker_y)-1][int(joker_x)-1])
+        print("Player",player_switch, all_players[player_switch]["letters"])
+        joker_coords.remove(joker_picked_position)
     
     
 #FUNCTIONS THAT CHECK AND RETURN TRUE OR FALSE
