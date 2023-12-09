@@ -27,10 +27,10 @@ letters_sack = ["A", "A", "A", "A", "A", "A", "A", "A", "A", "B", "B", "C", "C",
                 "N", "O", "O", "O", "O", "O", "O", "O", "O", "P", "P", "Q", "R", "R", "R", "R", "R", "R", "S", "S", "S", "S", "T", "T", "T", "T", "T", "T", "U", 
                 "U", "U", "U", "V", "V", "W", "W", "X", "Y", "Y", "Z", "joker", "joker"]
 letters = ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z"]
-all_players = {"1": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": [], "joker_value": [], "joker_letter": [], "score_memory": []}, 
-               "2": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": [], "joker_value": [], "joker_letter": [], "score_memory": []},
-               "3": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": [], "joker_value": [], "joker_letter": [], "score_memory": []},
-               "4": {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": [], "joker_value": [], "joker_letter": [], "score_memory": []}}
+all_players = {1: {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": [], "joker_value": [], "joker_letter": [], "score_memory": []}, 
+               2: {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": [], "joker_value": [], "joker_letter": [], "score_memory": []},
+               3: {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": [], "joker_value": [], "joker_letter": [], "score_memory": []},
+               4: {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": [], "joker_value": [], "joker_letter": [], "score_memory": []}}
 sack_placeholder = letters_sack
 score_memory = []
 x = ""
@@ -38,12 +38,13 @@ y = ""
 inp = ""
 word = list(inp)
 player_count = 0
-player_switch = "1"
+player_switch = 1
 max1 = 0
 joker_value_nahrada = []
 joker_coords = []
 joker_x = 0
 joker_y = 0
+podium = []
 
 #FUNCTIONS THAT EDIT OR DO SOMETHING
 def main_func():
@@ -123,19 +124,19 @@ def letter_sack_func():
     for i in range(7):
         letter = random.choice(sack_placeholder)
         sack_placeholder.remove(letter)
-        all_players["1"]["letters"].append(letter)
+        all_players[1]["letters"].append(letter)
     for i in range(7):
         letter = random.choice(sack_placeholder)
         sack_placeholder.remove(letter)
-        all_players["2"]["letters"].append(letter)
+        all_players[2]["letters"].append(letter)
     for i in range(7):
         letter = random.choice(sack_placeholder)
         sack_placeholder.remove(letter)
-        all_players["3"]["letters"].append(letter)
+        all_players[3]["letters"].append(letter)
     for i in range(7):
         letter = random.choice(sack_placeholder)
         sack_placeholder.remove(letter)
-        all_players["4"]["letters"].append(letter)
+        all_players[4]["letters"].append(letter)
 def sack_refill_func(player):
     while len(player["letters"]) < 7:
         letter = random.choice(sack_placeholder)
@@ -176,7 +177,7 @@ def score_counter(player):
         if len(all_players[player_switch]["joker_letter"]) != 0:
             score -= 2*sum(all_players[player_switch]["joker_value"])
     if score_multiplier_func_3L(player["word"], player["x"], player["y"], player["direction"]) != False:
-        score += 2*score_multiplier_func_3L(player["word"], player["x"], player["y"], player["direction"])
+        score += score_multiplier_func_3L(player["word"], player["x"], player["y"], player["direction"])
     if score_multiplier_func_2L(player["word"], player["x"], player["y"], player["direction"]) != False:
         score += score_multiplier_func_2L(player["word"], player["x"], player["y"], player["direction"])
     player["score"] += score
@@ -214,7 +215,6 @@ def print_score(player, score):
     print("Player", player_switch)
     for i in range(len(all_players[player_switch]["score_memory"])):
         print("      ", all_players[player_switch]["score_memory"][i])
-    print("Total:", sum(all_players[player_switch]["score_memory"]))
 def asking_for_word(player):
     global joker_status
     joker_status = ""
@@ -222,11 +222,11 @@ def asking_for_word(player):
         joker_status = input("Do you want to use your joker tile in this round? ")
     else:
         joker_status = "no"
-    if joker_status != "No" and joker_status != "no" and joker_status != "n" and joker_status != "N":
+    if joker_status != "No" and joker_status != "no" and joker_status != "n" and joker_status != "N" and joker_status != "NO":
         joker_selection()   
     if len(joker_coords) != 0:
         joker_pick = input("Do you want to replace joker placed on the board? ")
-        if joker_pick != "No" and joker_pick != "no" and joker_pick != "n" and joker_pick != "N":
+        if joker_pick != "No" and joker_pick != "no" and joker_pick != "n" and joker_pick != "N" and joker_pick != "NO":
             joker_pickup()
     player["word"] = input("Enter your word in CAPITALS ")
     player["input"] = player["word"]
@@ -330,6 +330,21 @@ def joker_pickup():
         all_players[player_switch]["letters"].remove(arr[int(joker_y)-1][int(joker_x)-1])
         print("Player",player_switch, all_players[player_switch]["letters"])
         joker_coords.remove(joker_picked_position)
+def score_deduction():
+    for i in range(1, player_count+1):
+        for j in all_players[i]["letters"]:
+            all_players[i]["score"] -= letter_scores[j] 
+def podium_print():
+    podium_unsorted = {}
+    for i in range(1, player_count+1):
+       if i in all_players:
+            podium_unsorted[i] = all_players[i]["score"]
+    if podium_unsorted:
+        max_score_player = max(podium_unsorted, key=podium_unsorted.get)
+        print("Player", max_score_player, "WON with", podium_unsorted[max_score_player], "points!")
+    else:
+        print("No players found.")
+
     
     
 #FUNCTIONS THAT CHECK AND RETURN TRUE OR FALSE
@@ -420,7 +435,7 @@ def score_multiplier_func_3L(word, x, y, direction):
                 p += 1
                 counter += letter_scores[i] 
                 if letter_scores[i] in joker_value_nahrada:
-                    counter -= letter_scores[i]
+                    counter -= 2*letter_scores[i]
                     joker_value_nahrada.remove(letter_scores[i])
             else:
                 p += 1
@@ -429,11 +444,13 @@ def score_multiplier_func_3L(word, x, y, direction):
                 p += 1
                 counter += letter_scores[i]
                 if letter_scores[i] in joker_value_nahrada:
-                    counter -= letter_scores[i]
+                    counter -= 2*letter_scores[i]
                     joker_value_nahrada.remove(letter_scores[i])
             else:
                 p += 1
     if counter > 0:
+        return 2*counter
+    elif counter <= 0:
         return counter
     else:
         return False
@@ -447,7 +464,7 @@ def score_multiplier_func_2L(word, x, y, direction):
                 p += 1
                 counter += letter_scores[i]
                 if letter_scores[i] in joker_value_nahrada:
-                    counter -= letter_scores[i]
+                    counter -= 2*letter_scores[i]
                     joker_value_nahrada.remove(letter_scores[i])
             else:
                 p += 1
@@ -456,11 +473,11 @@ def score_multiplier_func_2L(word, x, y, direction):
                 p += 1
                 counter += letter_scores[i]
                 if letter_scores[i] in joker_value_nahrada:
-                    counter -= letter_scores[i]
+                    counter -= 2*letter_scores[i]
                     joker_value_nahrada.remove(letter_scores[i])
             else:
                 p += 1
-    if counter > 0:
+    if counter != 0:
         return counter
     else:
         return False
@@ -555,6 +572,8 @@ while len(sack_placeholder) != 0:
         printing_word(all_players[player_switch]["input"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"])
         sack_refill_func(all_players[player_switch])
         print_score(all_players[player_switch], all_players[player_switch]["score"])
-    player_switch = "1" if player_switch == str(player_count) else str(int(player_switch) + 1)
+    player_switch = 1 if player_switch == player_count else int(player_switch) + 1
+score_deduction()
+podium_print()
 
         
