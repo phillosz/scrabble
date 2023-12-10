@@ -4,11 +4,13 @@ Hey all this is my first serious project in python. It's made as a part of my se
 Have fun!
 
 
+
 ## Sections
 [How to start](#how-to-start)
 [How to Play](#how-to-play)
 
 ## How to start
+
 
 Start by cloning repository to your machine:
 ```bash git clone 
@@ -21,12 +23,9 @@ cd scrabble
 ```
 After that run:
 ```bash
-python rework.py
-```
-or
-```bash
 python3 rework.py
 ```
+
 Make sure you have python downloaded on your machine.
 
 ## How to play
