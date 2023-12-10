@@ -240,7 +240,7 @@ def print_letters(player):
         scores.append(str(letter_scores[i]))
     print(" Score is", scores)
 def ask_for_status(player):
-    player["status"] = input("Do you want to pass, replace all, replace some or play? ")
+    player["status"] = input("Do you want to PASS, REPLACE ALL, REPLACE SOME or PLAY? ")
 def ask_number_of_players():
     global player_count
     player_count = int(input("Enter number of players 2-4 "))
@@ -552,12 +552,12 @@ while len(sack_placeholder) != 0:
     main_func()
     print_letters(all_players[player_switch])
     ask_for_status(all_players[player_switch])
-    if all_players[player_switch]["status"] == "pass":
+    if all_players[player_switch]["status"] == "PASS":
         pass
-    elif all_players[player_switch]["status"] == "replace all":
+    elif all_players[player_switch]["status"] == "REPLACE ALL":
         sack_replace_all_func(all_players[player_switch])
         print_letters(all_players[player_switch])
-    elif all_players[player_switch]["status"] == "replace some":
+    elif all_players[player_switch]["status"] == "REPLACE SOME":
         sack_replace_some_func(all_players[player_switch])
         print_letters(all_players[player_switch])
     else:
@@ -575,5 +575,6 @@ while len(sack_placeholder) != 0:
     player_switch = 1 if player_switch == player_count else int(player_switch) + 1
 score_deduction()
 podium_print()
+
 
         
