@@ -35,5 +35,5 @@ To questions such as directions or whether you want to replace letters or not re
 It is possible that you will get stuck if you for example realize that you cannot make any word. In that case press ***Control + C***.  
 
 ## Preview
-<img src="img/preview_start.png" alt="Error, load failed" width="250" height="500">
+<img src="img/preview_start.png" alt="Error, load failed" width="380" height="500">
 
