@@ -24,9 +24,9 @@ cd scrabble
 python3 rework.py
 ```
 
-Make sure that you have python downloaded on your machine.
+Make sure that you have [python](https://www.python.org/downloads/) downloaded on your machine.
 
 ## How to play
 
-Board size is 15x15, so the center is at 8,8 coordiantions. 
+Board size is 15x15, so the center is at 8,8 coordiantions.<br> 
 All your inputs are either in CAPSLOCK or numbers.
