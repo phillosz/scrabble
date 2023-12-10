@@ -10,7 +10,8 @@ Have fun!
 ## Sections
 [How to start](#how-to-start)  
 [How to Play](#how-to-play)  
-[Preview](#preview)
+[Preview](#preview)  
+[License](#license)  
 
 ## How to start
 
@@ -42,3 +43,6 @@ It is possible that you will get stuck if you for example realize that you canno
   <img src="img/preview_written.png" alt="Error, load failed" style="width: 49%;">
 </div>
 
+## License
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
