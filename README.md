@@ -11,7 +11,6 @@ Have fun!
 
 ## How to start
 
-<br>
 Start by cloning repository to your machine:
 ```bash git clone 
 git clone https://github.com/phillosz/scrabble.git
