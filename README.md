@@ -1,7 +1,6 @@
 # <p align="center">SCRABBLE IN TERMINAL</p>
 
-[![License](https://img.shields.io/github/license/phillosz/scrabble.svg)](https://opensource.org/licenses/MIT)
-
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 Hey all this is my first serious project in python. It's made as a part of my seminar work at high school. Feel free to post any issues.  
 Have fun!
