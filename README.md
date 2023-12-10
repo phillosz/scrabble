@@ -36,7 +36,7 @@ It is possible that you will get stuck if you for example realize that you canno
 
 ## Preview
 <div style="display: flex;">
-  <img src="img/preview_start.png" alt="Error, load failed" width="510" height="650">
-  <img src="img/preview_written.png" alt="Error, load failed" width="510" height="650">
+  <img src="img/preview_start.png" alt="Error, load failed" style="width: 50%;">
+  <img src="img/preview_written.png" alt="Error, load failed" style="width: 50%;">
 </div>
 
