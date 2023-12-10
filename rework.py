@@ -575,6 +575,6 @@ while len(sack_placeholder) != 0:
     player_switch = 1 if player_switch == player_count else int(player_switch) + 1
 score_deduction()
 podium_print()
-#test
+
 
         
