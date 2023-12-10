@@ -12,7 +12,7 @@ Have fun!
 ## How to start
 
 - Start by cloning repository to your machine:
-```bash git clone 
+```git 
 git clone https://github.com/phillosz/scrabble.git
 ```
 - Next navigate to your terminal (either in vscode or native) and type:
