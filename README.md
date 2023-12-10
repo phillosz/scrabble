@@ -6,8 +6,8 @@ Have fun!
 
 
 ## Sections
-[How to start](#how-to-start) 
-[How to Play](#how-to-play) 
+[How to start](#how-to-start)  
+[How to Play](#how-to-play)  
 [Preview](#preview)
 
 ## How to start
