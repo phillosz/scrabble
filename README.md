@@ -28,3 +28,5 @@ Make sure that you have python downloaded on your machine.
 
 ## How to play
 
+Board size is 15x15, so the center is at 8,8 coordiantions. 
+All your inputs are either in CAPSLOCK or numbers.
