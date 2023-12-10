@@ -29,5 +29,4 @@ Make sure that you have [python](https://www.python.org/downloads/) downloaded o
 ## How to play
 
 Board size is 15x15, so the center is at 8,8 coordiantions.<br> 
-All your inputs are either in [CAPSLOCK](<span style="background-color: #f2f2f2; padding: 4px; border-radius: 4px; box-shadow: 2px 2px 4px #888888;">Your Text Here</span>
-) or numbers.
+All your inputs are either in <span style="background-color: #f2f2f2; padding: 4px; border-radius: 4px; box-shadow: 2px 2px 4px #888888;">CAPSLOCK</span> or <span style="background-color: #f2f2f2; padding: 4px; border-radius: 4px; box-shadow: 2px 2px 4px #888888;">numbers</span>.
