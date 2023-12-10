@@ -14,7 +14,7 @@ Start by cloning repository to your machine:
 ```bash git clone 
 git clone https://github.com/phillosz/scrabble.git
 ```
-This should create scrabble folder in your disk
+This should create scrabble folder in your disk.
 Next navigate to your terminal (either in vscode or native) and type:
 ```bash
 cd scrabble
