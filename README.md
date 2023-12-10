@@ -20,7 +20,7 @@ Have fun!
 ```git 
 git clone https://github.com/phillosz/scrabble.git
 ```
-- Next navigate to your terminal (either in vscode or native) and type:
+- Next navigate to your terminal (either in vscode or native) and run:
 ```bash
 cd scrabble
 ```
