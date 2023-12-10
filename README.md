@@ -11,15 +11,15 @@ Have fun!
 
 ## How to start
 
-Start by cloning repository to your machine:
+- Start by cloning repository to your machine:
 ```bash git clone 
 git clone https://github.com/phillosz/scrabble.git
 ```
-Next navigate to your terminal (either in vscode or native) and type:
+- Next navigate to your terminal (either in vscode or native) and type:
 ```bash
 cd scrabble
 ```
-After that run:
+- After that run:
 ```bash
 python3 rework.py
 ```
