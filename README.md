@@ -6,7 +6,7 @@ Have fun!
 
 
 ## Sections
-[How to start](#how-to-start)
+[How to start](#how-to-start)<br>
 [How to Play](#how-to-play)
 
 ## How to start
@@ -26,7 +26,7 @@ After that run:
 python3 rework.py
 ```
 
-Make sure you have python downloaded on your machine.
+Make sure that you have python downloaded on your machine.
 
 ## How to play
 
