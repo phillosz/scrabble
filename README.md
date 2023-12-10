@@ -1,6 +1,4 @@
-<div style="text-align: center;">
-  <h1>SCRABBLE IN TERMINAL</h1>
-</div>
+# <p align="center">SCRABBLE IN TERMINAL</p>
 
 Hey all this is my first serious project in python. It's made as a part of my seminar work at high school. Feel free to post any issues.  
 Have fun!
