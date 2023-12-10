@@ -28,5 +28,4 @@ Make sure that you have [python](https://www.python.org/downloads/) downloaded o
 
 ## How to play
 
-Board size is 15x15, so the center is at 8,8 coordiantions.<br> 
-All your inputs are either in <span style="background-color: #f2f2f2; padding: 20px; border-radius: 20px; box-shadow: 10px 10px 20px #888888;">CAPSLOCK</span> or <span style="background-color: #f2f2f2; padding: 4px; border-radius: 4px; box-shadow: 2px 2px 4px #888888;">numbers</span>.
+Board size is 15x15, so the center is at 8,8 coordiantions. All your inputs are either in CAPSLOCK or numbers. To questions mentioning jokers please respond with YES or NO. It is possible that you will get stuck if you for example realize that you cannot make any word. In that case pres **Control + C**.
