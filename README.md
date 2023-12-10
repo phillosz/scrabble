@@ -1,6 +1,6 @@
 # SCRABBLE IN TERMINAL
 
-Hey all this is my first serious project in python. It's made as a part of my seminar work at high school. Feel free to post any issues.
+Hey all this is my first serious project in python. It's made as a part of my seminar work at high school. Feel free to post any issues.<br>
 Have fun!
 
 
@@ -28,4 +28,4 @@ Make sure that you have [python](https://www.python.org/downloads/) downloaded o
 
 ## How to play
 
-Board size is 15x15, so the center is at 8,8 coordiantions. All your inputs are either in ***CAPSLOCK*** or ***numbers***. To questions mentioning jokers please respond with YES or NO. It is possible that you will get stuck if you for example realize that you cannot make any word. In that case pres ***Control + C***.
+Board size is 15x15, so the center is at 8,8 coordiantions. All your inputs are either in ***CAPSLOCK*** or ***numbers***. To questions mentioning jokers please respond with YES or NO. It is possible that you will get stuck if you for example realize that you cannot make any word. In that case pres ***Control + C***. To questions such as directions or whether you want to replace letters or not respond with ***exactly the word or letter***.
