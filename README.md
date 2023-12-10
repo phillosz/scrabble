@@ -1,3 +1,4 @@
+[![License](https://img.shields.io/github/license/username/repo.svg)](https://opensource.org/licenses/MIT)
 # <p align="center">SCRABBLE IN TERMINAL</p>
 
 Hey all this is my first serious project in python. It's made as a part of my seminar work at high school. Feel free to post any issues.  
