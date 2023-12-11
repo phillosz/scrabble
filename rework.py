@@ -66,60 +66,8 @@ def main():
                 print(" S ", end=" ")
             elif each == 7:
                 print("__", end=" ")
-            elif each == "A":
-                print(" A ", end=" ")
-            elif each == "B":
-                print(" B ", end=" ")
-            elif each == "C":
-                print(" C ", end=" ")
-            elif each == "D":
-                print(" D ", end=" ")
-            elif each == "E":
-                print(" E ", end=" ")
-            elif each == "F":
-                print(" F ", end=" ")
-            elif each == "G":
-                print(" G ", end=" ")
-            elif each == "H":
-                print(" H ", end=" ")
-            elif each == "CH":
-                print("CH ", end=" ")
-            elif each == "I":
-                print(" I ", end=" ")
-            elif each == "J":
-                print(" J ", end=" ")
-            elif each == "K":
-                print(" K ", end=" ")
-            elif each == "L":
-                print(" L ", end=" ")
-            elif each == "M":
-                print(" M ", end=" ")
-            elif each == "N":
-                print(" N ", end=" ")
-            elif each == "O":
-                print(" O ", end=" ")
-            elif each == "P":
-                print(" P ", end=" ")
-            elif each == "Q":
-                print(" Q ", end=" ")
-            elif each == "R":
-                print(" R ", end=" ")
-            elif each == "S":
-                print(" S ", end=" ")
-            elif each == "T":
-                print(" T ", end=" ")
-            elif each == "U":
-                print(" U ", end=" ")
-            elif each == "V":
-                print(" V ", end=" ")
-            elif each == "W":
-                print(" W ", end=" ")
-            elif each == "X":
-                print(" X ", end=" ")
-            elif each == "Y":
-                print(" Y ", end=" ")
-            elif each == "Z":
-                print(" Z ", end=" ")
+            elif each in ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z"]:
+                print(f" {each} ", end=" ")
 def sack_refill(player):
     while len(player["letters"]) < 7:
         letter = random.choice(sack_placeholder)
@@ -481,7 +429,7 @@ def checks_if_collide_or_gothrough(word, x, y, direction):
         if direction == "R":
             if arr[int(y)-1][int(x)-1+p] == word[i]:
                     same_word_check += 1
-            if arr[int(y)-1][int(x)-1+p] != 0 and arr[int(y)-1][int(x)-1+p] != word[i] and arr[int(y)-1][int(x)-1+p] != 6 and arr[int(y)-1][int(x)-1+p] != 1 and arr[int(y)-1][int(x)-1+p] != 2 and arr[int(y)-1][int(x)-1+p] != 3 and arr[int(y)-1][int(x)-1+p] != 4:
+            if arr[int(y)-1][int(x)-1+p] not in [0, 1, 2, 3, 4, 6, word[i]]:
                 print("Error, word collides with another word")
                 return False
             else:
@@ -489,7 +437,7 @@ def checks_if_collide_or_gothrough(word, x, y, direction):
         elif direction == "D":
             if arr[int(y)-1+p][int(x)-1] == word[i]:
                     same_word_check += 1
-            if arr[int(y)-1+p][int(x)-1] != 0 and arr[int(y)-1+p][int(x)-1] != word[i] and arr[int(y)-1+p][int(x)-1] != 6 and arr[int(y)-1+p][int(x)-1] != 1 and arr[int(y)-1+p][int(x)-1] != 2 and arr[int(y)-1+p][int(x)-1] != 3 and arr[int(y)-1+p][int(x)-1] != 4:
+            if arr[int(y)-1+p][int(x)-1] not in [0, 1, 2, 3, 4, 6, word[i]]:
                 print("Error, word collides with another word")
                 return False
             else:
@@ -504,13 +452,13 @@ def checks_if_touch(word, x, y, direction):
     touch = 0
     for i in range(len(word)):
         if direction == "R":
-            if arr[int(y)-1][int(x)-1+p] == word[i] or arr[int(y)-1][int(x)-1+p] == 6:
+            if arr[int(y)-1][int(x)-1+p] in [6, word[i]]:
                 touch += 1
                 p += 1
             else:
                 p += 1
         elif direction == "D":
-            if arr[int(y)-1+p][int(x)-1] == word[i] or arr[int(y)-1+p][int(x)-1] == 6:
+            if arr[int(y)-1+p][int(x)-1] in [6, word[i]]:
                 touch += 1
                 p += 1
             else:
@@ -558,7 +506,7 @@ while len(sack_placeholder) != 0:
         while valid_english_word(all_players[player_switch]["word"]) == False or checks_valid_coords(all_players[player_switch]["x"], all_players[player_switch]["y"]) == False:
             ifanything_wrong(all_players[player_switch])
         add_before_after(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"])
-        while load_whole_word(all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or valid_english_word(all_players[player_switch]["word"]) == False or checks_if_touch(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or letters_inhand_checker(all_players[player_switch]["input"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or checks_valid_coords(all_players[player_switch]["x"], all_players[player_switch]["y"]) == False or checks_ifword_fit(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or checks_if_collide_or_gothrough(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or center_checker(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False:
+        while load_whole_word(all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or valid_english_word(all_players[player_switch]["word"]) == False or checks_if_touch(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or letters_inhand_checker(all_players[player_switch]["input"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or checks_valid_coords(all_players[player_switch]["x"], all_players[player_switch]["y"]) == False or checks_if_collide_or_gothrough(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or checks_ifword_fit(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or center_checker(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False:
             ifanything_wrong(all_players[player_switch])
         add_before_after(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"])
         score_counter(all_players[player_switch])
