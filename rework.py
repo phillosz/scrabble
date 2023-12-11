@@ -47,7 +47,7 @@ joker_y = 0
 podium = []
 
 #FUNCTIONS THAT EDIT OR DO SOMETHING
-def main_func():
+def main():
     for i in arr:
         for each in i:
             if each == 4:
@@ -120,34 +120,23 @@ def main_func():
                 print(" Y ", end=" ")
             elif each == "Z":
                 print(" Z ", end=" ")
-def letter_sack_func():
-    for i in range(7):
-        letter = random.choice(sack_placeholder)
-        sack_placeholder.remove(letter)
-        all_players[1]["letters"].append(letter)
-    for i in range(7):
-        letter = random.choice(sack_placeholder)
-        sack_placeholder.remove(letter)
-        all_players[2]["letters"].append(letter)
-    for i in range(7):
-        letter = random.choice(sack_placeholder)
-        sack_placeholder.remove(letter)
-        all_players[3]["letters"].append(letter)
-    for i in range(7):
-        letter = random.choice(sack_placeholder)
-        sack_placeholder.remove(letter)
-        all_players[4]["letters"].append(letter)
-def sack_refill_func(player):
+def sack_refill(player):
     while len(player["letters"]) < 7:
         letter = random.choice(sack_placeholder)
         sack_placeholder.remove(letter)
         player["letters"].append(letter)
-def sack_replace_all_func(player):
+def letter_distribution():
+    for i in range(player_count):
+        for j in range(7):
+            letter = random.choice(sack_placeholder)
+            sack_placeholder.remove(letter)
+            all_players[i+1]["letters"].append(letter)
+def sack_replace_all(player):
     for i in player["letters"]:
         sack_placeholder.append(i)
     player["letters"] = []
-    sack_refill_func(player)
-def sack_replace_some_func(player):
+    sack_refill(player)
+def sack_replace_some(player):
     print("Your letters are: ", player["letters"])
     letter = input("Enter letter you want to replace ")
     while letter not in player["letters"]:
@@ -155,7 +144,7 @@ def sack_replace_some_func(player):
         letter = input("Enter letter you want to replace ")
     sack_placeholder.append(letter)
     player["letters"].remove(letter)
-    sack_refill_func(player)
+    sack_refill(player)
 def ifanything_wrong(player):
     player["word"] = input("Enter your word in CAPITALS ")
     player["input"] = player["word"]
@@ -243,7 +232,11 @@ def ask_for_status(player):
     player["status"] = input("Do you want to PASS, REPLACE ALL, REPLACE SOME or PLAY? ")
 def ask_number_of_players():
     global player_count
-    player_count = int(input("Enter number of players 2-4 "))
+    input_number = input("Enter number of players 2-4 ")
+    if input_number in ["2", "3", "4"]:
+        player_count = int(input_number)
+    else:
+        ask_number_of_players()
 def load_whole_word(x, y, direction):
     new_word = ""
     p = 0
@@ -546,19 +539,19 @@ def checks_valid_coords(x, y):
     
     
 #GAME
-letter_sack_func()
 ask_number_of_players()
+letter_distribution()
 while len(sack_placeholder) != 0:
-    main_func()
+    main()
     print_letters(all_players[player_switch])
     ask_for_status(all_players[player_switch])
     if all_players[player_switch]["status"] == "PASS":
         pass
     elif all_players[player_switch]["status"] == "REPLACE ALL":
-        sack_replace_all_func(all_players[player_switch])
+        sack_replace_all(all_players[player_switch])
         print_letters(all_players[player_switch])
     elif all_players[player_switch]["status"] == "REPLACE SOME":
-        sack_replace_some_func(all_players[player_switch])
+        sack_replace_some(all_players[player_switch])
         print_letters(all_players[player_switch])
     else:
         asking_for_word(all_players[player_switch])
@@ -570,7 +563,7 @@ while len(sack_placeholder) != 0:
         add_before_after(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"])
         score_counter(all_players[player_switch])
         printing_word(all_players[player_switch]["input"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"])
-        sack_refill_func(all_players[player_switch])
+        sack_refill(all_players[player_switch])
         print_score(all_players[player_switch], all_players[player_switch]["score"])
     player_switch = 1 if player_switch == player_count else int(player_switch) + 1
 score_deduction()
