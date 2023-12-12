@@ -66,7 +66,7 @@ def main():
                 print(" S ", end=" ")
             elif each == 7:
                 print("__", end=" ")
-            elif each in ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z"]:
+            elif each in ["A", "B", "C", "D", "E", "F", "G", "H", "CH", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]:
                 print(f" {each} ", end=" ")
 def sack_refill(player):
     while len(player["letters"]) < 7:
