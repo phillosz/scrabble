@@ -266,9 +266,11 @@ def add_before_after(word, x, y, direction):
         all_players[player_switch]["word"] = new_word
 def joker_selection():
     global joker_replace
-    all_players[player_switch]["joker_letter"].append(input("What letter do you want to use instead of the joker? "))
-    all_players[player_switch]["joker_value"].append(letter_scores[joker_replace])
-    for i in range(len(all_players[player_switch]["letters"])):                                                 #SELECTS JOKER AND ASIGNS POSITION AND SCORE
+    joker_replace = input("What letter do you want to use instead of the joker? ")
+    joker_value = letter_scores[joker_replace]
+    all_players[player_switch]["joker_value"].append(joker_value)
+    all_players[player_switch]["joker_letter"].append(joker_replace)                                            #ASKS FOR JOKER LETTER
+    for i in range(len(all_players[player_switch]["letters"])):
         if all_players[player_switch]["letters"][i] == "joker":
             all_players[player_switch]["letters"][i] = joker_replace
 def joker_pickup():
