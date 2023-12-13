@@ -90,6 +90,8 @@ def sack_replace_some(player):
     while letter not in player["letters"]:                      #ASKS FOR LETTER TO BE REPLACED
         print("Error")
         letter = input("Enter letter you want to replace ")
+    sack_append_letters_remove(all_players[player_switch], letter)
+def sack_append_letters_remove(player, letter):
     sack_placeholder.append(letter)
     player["letters"].remove(letter)
     sack_refill(player)
@@ -106,7 +108,6 @@ def score_counter(player):
         score += letter_scores[i]                               #COUNTS BASIC SCORE WITHOUT ANY MULTIPLIERS
     if len(player["word"]) == 7:
         player["score"] += 50
-        
     if score_multiplier_func_3W(player["word"], player["x"], player["y"], player["direction"]) != False:
         score *= 3*score_multiplier_func_3W(player["word"], player["x"], player["y"], player["direction"])      #ADDS POINTS FOR TRIPLE WORD
         if len(all_players[player_switch]["joker_letter"]) != 0:
@@ -123,6 +124,9 @@ def score_counter(player):
     if score_multiplier_func_2L(player["word"], player["x"], player["y"], player["direction"]) != False:        #ADDS POINTS FOR LETTERS ON DOUBLE LETTER
         score += score_multiplier_func_2L(player["word"], player["x"], player["y"], player["direction"])
         
+    if len(all_players[player_switch]["joker_value"]) != 0:
+        for i in all_players[player_switch]["joker_value"]:
+            score -= i    
     player["score"] += score
 def printing_word(inp, x, y, direction):
     global joker_coords, joker_status
@@ -174,12 +178,7 @@ def asking_for_word(player):
         joker_pick = input("Do you want to replace joker placed on the board? ")                                #ASKS IF YOU WANT TO REPLACE JOKER WITH LETTER
         if joker_pick not in ["NO", "no", "N", "n", "No", "nO"]:
             joker_pickup()
-            
-    player["word"] = input("Enter your word in CAPITALS ")
-    player["input"] = player["word"]
-    player["x"] = input("Enter the x coordinate ")                                                              #ASKS FOR USER INPUT
-    player["y"] = input("Enter the y coordinate ")
-    player["direction"] = input("Enter the direction R, D ")
+    ifanything_wrong(player)
 def print_letters(player):
     scores = []
     print("Player", player_switch, player["letters"])
@@ -266,11 +265,13 @@ def add_before_after(word, x, y, direction):
         all_players[player_switch]["word"] = new_word
 def joker_selection():
     global joker_replace
-    joker_replace = input("What letter do you want to use instead of the joker? ")
+    joker_replace = input("What letter do you want to use instead of the joker? ")                              #ASKS FOR JOKER LETTER
+    locate_joker()
+def locate_joker():
     joker_value = letter_scores[joker_replace]
     all_players[player_switch]["joker_value"].append(joker_value)
-    all_players[player_switch]["joker_letter"].append(joker_replace)                                            #ASKS FOR JOKER LETTER
-    for i in range(len(all_players[player_switch]["letters"])):
+    all_players[player_switch]["joker_letter"].append(joker_replace)                                           
+    for i in range(len(all_players[player_switch]["letters"])):                                                 #REPLACES THE JOKER IN LETTERS
         if all_players[player_switch]["letters"][i] == "joker":
             all_players[player_switch]["letters"][i] = joker_replace
 def joker_pickup():
@@ -278,6 +279,8 @@ def joker_pickup():
     joker_x = input("Enter the x coordinate of joker ")
     joker_y = input("Enter the y coordinate of joker ")
     joker_picked_position = [int(joker_x), int(joker_y)]
+    joker_pickup_engine(joker_picked_position)
+def joker_pickup_engine(joker_picked_position):    
     if joker_picked_position in joker_coords:                                                                   #LETS YOU REPLACE LETTER FOR JOKER
         all_players[player_switch]["letters"].append("joker")
         all_players[player_switch]["letters"].remove(arr[int(joker_y)-1][int(joker_x)-1])
@@ -381,24 +384,23 @@ def score_multiplier_func_2W(word, x, y, direction):
 def score_multiplier_func_3L(word, x, y, direction):
     p = 0
     counter = 0
-    joker_value_nahrada = all_players[player_switch]["joker_value"].copy()
     for i in word:
         if direction == "R":
             if arr[int(y)-1][int(x)-1+p] == 2:
                 p += 1
                 counter += letter_scores[i] 
-                if letter_scores[i] in joker_value_nahrada:
+                if letter_scores[i] in all_players[player_switch]["joker_value"]:
                     counter -= 2*letter_scores[i]
-                    joker_value_nahrada.remove(letter_scores[i])
+                    all_players[player_switch]["joker_value"].remove(letter_scores[i])
             else:                                                                                               #RETURNS WHAT TO MULTIPLY
                 p += 1
         elif direction == "D":
             if arr[int(y)-1+p][int(x)-1] == 2:
                 p += 1
                 counter += letter_scores[i]
-                if letter_scores[i] in joker_value_nahrada:
+                if letter_scores[i] in all_players[player_switch]["joker_value"]:
                     counter -= 2*letter_scores[i]
-                    joker_value_nahrada.remove(letter_scores[i])
+                    all_players[player_switch]["joker_value"].remove(letter_scores[i])
             else:
                 p += 1
     if counter > 0:
@@ -410,24 +412,23 @@ def score_multiplier_func_3L(word, x, y, direction):
 def score_multiplier_func_2L(word, x, y, direction):
     p = 0
     counter = 0
-    joker_value_nahrada = all_players[player_switch]["joker_value"].copy()
     for i in word:
         if direction == "R":
             if arr[int(y)-1][int(x)-1+p] == 1:
                 p += 1
                 counter += letter_scores[i]
-                if letter_scores[i] in joker_value_nahrada:
+                if letter_scores[i] in all_players[player_switch]["joker_value"]:
                     counter -= 2*letter_scores[i]
-                    joker_value_nahrada.remove(letter_scores[i])
+                    all_players[player_switch]["joker_value"].remove(letter_scores[i])
             else:                                                                                               #RETURNS WHAT TO MULTIPLY
                 p += 1
         elif direction == "D":
             if arr[int(y)-1+p][int(x)-1] == 1:
                 p += 1
                 counter += letter_scores[i]
-                if letter_scores[i] in joker_value_nahrada:
+                if letter_scores[i] in all_players[player_switch]["joker_value"]:
                     counter -= 2*letter_scores[i]
-                    joker_value_nahrada.remove(letter_scores[i])
+                    all_players[player_switch]["joker_value"].remove(letter_scores[i])
             else:
                 p += 1
     if counter != 0:
