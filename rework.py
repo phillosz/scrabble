@@ -112,11 +112,13 @@ def score_counter(player):
         score *= 3*score_multiplier_func_3W(player["word"], player["x"], player["y"], player["direction"])      #ADDS POINTS FOR TRIPLE WORD
         if len(all_players[player_switch]["joker_letter"]) != 0:
             score -= 3*sum(all_players[player_switch]["joker_value"])
+            all_players[player_switch]["joker_value"] = []
             
     if score_multiplier_func_2W(player["word"], player["x"], player["y"], player["direction"]) != False:
         score *= 2*score_multiplier_func_2W(player["word"], player["x"], player["y"], player["direction"])      #ADDS POINTS FOR DOUBLE WORD 
         if len(all_players[player_switch]["joker_letter"]) != 0:
             score -= 2*sum(all_players[player_switch]["joker_value"])
+            all_players[player_switch]["joker_value"] = []
             
     if score_multiplier_func_3L(player["word"], player["x"], player["y"], player["direction"]) != False:        #ADDDS POINTS FOR LETERS ON TRIPLE LETTER
         score += score_multiplier_func_3L(player["word"], player["x"], player["y"], player["direction"])
