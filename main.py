@@ -89,13 +89,13 @@ def ask_number_of_players():
 def joker_selection():
     global joker_replace
     joker_replace = input("What letter do you want to use instead of the joker? ")
-    sc.locate_joker(joker_replace, all_players, player_switch, letter_scores)
+    sc.locate_joker(all_players[player_switch], joker_replace, letter_scores)
 def joker_pickup():
     global joker_x, joker_y, joker_coords
     joker_x = input("Enter the x coordinate of joker ")
     joker_y = input("Enter the y coordinate of joker ")
     joker_picked_position = [int(joker_x), int(joker_y)]
-    sc.joker_pickup_engine(joker_picked_position, all_players, player_switch, arr, joker_y, joker_x, joker_coords)
+    sc.joker_pickup_engine(all_players[player_switch], joker_picked_position, player_switch, arr, joker_y, joker_x, joker_coords)
     
     
 #GAME
@@ -117,14 +117,14 @@ while len(sack_placeholder) != 0:
         asking_for_word(all_players[player_switch])
         while sc.valid_english_word(all_players[player_switch]["word"]) == False or sc.checks_valid_coords(all_players[player_switch]["x"], all_players[player_switch]["y"]) == False:
             ifanything_wrong(all_players[player_switch])
-        sc.add_before_after(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], all_players, player_switch, arr)
-        while sc.load_whole_word(all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], all_players, player_switch, arr) == False or sc.valid_english_word(all_players[player_switch]["word"]) == False or sc.checks_if_touch(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], arr) == False or sc.letters_inhand_checker(all_players[player_switch]["input"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], all_players, player_switch, arr) == False or sc.checks_valid_coords(all_players[player_switch]["x"], all_players[player_switch]["y"]) == False or sc.checks_if_collide_or_gothrough(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], arr) == False or sc.checks_ifword_fit(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or sc.center_checker(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], arr, max1) == False:
+        sc.add_before_after(all_players[player_switch], all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], arr)
+        while sc.load_whole_word(all_players[player_switch], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], arr) == False or sc.valid_english_word(all_players[player_switch]["word"]) == False or sc.checks_if_touch(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], arr) == False or sc.letters_inhand_checker(all_players[player_switch], all_players[player_switch]["input"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], arr) == False or sc.checks_valid_coords(all_players[player_switch]["x"], all_players[player_switch]["y"]) == False or sc.checks_if_collide_or_gothrough(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], arr) == False or sc.checks_ifword_fit(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or sc.center_checker(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], arr, max1) == False:
             ifanything_wrong(all_players[player_switch])
-        sc.add_before_after(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], all_players, player_switch, arr)
-        sc.score_counter(all_players[player_switch], letter_scores, all_players, player_switch, arr)
-        sc.printing_word(all_players[player_switch]["input"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], joker_replace,  arr, all_players, player_switch, joker_status, joker_coords)
+        sc.add_before_after(all_players[player_switch], all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], arr)
+        sc.score_counter(all_players[player_switch], letter_scores, arr)
+        sc.printing_word(all_players[player_switch], all_players[player_switch]["input"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], joker_replace,  arr, joker_status, joker_coords)
         sc.sack_refill(all_players[player_switch], sack_placeholder)
-        sc.print_score(all_players[player_switch]["score"], all_players, player_switch)
+        sc.print_score(all_players[player_switch], all_players[player_switch]["score"], player_switch)
     player_switch = 1 if player_switch == player_count else int(player_switch) + 1
 sc.score_deduction(all_players, letter_scores, player_count)
 sc.podium_print(all_players, player_count)
