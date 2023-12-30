@@ -5,21 +5,6 @@ with open("dic.txt", "r") as file:
     en_words = file.read().splitlines()
     
 #VARIABLES
-arr = [[4, 0, 0, 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0, 4, 5,],
-    [0, 3, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 3, 0, 5,],
-    [0, 0, 3, 0, 0, 0, 1, 0, 1, 0, 0, 0, 3, 0, 0, 5,],
-    [1, 0, 0, 3, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 1, 5,],
-    [0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 5,],
-    [0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 5,],
-    [0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 5,],
-    [4, 0, 0, 1, 0, 0, 0, 6, 0, 0, 0, 1, 0, 0, 4, 5,],
-    [0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 5,],
-    [0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 5,],
-    [0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 5,],
-    [1, 0, 0, 3, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 1, 5,],
-    [0, 0, 3, 0, 0, 0, 1, 0, 1, 0, 0, 0, 3, 0, 0, 5,],
-    [0, 3, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 3, 0, 5,],
-    [4, 0, 0, 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0, 4, 5]]
 letter_scores = {'A': 1, 'B': 3, 'C': 3, 'D': 2, 'E': 1, 'F': 4, 'G': 2, 'H': 4,
     'I': 1, 'J': 8, 'K': 5, 'L': 1, 'M': 3, 'N': 1, 'O': 1, 'P': 3,
     'Q': 10, 'R': 1, 'S': 1, 'T': 1, 'U': 1, 'V': 4, 'W': 4, 'X': 8,
@@ -35,8 +20,6 @@ all_players = {1: {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direc
                4: {"letters": [], "score": 0, "word": [], "y": 0, "x": 0, "direction": "", "status": "", "input": [], "joker_value": [], "joker_letter": [], "score_memory": []}}
 sack_placeholder = letters_sack
 score_memory = []
-x = ""
-y = ""
 inp = ""
 word = list(inp)
 player_count = 0
@@ -64,25 +47,6 @@ def ifanything_wrong(player):
     player["x"] = input("Enter the x coordinate ")
     player["y"] = input("Enter the y coordinate ")
     player["direction"] = input("Enter the direction R, D ")
-def asking_for_word(player):
-    global joker_status
-    joker_status = ""
-    if "joker" in all_players[player_switch]["letters"]:
-        joker_status = input("Do you want to use your joker tile in this round? ")
-    else:
-        joker_status = "no"
-    if joker_status not in ["NO", "no", "N", "n", "No", "nO"]:
-        joker_selection()   
-        
-    if len(joker_coords) != 0:
-        joker_pick = input("Do you want to replace joker placed on the board? ")
-        if joker_pick not in ["NO", "no", "N", "n", "No", "nO"]:
-            joker_pickup()
-    player["input"] = input("Enter your letters one by one in CAPITALS ")
-    player["word"].append(player["input"])
-    player["x"] = input("Enter the x coordinate ")
-    player["y"] = input("Enter the y coordinate ")
-    player["direction"] = input("Enter the direction R, D ")
 def ask_for_status(player):
     player["status"] = input("Do you want to PASS, REPLACE ALL, REPLACE SOME or PLAY? ")
 def ask_number_of_players():
@@ -96,12 +60,6 @@ def joker_selection():
     global joker_replace
     joker_replace = input("What letter do you want to use instead of the joker? ")
     sc.locate_joker(all_players[player_switch], joker_replace, letter_scores)
-def joker_pickup():
-    global joker_x, joker_y, joker_coords
-    joker_x = input("Enter the x coordinate of joker ")
-    joker_y = input("Enter the y coordinate of joker ")
-    joker_picked_position = [int(joker_x), int(joker_y)]
-    sc.joker_pickup_engine(all_players[player_switch], joker_picked_position, player_switch, arr, joker_y, joker_x, joker_coords)
     
 #TKINTER
 def on_tile_click(event):
@@ -110,14 +68,13 @@ def on_tile_click(event):
     row, col = canvas.grid_info()["row"], canvas.grid_info()["column"]
 
     if row == 1 and 15 <= col <= 21:
-        canvas.configure(bg="grey")
         last_clicked_canvas = canvas
         players_clicked_this_round.append(canvas)
     
 def check_word():
     for canvas in players_clicked_this_round:
         remove_text(canvas)
-    return True
+    show_next_player()
         
 def remove_text(canvas):
     for item in canvas.find_all():
@@ -133,26 +90,29 @@ def create_players():
         create_players_button.grid_forget()
 
         sc.letter_distribution(player_count, sack_placeholder, all_players)
-
-        for idx, canvas in enumerate(player_canvases):
+        asign_letters()
+        player_label.grid(row=0, column=15, columnspan=7, sticky=(N, W))
+        check_button.grid(row=3, column=15, columnspan=7, sticky=(N, W))
+        
+def asign_letters():
+    for idx, canvas in enumerate(player_canvases):
             canvas.grid(row=1, column=15 + idx, sticky=(N, W))
             canvas.create_text(tile_size // 2, tile_size // 2, text=all_players[player_switch]["letters"][idx], fill='black')
             canvas.bind('<Button-1>', on_tile_click)
             canvas_letters[canvas] = all_players[player_switch]["letters"][idx]
-
-        player_label.grid(row=0, column=15, columnspan=7, sticky=(N, W))
-        check_button.grid(row=3, column=15, columnspan=7, sticky=(N, W))
     
 def change_letters_canvases(event):
-    global last_clicked_canvas, whole_word
+    global last_clicked_canvas, whole_word, all_players, player_switch
     current_canvas = event.widget
     print(f"Clicked canvas: {current_canvas}")
 
-    if last_clicked_canvas is not None:
+    if last_clicked_canvas is not None and len(current_canvas.find_withtag("text")) == 0:
         current_letter = canvas_letters[last_clicked_canvas]
         canvas_letters[current_canvas] = current_letter
+        all_players[player_switch]["letters"].remove(current_letter)
         canvas_letters[last_clicked_canvas] = ""
-        current_canvas.create_text(tile_size // 2, tile_size // 2, text=current_letter, font=("Arial", 16), fill="black")
+        last_clicked_canvas.configure(bg="grey")
+        current_canvas.create_text(tile_size // 2, tile_size // 2, text=current_letter, font=("Arial", 16), fill="black", tags="text")
         whole_word += current_letter
         last_clicked_canvas = None
     else:
@@ -166,14 +126,18 @@ def hide_error():
     error_label.grid_remove()
     
 def show_next_player():
-    if check_word() == True:
-        next_player.grid(row=4, column=15, columnspan=7, sticky=(N, W))
+    next_player.grid(row=4, column=15, columnspan=7, sticky=(N, W))
 
 def next_player():
-    global player_canvases
+    global player_canvases, player_switch, players_clicked_this_round
+    sc.sack_refill(all_players[player_switch], sack_placeholder)
+    player_switch = 1 if player_switch == player_count else int(player_switch) + 1
+    players_clicked_this_round = []
     for canvas in player_canvases:
         canvas.delete("all")
         canvas.configure(bg="white")
+    player_label.configure(text=f"Player {player_switch}")
+    asign_letters()
     
 root = Tk()
 root.title("SCRABBLE")
@@ -207,38 +171,5 @@ player_canvases = []
 for i in range(7):
     canvas = Canvas(root, width=tile_size, height=tile_size, bg='white')
     player_canvases.append(canvas)
-    
-show_next_player()
 
 root.mainloop()
-    
-#GAME
-#ask_number_of_players()
-#sc.letter_distribution(player_count, sack_placeholder, all_players)
-while len(sack_placeholder) != 0:
-    sc.main(arr)
-    sc.print_letters(all_players[player_switch], player_switch, letter_scores)
-    ask_for_status(all_players[player_switch])
-    if all_players[player_switch]["status"] == "PASS":
-        pass
-    elif all_players[player_switch]["status"] == "REPLACE ALL":
-        sc.sack_replace_all(all_players[player_switch], sack_placeholder)
-        sc.print_letters(all_players[player_switch], player_switch, letter_scores)
-    elif all_players[player_switch]["status"] == "REPLACE SOME":
-        sack_replace_some(all_players[player_switch])
-        sc.print_letters(all_players[player_switch], player_switch, letter_scores)
-    else:
-        asking_for_word(all_players[player_switch])
-        while sc.valid_english_word(all_players[player_switch]["word"]) == False or sc.checks_valid_coords(all_players[player_switch]["x"], all_players[player_switch]["y"]) == False:
-            ifanything_wrong(all_players[player_switch])
-        sc.add_before_after(all_players[player_switch], all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], arr)
-        while sc.load_whole_word(all_players[player_switch], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], arr) == False or sc.valid_english_word(all_players[player_switch]["word"]) == False or sc.checks_if_touch(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], arr) == False or sc.letters_inhand_checker(all_players[player_switch], all_players[player_switch]["input"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], arr) == False or sc.checks_valid_coords(all_players[player_switch]["x"], all_players[player_switch]["y"]) == False or sc.checks_if_collide_or_gothrough(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], arr) == False or sc.checks_ifword_fit(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or sc.center_checker(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], arr, max1) == False:
-            ifanything_wrong(all_players[player_switch])
-        sc.add_before_after(all_players[player_switch], all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], arr)
-        sc.score_counter(all_players[player_switch], letter_scores, arr)
-        sc.printing_word(all_players[player_switch], all_players[player_switch]["input"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], joker_replace,  arr, joker_status, joker_coords)
-        sc.sack_refill(all_players[player_switch], sack_placeholder)
-        sc.print_score(all_players[player_switch], all_players[player_switch]["score"], player_switch)
-    player_switch = 1 if player_switch == player_count else int(player_switch) + 1
-sc.score_deduction(all_players, letter_scores, player_count)
-sc.podium_print(all_players, player_count)
