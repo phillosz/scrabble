@@ -30,7 +30,7 @@ def sack_refill(player, sack_placeholder):
         sack_placeholder.remove(letter)
         player["letters"].append(letter)
 def letter_distribution(player_count, sack_placeholder, all_players):
-    for i in range(player_count):
+    for i in range(int(player_count)):
         for j in range(7):
             letter = random.choice(sack_placeholder)
             sack_placeholder.remove(letter)

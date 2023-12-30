@@ -1,4 +1,5 @@
-import random
+from tkinter import *
+from tkinter import Tk, N, W, ttk
 import scrabble_engine as sc
 with open("dic.txt", "r") as file:
     en_words = file.read().splitlines()
@@ -48,6 +49,7 @@ joker_y = 0
 podium = []
 joker_replace = ""
 
+
 #FUNCTIONS THAT EDIT OR DO SOMETHING
 def sack_replace_some(player):
     print("Your letters are: ", player["letters"])
@@ -76,7 +78,11 @@ def asking_for_word(player):
         joker_pick = input("Do you want to replace joker placed on the board? ")
         if joker_pick not in ["NO", "no", "N", "n", "No", "nO"]:
             joker_pickup()
-    ifanything_wrong(player)
+    player["input"] = input("Enter your letters one by one in CAPITALS ")
+    player["word"].append(player["input"])
+    player["x"] = input("Enter the x coordinate ")
+    player["y"] = input("Enter the y coordinate ")
+    player["direction"] = input("Enter the direction R, D ")
 def ask_for_status(player):
     player["status"] = input("Do you want to PASS, REPLACE ALL, REPLACE SOME or PLAY? ")
 def ask_number_of_players():
@@ -97,10 +103,118 @@ def joker_pickup():
     joker_picked_position = [int(joker_x), int(joker_y)]
     sc.joker_pickup_engine(all_players[player_switch], joker_picked_position, player_switch, arr, joker_y, joker_x, joker_coords)
     
+#TKINTER
+def on_tile_click(event):
+    global last_clicked_canvas, players_clicked_this_round
+    canvas = event.widget
+    row, col = canvas.grid_info()["row"], canvas.grid_info()["column"]
+
+    if row == 1 and 15 <= col <= 21:
+        canvas.configure(bg="grey")
+        last_clicked_canvas = canvas
+        players_clicked_this_round.append(canvas)
+    
+def check_word():
+    for canvas in players_clicked_this_round:
+        remove_text(canvas)
+    return True
+        
+def remove_text(canvas):
+    for item in canvas.find_all():
+        if canvas.type(item) == "text":
+            canvas.delete(item)
+
+def create_players():
+    global player_count
+    player_count = int(player_count_var.get())
+
+    if 2 <= player_count <= 4:
+        num_players_entry.grid_forget()
+        create_players_button.grid_forget()
+
+        sc.letter_distribution(player_count, sack_placeholder, all_players)
+
+        for idx, canvas in enumerate(player_canvases):
+            canvas.grid(row=1, column=15 + idx, sticky=(N, W))
+            canvas.create_text(tile_size // 2, tile_size // 2, text=all_players[player_switch]["letters"][idx], fill='black')
+            canvas.bind('<Button-1>', on_tile_click)
+            canvas_letters[canvas] = all_players[player_switch]["letters"][idx]
+
+        player_label.grid(row=0, column=15, columnspan=7, sticky=(N, W))
+        check_button.grid(row=3, column=15, columnspan=7, sticky=(N, W))
+    
+def change_letters_canvases(event):
+    global last_clicked_canvas, whole_word
+    current_canvas = event.widget
+    print(f"Clicked canvas: {current_canvas}")
+
+    if last_clicked_canvas is not None:
+        current_letter = canvas_letters[last_clicked_canvas]
+        canvas_letters[current_canvas] = current_letter
+        canvas_letters[last_clicked_canvas] = ""
+        current_canvas.create_text(tile_size // 2, tile_size // 2, text=current_letter, font=("Arial", 16), fill="black")
+        whole_word += current_letter
+        last_clicked_canvas = None
+    else:
+        display_error()
+    
+def display_error():
+    error_label.grid(row=6, column=6, columnspan=5, sticky=(S, W))
+    root.after(3000, hide_error)
+    
+def hide_error():
+    error_label.grid_remove()
+    
+def show_next_player():
+    if check_word() == True:
+        next_player.grid(row=4, column=15, columnspan=7, sticky=(N, W))
+
+def next_player():
+    global player_canvases
+    for canvas in player_canvases:
+        canvas.delete("all")
+        canvas.configure(bg="white")
+    
+root = Tk()
+root.title("SCRABBLE")
+
+tile_size = 30 
+canvas_letters = {}
+last_clicked_canvas = None
+players_clicked_this_round= []
+whole_word = ""
+
+player_count_var = StringVar()
+num_players_entry = Entry(root, textvariable=player_count_var)
+num_players_entry.grid(row=0, column=15, columnspan=7, sticky=(N, W))
+
+for j in range(15):
+    for i in range(15):
+        canvas = Canvas(root, width=tile_size, height=tile_size, bg='white')
+        canvas.grid(row=j, column=i, sticky=(N, W))
+        canvas.bind('<Button-1>', change_letters_canvases)
+        canvas_letters[canvas] = ""
+        
+create_players_button = Button(root, text="Create Players", command=create_players)
+create_players_button.grid(row=1, column=15, columnspan=7, sticky=(N, W))
+
+check_button = Button(root, text="Check Word", command=check_word)
+player_label = Label(root, text=f"Player {player_switch}")
+error_label = Label(root, text="Error try something else")
+next_player = Button(root, text="Next Player", command=next_player)
+
+player_canvases = []
+for i in range(7):
+    canvas = Canvas(root, width=tile_size, height=tile_size, bg='white')
+    player_canvases.append(canvas)
+    
+show_next_player()
+
+root.mainloop()
     
 #GAME
-ask_number_of_players()
-sc.letter_distribution(player_count, sack_placeholder, all_players)
+#ask_number_of_players()
+#sc.letter_distribution(player_count, sack_placeholder, all_players)
 while len(sack_placeholder) != 0:
     sc.main(arr)
     sc.print_letters(all_players[player_switch], player_switch, letter_scores)
@@ -128,6 +242,3 @@ while len(sack_placeholder) != 0:
     player_switch = 1 if player_switch == player_count else int(player_switch) + 1
 sc.score_deduction(all_players, letter_scores, player_count)
 sc.podium_print(all_players, player_count)
-
-
-        
