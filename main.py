@@ -72,8 +72,21 @@ def on_tile_click(event):
         players_clicked_this_round.append(canvas)
     
 def check_word():
+    global previous_canvas, canvas_coordinates
     for canvas in players_clicked_this_round:
         remove_text(canvas)
+    for i in range(len(canvas_coordinates)):
+        row, col = canvas_coordinates[i]
+        if i > 0:
+            prev_row, prev_col = canvas_coordinates[i - 1]
+            if row == prev_row + 1 and col == prev_col or row == prev_row and col == prev_col + 1:
+                pass
+            else:
+                raise Exception("Invalid word!")
+        else:
+            pass
+        previous_canvas = (row, col)
+    canvas_coordinates = []
     show_next_player()
         
 def remove_text(canvas):
@@ -102,9 +115,11 @@ def asign_letters():
             canvas_letters[canvas] = all_players[player_switch]["letters"][idx]
     
 def change_letters_canvases(event):
-    global last_clicked_canvas, whole_word, all_players, player_switch
+    global last_clicked_canvas, whole_word, all_players, player_switch, previous_canvas
     current_canvas = event.widget
+    row, col = current_canvas.grid_info()["row"], current_canvas.grid_info()["column"]
     print(f"Clicked canvas: {current_canvas}")
+    print(f"Clicked coords are {row, col}")
 
     if last_clicked_canvas is not None and len(current_canvas.find_withtag("text")) == 0:
         current_letter = canvas_letters[last_clicked_canvas]
@@ -117,6 +132,9 @@ def change_letters_canvases(event):
         last_clicked_canvas = None
     else:
         display_error()
+        
+    canvas_coordinates.append((row, col))
+    print(canvas_coordinates)
     
 def display_error():
     error_label.grid(row=6, column=6, columnspan=5, sticky=(S, W))
@@ -130,6 +148,7 @@ def show_next_player():
 
 def next_player():
     global player_canvases, player_switch, players_clicked_this_round
+    next_player.grid_forget()
     sc.sack_refill(all_players[player_switch], sack_placeholder)
     player_switch = 1 if player_switch == player_count else int(player_switch) + 1
     players_clicked_this_round = []
@@ -147,6 +166,8 @@ canvas_letters = {}
 last_clicked_canvas = None
 players_clicked_this_round= []
 whole_word = ""
+previous_canvas = None
+canvas_coordinates = []
 
 player_count_var = StringVar()
 num_players_entry = Entry(root, textvariable=player_count_var)
