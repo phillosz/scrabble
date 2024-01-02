@@ -72,9 +72,7 @@ def on_tile_click(event):
         players_clicked_this_round.append(canvas)
     
 def check_word():
-    global previous_canvas, canvas_coordinates
-    for canvas in players_clicked_this_round:
-        remove_text(canvas)
+    global previous_canvas, canvas_coordinates, players_clicked_this_round, canvas_clicked, all_players, player_switch, score
     for i in range(len(canvas_coordinates)):
         row, col = canvas_coordinates[i]
         if i > 0:
@@ -82,10 +80,26 @@ def check_word():
             if row == prev_row + 1 and col == prev_col or row == prev_row and col == prev_col + 1:
                 pass
             else:
-                raise Exception("Invalid word!")
+                display_error()
+                for canvas in canvas_clicked:
+                    remove_text(canvas)
+                for canvas in players_clicked_this_round:
+                    canvas.configure(bg="white")
+                print(all_players[player_switch]["letters"])
+                canvas_coordinates = []
+                canvas_clicked = []
+                previous_canvas = None
+                players_clicked_this_round = []
+                return
         else:
             pass
         previous_canvas = (row, col)
+    for canvas in players_clicked_this_round:
+        all_players[player_switch]["letters"].remove(canvas_letters[canvas])
+        remove_text(canvas)
+    for canvas in canvas_clicked:
+        all_players[player_switch]["score"] += letter_scores[canvas_letters[canvas]]
+    update_score()
     canvas_coordinates = []
     show_next_player()
         
@@ -106,11 +120,13 @@ def create_players():
         asign_letters()
         player_label.grid(row=0, column=15, columnspan=7, sticky=(N, W))
         check_button.grid(row=3, column=15, columnspan=7, sticky=(N, W))
+        score_board.grid(row=6, column=15, columnspan=7, sticky=(N, W))
         
 def asign_letters():
     for idx, canvas in enumerate(player_canvases):
             canvas.grid(row=1, column=15 + idx, sticky=(N, W))
             canvas.create_text(tile_size // 2, tile_size // 2, text=all_players[player_switch]["letters"][idx], fill='black')
+            canvas.create_text(tile_size // 1.2, tile_size // 1.2, text=letter_scores[all_players[player_switch]["letters"][idx]], fill="gray25")
             canvas.bind('<Button-1>', on_tile_click)
             canvas_letters[canvas] = all_players[player_switch]["letters"][idx]
     
@@ -124,8 +140,6 @@ def change_letters_canvases(event):
     if last_clicked_canvas is not None and len(current_canvas.find_withtag("text")) == 0:
         current_letter = canvas_letters[last_clicked_canvas]
         canvas_letters[current_canvas] = current_letter
-        all_players[player_switch]["letters"].remove(current_letter)
-        canvas_letters[last_clicked_canvas] = ""
         last_clicked_canvas.configure(bg="grey")
         current_canvas.create_text(tile_size // 2, tile_size // 2, text=current_letter, font=("Arial", 16), fill="black", tags="text")
         whole_word += current_letter
@@ -134,6 +148,7 @@ def change_letters_canvases(event):
         display_error()
         
     canvas_coordinates.append((row, col))
+    canvas_clicked.append(current_canvas)
     print(canvas_coordinates)
     
 def display_error():
@@ -147,16 +162,21 @@ def show_next_player():
     next_player.grid(row=4, column=15, columnspan=7, sticky=(N, W))
 
 def next_player():
-    global player_canvases, player_switch, players_clicked_this_round
+    global player_canvases, player_switch, players_clicked_this_round, canvas_clicked
     next_player.grid_forget()
     sc.sack_refill(all_players[player_switch], sack_placeholder)
     player_switch = 1 if player_switch == player_count else int(player_switch) + 1
     players_clicked_this_round = []
+    canvas_clicked = []
     for canvas in player_canvases:
         canvas.delete("all")
         canvas.configure(bg="white")
     player_label.configure(text=f"Player {player_switch}")
+    update_score()
     asign_letters()
+    
+def update_score():
+    score_board.configure(text=f"Score: {all_players[player_switch]['score']}")
     
 root = Tk()
 root.title("SCRABBLE")
@@ -168,6 +188,7 @@ players_clicked_this_round= []
 whole_word = ""
 previous_canvas = None
 canvas_coordinates = []
+canvas_clicked = []
 
 player_count_var = StringVar()
 num_players_entry = Entry(root, textvariable=player_count_var)
@@ -192,5 +213,7 @@ player_canvases = []
 for i in range(7):
     canvas = Canvas(root, width=tile_size, height=tile_size, bg='white')
     player_canvases.append(canvas)
+    
+score_board = Label(root, text="Score: 0", font=("Arial", 16))
 
 root.mainloop()
