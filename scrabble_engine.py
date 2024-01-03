@@ -40,12 +40,12 @@ def sack_replace_all(player, sack_placeholder):
         sack_placeholder.append(i)                              
     player["letters"] = []
     sack_refill(player, sack_placeholder)
-    
-    
 def sack_append_letters_remove(player, letter, sack_placeholder):
     sack_placeholder.append(letter)
     player["letters"].remove(letter)
     sack_refill(player, sack_placeholder)
+    
+    
 def score_counter(player, letter_scores, arr):
     score = 0
     for i in player["word"]:
