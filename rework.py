@@ -185,7 +185,10 @@ def print_letters(player):
     scores = []
     print("Player", player_switch, player["letters"])
     for i in player["letters"]:                                                                                 #PRINTS LETTERS SCORE UNDER LETTERS
-        scores.append(str(letter_scores[i]))
+        if i == "joker":
+            scores.append("0    ")
+        else:
+            scores.append(str(letter_scores[i]))
     print(" Score is", scores)
 def ask_for_status(player):
     player["status"] = input("Do you want to PASS, REPLACE ALL, REPLACE SOME or PLAY? ")                        #ASKS WHETHER YOU WANT TO PLAY OR NOT
