@@ -73,21 +73,8 @@ def on_tile_click(event):
     
 def check_word():
     global canvas_coordinates, players_clicked_this_round, canvas_clicked, all_players, player_switch, score
-    # get the list of words and the validity of the board from the crossing_words function
     words, all_valid = crossing_words()
-    # check if the word that the player entered is connected to the existing words on the board
-    if not any(canvas in canvas_clicked for canvas in canvas_letters):
-        display_error()
-        for canvas in canvas_clicked:
-            remove_text(canvas)
-        for canvas in players_clicked_this_round:
-            canvas.configure(bg="white")
-        canvas_coordinates = []
-        canvas_clicked = []
-        players_clicked_this_round = []
-        all_players[player_switch]["word"] = ""
-        return
-    if not all_valid:
+    if not any(canvas in canvas_clicked for canvas in canvas_letters) or not all_valid:
         display_error()
         for canvas in canvas_clicked:
             remove_text(canvas)
@@ -101,7 +88,6 @@ def check_word():
     for canvas in players_clicked_this_round:
         all_players[player_switch]["letters"].remove(canvas_letters[canvas])
         remove_text(canvas)
-    # loop through the words list and add the score of each word to the player's score
     for word in words:
         for letter in word:
             all_players[player_switch]["score"] += letter_scores[letter]

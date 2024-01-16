@@ -341,16 +341,17 @@ def letters_inhand_checker(inp, x, y, direction):
     for i in inp:
         if direction == "D":
             if i in all_players[player_switch]["letters"] or i == arr[int(y)-1+p][int(x)-1]:
-                return True
+                pass
             else:
-                print("Error, you don't have the letter", i)                                                    #CHECKS IF YOU HAVE ALL THE LETTERS NEEDED
+                print("Error, you don't have all the letters needed")                                                    #CHECKS IF YOU HAVE ALL THE LETTERS NEEDED
                 return False
         if direction == "R":
             if i in all_players[player_switch]["letters"] or i == arr[int(y)-1][int(x)-1+p]:
-                return True
+                pass
             else:
-                print("Error, you don't have the letter", i)
+                print("Error, you don't have all the letters needed")
                 return False
+        p += 1
     
 def score_multiplier_func_3W(word, x, y, direction):
     p = 0
