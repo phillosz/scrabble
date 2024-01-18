@@ -202,7 +202,7 @@ def print_letters(player):
             scores.append(str(letter_scores[i]))
     print(" Score is", scores)
 def ask_for_status(player):
-    player["status"] = input("Do you want to PASS, REPLACE ALL, REPLACE SOME or PLAY? ")                        #ASKS WHETHER YOU WANT TO PLAY OR NOT
+    player["status"] = input("Do you want to PASS, REPLACE ALL, REPLACE SOME, PLAY or GIVE UP? ")                        #ASKS WHETHER YOU WANT TO PLAY OR NOT
 def ask_number_of_players():
     global player_count
     input_number = input("Enter number of players 2-4 ")
@@ -543,6 +543,8 @@ while check_final_stage(all_players[player_switch]):
     elif all_players[player_switch]["status"] == "REPLACE SOME":
         sack_replace_some(all_players[player_switch])
         print_letters(all_players[player_switch])
+    elif all_players[player_switch]["status"] == "GIVE UP":
+        break
     else:
         for i in range(1):
             if asking_for_word(all_players[player_switch]) == -1:
