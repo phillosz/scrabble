@@ -97,10 +97,20 @@ def sack_append_letters_remove(player, letter):
     sack_refill(player)
 def ifanything_wrong(player):
     player["word"] = input("Enter your word in CAPITALS ")
+    if player["word"] == "SKIP":
+        return -1
     player["input"] = player["word"]
+    if player["input"] == "SKIP":
+        return -1
     player["x"] = input("Enter the x coordinate ")              #ASKS FOR NEW USER INPUT
+    if player["x"] == "SKIP":
+        return -1
     player["y"] = input("Enter the y coordinate ")
+    if player["y"] == "SKIP":
+        return -1
     player["direction"] = input("Enter the direction R, D ")
+    if player["direction"] == "SKIP":
+        return -1
 def score_counter(player):
     
     score = 0
@@ -180,7 +190,8 @@ def asking_for_word(player):
         joker_pick = input("Do you want to replace joker placed on the board? ")                                #ASKS IF YOU WANT TO REPLACE JOKER WITH LETTER
         if joker_pick not in ["NO", "no", "N", "n", "No", "nO"]:
             joker_pickup()
-    ifanything_wrong(player)
+    if ifanything_wrong(player) == -1:
+        return -1
 def print_letters(player):
     scores = []
     print("Player", player_switch, player["letters"])
@@ -284,13 +295,20 @@ def joker_pickup():
     joker_x = input("Enter the x coordinate of joker ")
     joker_y = input("Enter the y coordinate of joker ")
     joker_picked_position = [int(joker_x), int(joker_y)]
-    joker_pickup_engine(joker_picked_position)
-def joker_pickup_engine(joker_picked_position):    
+    joker_pickup_engine(joker_picked_position, all_players[player_switch])
+def joker_pickup_engine(joker_picked_position, player):  
+    scores = []  
     if joker_picked_position in joker_coords:                                                                   #LETS YOU REPLACE LETTER FOR JOKER
         all_players[player_switch]["letters"].append("joker")
         all_players[player_switch]["letters"].remove(arr[int(joker_y)-1][int(joker_x)-1])
         print("Player",player_switch, all_players[player_switch]["letters"])
         joker_coords.remove(joker_picked_position)
+        for i in player["letters"]:                                                                                 #PRINTS LETTERS SCORE UNDER LETTERS
+            if i == "joker":
+                scores.append("0    ")
+            else:
+                scores.append(str(letter_scores[i]))
+        print("Score is", scores)
 def score_deduction():
     for i in range(1, player_count+1):
         for j in all_players[i]["letters"]:                                                                     #DEDUCTS SCORE FOR LETTERS YOU ENDEDUP WITH WHEN THE GAME ENDS
@@ -503,12 +521,17 @@ def checks_valid_coords(x, y):
     while x not in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"]:
         print("Error, please enter number between 1 and 15")
         return False
+def check_final_stage(player):
+    for i in player:
+        if len(player["letters"]) == 0 and len(sack_placeholder) == 0:
+            return False
+    return True
     
     
 #GAME
 ask_number_of_players()
 letter_distribution()
-while len(sack_placeholder) != 0:
+while check_final_stage(all_players[player_switch]):
     main()
     print_letters(all_players[player_switch])
     ask_for_status(all_players[player_switch])
@@ -521,17 +544,19 @@ while len(sack_placeholder) != 0:
         sack_replace_some(all_players[player_switch])
         print_letters(all_players[player_switch])
     else:
-        asking_for_word(all_players[player_switch])
-        while valid_english_word(all_players[player_switch]["word"]) == False or checks_valid_coords(all_players[player_switch]["x"], all_players[player_switch]["y"]) == False:
-            ifanything_wrong(all_players[player_switch])
-        add_before_after(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"])
-        while load_whole_word(all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or valid_english_word(all_players[player_switch]["word"]) == False or checks_if_touch(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or letters_inhand_checker(all_players[player_switch]["input"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or checks_valid_coords(all_players[player_switch]["x"], all_players[player_switch]["y"]) == False or checks_if_collide_or_gothrough(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or checks_ifword_fit(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or center_checker(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False:
-            ifanything_wrong(all_players[player_switch])
-        add_before_after(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"])
-        score_counter(all_players[player_switch])
-        printing_word(all_players[player_switch]["input"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"])
-        sack_refill(all_players[player_switch])
-        print_score(all_players[player_switch]["score"])
+        for i in range(1):
+            if asking_for_word(all_players[player_switch]) == -1:
+                continue
+            while valid_english_word(all_players[player_switch]["word"]) == False or checks_valid_coords(all_players[player_switch]["x"], all_players[player_switch]["y"]) == False:
+                ifanything_wrong(all_players[player_switch])
+            add_before_after(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"])
+            while load_whole_word(all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or valid_english_word(all_players[player_switch]["word"]) == False or checks_if_touch(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or letters_inhand_checker(all_players[player_switch]["input"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or checks_valid_coords(all_players[player_switch]["x"], all_players[player_switch]["y"]) == False or checks_if_collide_or_gothrough(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or checks_ifword_fit(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or center_checker(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False:
+                ifanything_wrong(all_players[player_switch])
+            add_before_after(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"])
+            score_counter(all_players[player_switch])
+            printing_word(all_players[player_switch]["input"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"])
+            sack_refill(all_players[player_switch])
+            print_score(all_players[player_switch]["score"])
     player_switch = 1 if player_switch == player_count else int(player_switch) + 1
 score_deduction()
 podium_print()
