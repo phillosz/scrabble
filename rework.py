@@ -184,7 +184,7 @@ def asking_for_word(player):
     else:                                                                                                       #ASKS WHETHER TO USE JOKER OR NOT
         joker_status = "no"
     if joker_status not in ["NO", "no", "N", "n", "No", "nO"]:
-        joker_selection()   
+        joker_selection()
         
     if len(joker_coords) != 0:
         joker_pick = input("Do you want to replace joker placed on the board? ")                                #ASKS IF YOU WANT TO REPLACE JOKER WITH LETTER
@@ -282,6 +282,8 @@ def add_before_after(word, x, y, direction):
 def joker_selection():
     global joker_replace
     joker_replace = input("What letter do you want to use instead of the joker? ")                              #ASKS FOR JOKER LETTER
+    while len(joker_replace) != 1:
+        joker_selection()
     locate_joker()
 def locate_joker():
     joker_value = letter_scores[joker_replace]
