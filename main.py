@@ -72,62 +72,64 @@ def on_tile_click(event):
         players_clicked_this_round.append(canvas)
     
 def check_word():
-    global canvas_coordinates, players_clicked_this_round, canvas_clicked, all_players, player_switch, score
-    words, all_valid = crossing_words()
-    if not any(canvas in canvas_clicked for canvas in canvas_letters) or not all_valid:
-        display_error()
-        for canvas in canvas_clicked:
-            remove_text(canvas)
-        for canvas in players_clicked_this_round:
-            canvas.configure(bg="white")
-        canvas_coordinates = []
-        canvas_clicked = []
-        players_clicked_this_round = []
-        all_players[player_switch]["word"] = ""
-        return
-    for canvas in players_clicked_this_round:
-        all_players[player_switch]["letters"].remove(canvas_letters[canvas])
-        remove_text(canvas)
-    for word in words:
-        for letter in word:
-            all_players[player_switch]["score"] += letter_scores[letter]
-    update_score()
-    canvas_coordinates = []
-    print(all_players[player_switch]["word"])
-    show_next_player()
+    pass
+#     global canvas_coordinates, players_clicked_this_round, canvas_clicked, all_players, player_switch, score
+#     words, all_valid = crossing_words()
+#     if not any(canvas in canvas_clicked for canvas in canvas_letters) or not all_valid:
+#         display_error()
+#         for canvas in canvas_clicked:
+#             remove_text(canvas)
+#         for canvas in players_clicked_this_round:
+#             canvas.configure(bg="white")
+#         canvas_coordinates = []
+#         canvas_clicked = []
+#         players_clicked_this_round = []
+#         all_players[player_switch]["word"] = ""
+#         return
+#     for canvas in players_clicked_this_round:
+#         all_players[player_switch]["letters"].remove(canvas_letters[canvas])
+#         remove_text(canvas)
+#     for word in words:
+#         for letter in word:
+#             all_players[player_switch]["score"] += letter_scores[letter]
+#     update_score()
+#     canvas_coordinates = []
+#     print(all_players[player_switch]["word"])
+#     show_next_player()
 
 
     
-def is_straight_line(canvas_coordinates):
-    if not canvas_coordinates or len(canvas_coordinates) == 1:
-        return True
+# def is_straight_line(canvas_coordinates):
+#     if not canvas_coordinates or len(canvas_coordinates) == 1:
+#         return True
     
-    x_set = set()
-    y_set = set()
+#     x_set = set()
+#     y_set = set()
     
-    for x, y in canvas_coordinates:
-        x_set.add(x)
-        y_set.add(y)
+#     for x, y in canvas_coordinates:
+#         x_set.add(x)
+#         y_set.add(y)
     
-    if len(x_set) == 1 or len(y_set) == 1:
-        return True
-    else:
-        return False
+#     if len(x_set) == 1 or len(y_set) == 1:
+#         return True
+#     else:
+#         return False
 
 def is_adjacent(row1, col1, row2, col2):
-    if abs(row1 - row2) <= 1:
-        if abs(col1 - col2) <= 1:
-            if row1 == row2 or col1 == col2:
-                return True
-    return False
+    pass
+#     if abs(row1 - row2) <= 1:
+#         if abs(col1 - col2) <= 1:
+#             if row1 == row2 or col1 == col2:
+#                 return True
+#     return False
 
 
-def is_straight_and_valid(canvas_coordinates):
-    if not is_straight_line(canvas_coordinates):
-        return False
-    if not crossing_words():
-        return False
-    return True
+# def is_straight_and_valid(canvas_coordinates):
+#     if not is_straight_line(canvas_coordinates):
+#         return False
+#     if not crossing_words():
+#         return False
+#     return True
     
 def remove_text(canvas):
     for item in canvas.find_all():
@@ -284,49 +286,49 @@ def replace_some():
     asign_letters()
     check_word()  
     
-def crossing_words():
-    all_valid = True
-    words = [] # a list to store the words
-    for i in range(15):
-        for j in range(15):
-            horizontal_word = ""
-            horizontal_canvases = [] # a list to store the canvases that form the horizontal word
-            for k in range(j, 15):
-                letter = canvas_letters[grid[i][k]]
-                if letter:
-                    horizontal_word += letter
-                    horizontal_canvases.append(grid[i][k]) # add the canvas to the list
-                else:
-                    break
-            # check if the horizontal word is longer than one letter
-            if len(horizontal_word) > 1:
-                # check if the horizontal word is connected to the player's word
-                if any(canvas in horizontal_canvases for canvas in canvas_clicked):
-                    # add it to the list of words
-                    words.append(horizontal_word)
-            vertical_word = ""
-            vertical_canvases = [] # a list to store the canvases that form the vertical word
-            for k in range(i, 15):
-                letter = canvas_letters[grid[k][j]]
-                if letter:
-                    vertical_word += letter
-                    vertical_canvases.append(grid[k][j]) # add the canvas to the list
-                else:
-                    break
-            # check if the vertical word is longer than one letter
-            if len(vertical_word) > 1:
-                # check if the vertical word is connected to the player's word
-                if any(canvas in vertical_canvases for canvas in canvas_clicked):
-                    # add it to the list of words
-                    words.append(vertical_word)
-    # loop through the list of words and check if they are valid
-    for word in words:
-        if word in en_words:
-            pass
-        else:
-            all_valid = False
-    # return a tuple of two values: a list of words and a boolean
-    return words, all_valid
+# def crossing_words():
+#     all_valid = True
+#     words = [] # a list to store the words
+#     for i in range(15):
+#         for j in range(15):
+#             horizontal_word = ""
+#             horizontal_canvases = [] # a list to store the canvases that form the horizontal word
+#             for k in range(j, 15):
+#                 letter = canvas_letters[grid[i][k]]
+#                 if letter:
+#                     horizontal_word += letter
+#                     horizontal_canvases.append(grid[i][k]) # add the canvas to the list
+#                 else:
+#                     break
+#             # check if the horizontal word is longer than one letter
+#             if len(horizontal_word) > 1:
+#                 # check if the horizontal word is connected to the player's word
+#                 if any(canvas in horizontal_canvases for canvas in canvas_clicked):
+#                     # add it to the list of words
+#                     words.append(horizontal_word)
+#             vertical_word = ""
+#             vertical_canvases = [] # a list to store the canvases that form the vertical word
+#             for k in range(i, 15):
+#                 letter = canvas_letters[grid[k][j]]
+#                 if letter:
+#                     vertical_word += letter
+#                     vertical_canvases.append(grid[k][j]) # add the canvas to the list
+#                 else:
+#                     break
+#             # check if the vertical word is longer than one letter
+#             if len(vertical_word) > 1:
+#                 # check if the vertical word is connected to the player's word
+#                 if any(canvas in vertical_canvases for canvas in canvas_clicked):
+#                     # add it to the list of words
+#                     words.append(vertical_word)
+#     # loop through the list of words and check if they are valid
+#     for word in words:
+#         if word in en_words:
+#             pass
+#         else:
+#             all_valid = False
+#     # return a tuple of two values: a list of words and a boolean
+#     return words, all_valid
 
 def hard_skip():
     global players_clicked_this_round, canvas_coordinates, canvas_clicked
@@ -353,16 +355,16 @@ player_count_var = StringVar()
 num_players_entry = Entry(root, textvariable=player_count_var)
 num_players_entry.grid(row=0, column=15, columnspan=7, sticky=(N, W))
 
-grid = [] # Create an empty list
+grid = []
 for j in range(15):
-    row = [] # Create a new list for each row
+    row = []
     for i in range(15):
         canvas = Canvas(root, width=tile_size, height=tile_size, bg='white')
         canvas.grid(row=j, column=i, sticky=(N, W))
         canvas.bind('<Button-1>', change_letters_canvases)
         canvas_letters[canvas] = ""
-        row.append(canvas) # Append the canvas to the row list
-    grid.append(row) # Append the row list to the grid list
+        row.append(canvas)
+    grid.append(row)
         
 create_players_button = Button(root, text="Create Players", command=create_players)
 create_players_button.grid(row=1, column=15, columnspan=7, sticky=(N, W))

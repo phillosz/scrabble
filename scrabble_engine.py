@@ -397,3 +397,8 @@ def checks_valid_coords(x, y):
     while x not in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"]:
         print("Error, please enter number between 1 and 15")
         return False
+def check_final_stage(player, sack_placeholder):
+    for i in player:
+        if len(player["letters"]) == 0 and len(sack_placeholder) == 0:
+            return False
+    return True
