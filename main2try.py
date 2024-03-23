@@ -40,8 +40,8 @@ x = ""
 y = ""
 inp = ""
 word = list(inp)
-player_count = 0
-player_switch = 1
+player_count = mp.Value("i", 0)
+player_switch = mp.Value("i", 1)
 max1 = 0
 joker_value_nahrada = []
 joker_coords = []
@@ -64,14 +64,17 @@ def gui_version(queue):
     canvas_clicked = []
     
     def submit_clicked():
+        while player_count_var.get() not in ["2", "3", "4"]:
+            num_players_entry.grid_forget()
+            num_players_entry.grid(row=0, column=15, columnspan=7, sticky=(N, W))
         number_of_players = player_count_var.get()
         queue.put(number_of_players)
         num_players_entry.grid_forget()
         create_players_button.grid_forget()
-        skip_button.grid(row=1, column=15, columnspan=7, sticky=(N, W))
-        replace_all_button.grid(row=1, column=22, columnspan=7, sticky=(N, W))
-        give_up_button.grid(row=2, column=15, columnspan=7, sticky=(N, W))
-        replace_some_button.grid(row=2, column=22, columnspan=7, sticky=(N, W))
+        skip_button.grid(row=2, column=15, columnspan=4, sticky=(N, W))
+        replace_all_button.grid(row=4, column=15, columnspan=7, sticky=(N, W))
+        give_up_button.grid(row=3, column=15, columnspan=4, sticky=(N, W))
+        replace_some_button.grid(row=5, column=15, columnspan=7, sticky=(N, W))
         
     def skip_clicked():
         queue.put("SKIP")
@@ -80,18 +83,35 @@ def gui_version(queue):
     def replace_some_clicked():
         queue.put("REPLACE SOME")
     def give_up_clicked():
-        queue.put("GUVE UP")
-
+        if max1 == 0:
+            error_word_label.place(x=130, y=220, width=300, height=50)
+            error_word_label.lift()
+            error_word_label.after(3000, lambda: error_word_label.place_forget())
+            queue.put("SKIP")
+        else:
+            queue.put("GIVE UP")
+        
+    def update_label():
+        #current_value = player_switch.value
+        player_name_label.config(text=f"P. {player_switch.value}")
+        root.after(100, update_label)
+        
+    player_name_label = Label(root)
+    player_name_label.grid(row=0, column=15, sticky=(N, W))
+    update_label()
+    
     player_count_var = StringVar()
     num_players_entry = Entry(root, textvariable=player_count_var)
-    num_players_entry.grid(row=0, column=15, columnspan=7, sticky=(N, W))
+    num_players_entry.grid(row=2, column=15, columnspan=7, sticky=(N, W))
     create_players_button = Button(root, text="Create Players", command=submit_clicked)
-    create_players_button.grid(row=1, column=15, columnspan=7, sticky=(N, W))
+    create_players_button.grid(row=3, column=15, columnspan=7, sticky=(N, W))
     
     skip_button = Button(root, text="Skip", command=skip_clicked)
     replace_all_button = Button(root, text="Replace All", command=replace_all_clicked)
     replace_some_button = Button(root, text="Replace Some", command=replace_some_clicked)
     give_up_button = Button(root, text="Give Up", command=give_up_clicked)
+    
+    error_word_label = Label(root, text="ERROR PLEASE ENTER A WORD OR SKIP")
 
     grid = []
     for j in range(15):
@@ -103,6 +123,12 @@ def gui_version(queue):
             canvas_letters[canvas] = ""
             row.append(canvas)
         grid.append(row)   
+    grid_letters = []
+    for i in range(7):
+        canvas = Canvas(root, width=tile_size, height=tile_size, bg='white')
+        canvas.grid(row=1, column=15 + i, sticky=(N, W))
+        canvas_letters[canvas] = ""
+        grid_letters.append(canvas)
         
     root.mainloop()
 
@@ -150,11 +176,11 @@ def terminal_version(queue, player_switch):
         player["status"] = queue.get()                        #ASKS WHETHER YOU 
     def ask_number_of_players(queue):
         global player_count
-        while player_count not in [2, 3, 4]:
+        while player_count.value not in [2, 3, 4]:
             if not queue.empty():
                 player_count_var = queue.get()
                 try:
-                    player_count = int(player_count_var)
+                    player_count.value = int(player_count_var)
                 except ValueError:
                     print("Invalid input. Please enter a number.")
     def joker_selection():
@@ -172,35 +198,35 @@ def terminal_version(queue, player_switch):
 
     ask_number_of_players(queue)
     sc.letter_distribution(player_count, sack_placeholder, all_players)
-    while sc.check_final_stage(all_players[player_switch], sack_placeholder):
+    while sc.check_final_stage(all_players[player_switch.value], sack_placeholder):
         sc.main(arr)
-        sc.print_letters(all_players[player_switch], player_switch, letter_scores)
-        ask_for_status(all_players[player_switch], queue)
-        if all_players[player_switch]["status"] == "PASS":
+        sc.print_letters(all_players[player_switch.value], player_switch, letter_scores)
+        ask_for_status(all_players[player_switch.value], queue)
+        if all_players[player_switch.value]["status"] == "SKIP":
             pass
-        elif all_players[player_switch]["status"] == "REPLACE ALL":
-            sc.sack_replace_all(all_players[player_switch], sack_placeholder)
-            sc.print_letters(all_players[player_switch], player_switch, letter_scores)
-        elif all_players[player_switch]["status"] == "REPLACE SOME":
-            sack_replace_some(all_players[player_switch])
-            sc.print_letters(all_players[player_switch], player_switch, letter_scores)
+        elif all_players[player_switch.value]["status"] == "REPLACE ALL":
+            sc.sack_replace_all(all_players[player_switch.value], sack_placeholder)
+            sc.print_letters(all_players[player_switch.value], player_switch, letter_scores)
+        elif all_players[player_switch.value]["status"] == "REPLACE SOME":
+            sack_replace_some(all_players[player_switch.value])
+            sc.print_letters(all_players[player_switch.value], player_switch, letter_scores)
         elif all_players[player_switch]["status"] == "GIVE UP":
             break
         else:
             for i in range(1):
-                if asking_for_word(all_players[player_switch]) == -1:
+                if asking_for_word(all_players[player_switch.value]) == -1:
                     continue
-                while sc.valid_english_word(all_players[player_switch]["word"]) == False or sc.checks_valid_coords(all_players[player_switch]["x"], all_players[player_switch]["y"]) == False:
-                    ifanything_wrong(all_players[player_switch])
-                sc.add_before_after(all_players[player_switch], all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], arr)
-                while sc.load_whole_word(all_players[player_switch], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], arr) == False or sc.valid_english_word(all_players[player_switch]["word"]) == False or sc.checks_if_touch(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], arr) == False or sc.letters_inhand_checker(all_players[player_switch], all_players[player_switch]["input"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], arr) == False or sc.checks_valid_coords(all_players[player_switch]["x"], all_players[player_switch]["y"]) == False or sc.checks_if_collide_or_gothrough(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], arr) == False or sc.checks_ifword_fit(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"]) == False or sc.center_checker(all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], arr, max1) == False:
-                    ifanything_wrong(all_players[player_switch])
-                sc.add_before_after(all_players[player_switch], all_players[player_switch]["word"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], arr)
-                sc.score_counter(all_players[player_switch], letter_scores, arr)
-                sc.printing_word(all_players[player_switch], all_players[player_switch]["input"], all_players[player_switch]["x"], all_players[player_switch]["y"], all_players[player_switch]["direction"], joker_replace,  arr, joker_status, joker_coords)
-                sc.sack_refill(all_players[player_switch], sack_placeholder)
-                sc.print_score(all_players[player_switch], all_players[player_switch]["score"], player_switch)
-        player_switch = 1 if player_switch == player_count else int(player_switch) + 1
+                while sc.valid_english_word(all_players[player_switch.value]["word"]) == False or sc.checks_valid_coords(all_players[player_switch.value]["x"], all_players[player_switch.value]["y"]) == False:
+                    ifanything_wrong(all_players[player_switch.value])
+                sc.add_before_after(all_players[player_switch.value], all_players[player_switch.value]["word"], all_players[player_switch.value]["x"], all_players[player_switch.value]["y"], all_players[player_switch.value]["direction"], arr)
+                while sc.load_whole_word(all_players[player_switch.value], all_players[player_switch.value]["x"], all_players[player_switch.value]["y"], all_players[player_switch.value]["direction"], arr) == False or sc.valid_english_word(all_players[player_switch.value]["word"]) == False or sc.checks_if_touch(all_players[player_switch.value]["word"], all_players[player_switch.value]["x"], all_players[player_switch.value]["y"], all_players[player_switch.value]["direction"], arr) == False or sc.letters_inhand_checker(all_players[player_switch.value], all_players[player_switch.value]["input"], all_players[player_switch.value]["x"], all_players[player_switch.value]["y"], all_players[player_switch.value]["direction"], arr) == False or sc.checks_valid_coords(all_players[player_switch.value]["x"], all_players[player_switch.value]["y"]) == False or sc.checks_if_collide_or_gothrough(all_players[player_switch.value]["word"], all_players[player_switch.value]["x"], all_players[player_switch.value]["y"], all_players[player_switch.value]["direction"], arr) == False or sc.checks_ifword_fit(all_players[player_switch.value]["word"], all_players[player_switch.value]["x"], all_players[player_switch.value]["y"], all_players[player_switch.value]["direction"]) == False or sc.center_checker(all_players[player_switch.value]["word"], all_players[player_switch.value]["x"], all_players[player_switch.value]["y"], all_players[player_switch.value]["direction"], arr, max1) == False:
+                    ifanything_wrong(all_players[player_switch.value])
+                sc.add_before_after(all_players[player_switch.value], all_players[player_switch.value]["word"], all_players[player_switch.value]["x"], all_players[player_switch.value]["y"], all_players[player_switch.value]["direction"], arr)
+                sc.score_counter(all_players[player_switch.value], letter_scores, arr)
+                sc.printing_word(all_players[player_switch.value], all_players[player_switch.value]["input"], all_players[player_switch.value]["x"], all_players[player_switch.value]["y"], all_players[player_switch.value]["direction"], joker_replace,  arr, joker_status, joker_coords)
+                sc.sack_refill(all_players[player_switch.value], sack_placeholder)
+                sc.print_score(all_players[player_switch.value], all_players[player_switch.value]["score"], player_switch)
+        player_switch.value = 1 if player_switch.value == player_count.value else player_switch.value + 1
     sc.score_deduction(all_players, letter_scores, player_count)
     sc.podium_print(all_players, player_count)
 
@@ -216,3 +242,5 @@ def run_game():
     
 if __name__ == '__main__':
     run_game()
+    manager = mp.Manager()
+    all_players = manager.dict()

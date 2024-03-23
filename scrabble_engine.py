@@ -30,7 +30,7 @@ def sack_refill(player, sack_placeholder):
         sack_placeholder.remove(letter)
         player["letters"].append(letter)
 def letter_distribution(player_count, sack_placeholder, all_players):
-    for i in range(int(player_count)):
+    for i in range(int(player_count.value)):
         for j in range(7):
             letter = random.choice(sack_placeholder)
             sack_placeholder.remove(letter)
@@ -105,7 +105,7 @@ def print_score(player, score, player_switch):
         print("      ", player["score_memory"][i])
 def print_letters(player, player_switch, letter_scores):
     scores = []
-    print("Player", player_switch, player["letters"])
+    print("Player", player_switch.value, player["letters"])
     for i in player["letters"]:
         scores.append(str(letter_scores[i]))
     print(" Score is", scores)
