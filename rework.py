@@ -112,12 +112,12 @@ def ifanything_wrong(player):
     if player["direction"] == "SKIP":
         return -1
 def score_counter(player):
-    
     score = 0
     for i in player["word"]:
         score += letter_scores[i]                               #COUNTS BASIC SCORE WITHOUT ANY MULTIPLIERS
     if len(player["word"]) == 7:
         player["score"] += 50
+        
     if score_multiplier_func_3W(player["word"], player["x"], player["y"], player["direction"]) != False:
         score *= 3*score_multiplier_func_3W(player["word"], player["x"], player["y"], player["direction"])      #ADDS POINTS FOR TRIPLE WORD
         if len(all_players[player_switch]["joker_letter"]) != 0:
